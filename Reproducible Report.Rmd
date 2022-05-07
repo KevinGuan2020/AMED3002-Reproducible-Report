@@ -38,5 +38,35 @@ h3 { /* Header 3 */
 </style>
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
+
+library(tidyverse)
+library(GEOquery)
+library(org.Hs.eg.db)
+library(limma)
+library(edgeR)
+library(Glimma)
+library(Homo.sapiens)
+library(phyloseq)
 ```
+
+GEO data analysis help https://sbc.shef.ac.uk/geo_tutorial/tutorial.nb.html
+
+
+```{r}
+Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
+TS1 <- getGEO("GSE19435", GSEMatrix = TRUE)[[1]]
+TS3 <- getGEO("GSE19439", GSEMatrix = TRUE)[[1]]
+TS4<- getGEO("GSE19444", GSEMatrix = TRUE)[[1]]
+TS5 <- getGEO("GSE19442", GSEMatrix = TRUE)[[1]]
+TS6 <- getGEO("GSE40553", GSEMatrix = TRUE)[[1]]
+```
+
+```{r}
+pData(gse)
+fData(gse)
+exprs(gse)
+```
+
+
+
 
