@@ -62,9 +62,14 @@ TS6 <- getGEO("GSE40553", GSEMatrix = TRUE)[[1]]
 ```
 
 ```{r}
-pData(gse)
-fData(gse)
-exprs(gse)
+#Sample(patient) data
+pData(Origin)
+
+#Gene data 
+fData(Origin)
+
+#gene expression data
+exprs(Origin)
 ```
 
 
