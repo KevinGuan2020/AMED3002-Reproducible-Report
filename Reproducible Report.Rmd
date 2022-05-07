@@ -1,0 +1,42 @@
+---
+title: "AMED3002 Reproducible Report"
+subtitle: "idk"
+author: "Kevin Guan, ..."
+date: "University of Sydney | Semester 1 2022"
+output:
+  rmdformats::downcute:
+    fig_caption: yes
+    self_contained: yes
+    number_sections: true 
+    df_print: kable
+    code_folding: hide
+    theme: sandstone
+    highlight: tango
+    css: 
+      - https://use.fontawesome.com/releases/v5.0.6/css/all.css
+---
+<style type="text/css">
+
+body{ /* Normal  */
+      font-size: 14px;
+  }
+h1, h2 { /* add border to h1 and h2 */
+  border-bottom: solid 1px #666;
+}
+h1 { /* Header 1 */
+  font-size: 56px;
+  color: Black;
+}
+h2 { /* Header 2 */
+    font-size: 18px;
+  color: Black;
+}
+h3 { /* Header 3 */
+  font-size: 16px;
+  color: Grey;
+}
+</style>
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
+```
+
