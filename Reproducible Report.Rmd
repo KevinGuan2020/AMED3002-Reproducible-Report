@@ -51,7 +51,7 @@ library(phyloseq)
 
 GEO data analysis help https://sbc.shef.ac.uk/geo_tutorial/tutorial.nb.html
 
-hi 
+hi hi lara 
 ```{r}
 Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
 TS1 <- getGEO("GSE19435", GSEMatrix = TRUE)[[1]]
