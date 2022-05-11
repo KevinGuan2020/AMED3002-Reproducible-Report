@@ -47,11 +47,12 @@ library(edgeR)
 library(Glimma)
 library(Homo.sapiens)
 library(phyloseq)
+library(gtools)
+library(preprocessCore)
 ```
 
 GEO data analysis help https://sbc.shef.ac.uk/geo_tutorial/tutorial.nb.html
 
-hi hi lara 
 ```{r}
 Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
 TS1 <- getGEO("GSE19435", GSEMatrix = TRUE)[[1]]
@@ -69,7 +70,29 @@ pData(Origin)
 fData(Origin)
 
 #gene expression data
-exprs(Origin)
+Expression <- exprs(Origin)
+rnames = row.names(Expression)
+cnames = colnames(Expression)
+
+Expression %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 1000)) %>% 
+  boxplot()
+
+as.data.frame(Expression)[,"GSM1230902"]
+
+Expression_normal = normalize.quantiles(Expression) %>% as.data.frame()
+row.names(Expression_normal) = rnames
+colnames(Expression_normal) = cnames
+```
+
+
+```{r}
+a <- 1:21
+b <- 21:1
+
+logratio2foldchange(foldchange(a, b), base = 2)
+
 ```
 
 
