@@ -1,0 +1,104 @@
+---
+title: "RR"
+author: "Christina Lauw"
+date: '2022-05-12'
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(GEOquery)
+library(org.Hs.eg.db)
+library(limma)
+library(edgeR)
+library(Glimma)
+library(Homo.sapiens)
+library(phyloseq)
+library(gtools)
+library(caret)
+library(e1071)
+library(preprocessCore)
+```
+
+
+```{r}
+Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
+TS1 <- getGEO("GSE19435", GSEMatrix = TRUE)[[1]]
+TS3 <- getGEO("GSE19439", GSEMatrix = TRUE)[[1]]
+TS4<- getGEO("GSE19444", GSEMatrix = TRUE)[[1]]
+TS5 <- getGEO("GSE19442", GSEMatrix = TRUE)[[1]]
+TS6 <- getGEO("GSE40553", GSEMatrix = TRUE)[[1]]
+```
+
+```{r}
+#Sample(patient) data
+Pheno = pData(Origin)
+
+#Gene data 
+Genes = fData(Origin)
+
+#gene expression data
+Expression <- as.data.frame(exprs(Origin))
+Expression_normalized <- as.data.frame(normalize.quantiles(exprs(Origin)))
+Expression_43 <- Expression%>%mutate(GSM1230946=(GSM1230903 + GSM1230904)/2)%>%dplyr::select(-GSM1230903)%>%dplyr::select(-GSM1230904)%>%relocate(GSM1230946,.after=GSM1230902)%>%dplyr::rename(GSM1230903=GSM1230946)
+Expression_43_normalized <- as.data.frame(normalize.quantiles(as.matrix(Expression_43)))
+Pheno_43 <- Pheno[-c(3),]
+
+Expression %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 1000)) %>% 
+  boxplot()
+
+Expression_normalized %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 1000)) %>% 
+  boxplot()
+
+Expression_43_normalized %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 1000)) %>% 
+  boxplot()
+```
+
+
+```{r}
+Expression_43_normalized_t <- as.data.frame(t(Expression_43_normalized))
+Pheno_43_description <- factor(Pheno_43$description)
+Test <- cbind(Pheno_43_description, Expression_43_normalized_t)
+```
+
+```{r}
+tune_svm <- tune.svm(Pheno_43_description~., data=Test, gamma=seq(0.01,0.1,by=0.01, cost=seq(0.1,1,by=0.1)), kernel="linear")
+
+tune.svm(Pheno_43_description~., data=Test, gamma=0.01, cost=0.01, kernel="linear")
+tune_svm$best.parameters
+
+tune(svm,Pheno_43_description~., data=Test, kernel="linear")
+
+
+svm(Pheno_43_description ~ ., data=Test, kernel="linear", gamma=0.1, cost=0.1)  
+```
+```{r}
+lmFuncs$fit<-function (x, y, first, last, ...){   
+     tmp <- as.data.frame(x)   
+     tmp$y <- y   
+ svm(y ~ ., data = tmp,data=Test, kernel="linear", gamma=1, cost=1)   
+}
+```
+
+```{r}
+parts = createDataPartition(Test$Pheno_43_description, p=0.8, list=FALSE)
+train = data[parts, ]
+test = data[-parts, ]
+X_train = train[,-9] #need to change
+y_train = train[,9]
+```
+
+
+```{r}
+#not done
+rfe_control <- rfeControl(functions = lmFuncs, method = "repeatedcv", repeats=10, number = 10, verbose=FALSE)
+
+svm_rfe <- rfe(Pheno_43_description~., data=Test, rfeControl=rfe_control)
+```
+

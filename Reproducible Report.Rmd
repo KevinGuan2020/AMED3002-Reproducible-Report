@@ -86,6 +86,8 @@ Expression_normal = normalize.quantiles(Expression) %>% as.data.frame()
 row.names(Expression_normal) = rnames
 colnames(Expression_normal) = cnames
 ```
+
+
 ```{r functions}
 svmRFE.wrap <- function(test.fold, X, ...) {
 # Wrapper to run svmRFE function while omitting a given test fold
@@ -223,6 +225,7 @@ PlotErrors <- function(errors, errors2=NULL, no.info=0.5, ylim=range(c(errors, e
 }
 ```
 
+
 ```{r testing}
 input = test
 nfold = 10
@@ -233,7 +236,7 @@ results = lapply(folds, svmRFE.wrap, input, k=10, cut.above=300)
 WriteFeatures(results, input, save=F)
 
 X = as.data.frame(t(Expression)) 
-y = factor(pheno$description)
+y = factor(Pheno$description)
 test = cbind(y,X)
 
 names = WriteFeatures(results = results, input = test, save = F)
