@@ -75,7 +75,22 @@ Expression <- exprs(Origin)
 rnames = row.names(Expression)
 cnames = colnames(Expression)
 
+Expression_normalized <- as.data.frame(normalize.quantiles(exprs(Origin)))
+Expression_43 <- Expression%>% as.data.frame()%>%mutate(GSM1230946=(GSM1230903 + GSM1230904)/2)%>%dplyr::select(-GSM1230903)%>%dplyr::select(-GSM1230904)%>%relocate(GSM1230946,.after=GSM1230902)%>%dplyr::rename(GSM1230903=GSM1230946)
+Expression_43_normalized <- as.data.frame(normalize.quantiles(as.matrix(Expression_43)))
+Pheno_43 <- Pheno[-c(3),]
+
 Expression %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 1000)) %>% 
+  boxplot()
+
+Expression_normalized %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 1000)) %>% 
+  boxplot()
+
+Expression_43_normalized %>% 
   as.data.frame() %>% 
   filter_all(all_vars(. < 1000)) %>% 
   boxplot()
@@ -85,7 +100,38 @@ as.data.frame(Expression["ILMN_3241953","GSM1230902"])
 Expression_normal = normalize.quantiles(Expression) %>% as.data.frame()
 row.names(Expression_normal) = rnames
 colnames(Expression_normal) = cnames
+
+row.names(Expression_43_normalized) = rnames
+colnames(Expression_43_normalized) = cnames[-3]
+
+
+Expression_43_normalized
 ```
+
+
+```{r}
+data = Expression_43_normalized
+
+type(fc)
+changes = c()
+names = c()
+for (a in (1:ncol(data)-1)){
+  for(i in (1:ncol(data)-a)) {
+    i = i + 1
+    fc = data[1,a]/data[1,i]
+    changes = c(changes, fc)
+    
+    n = paste(a,i,sep = ",")
+    names = c(names,n)
+  }
+  a = a+1 
+}
+
+foldchange = data.frame(name = names,
+                        change = changes)
+```
+
+
 
 
 ```{r functions}
@@ -227,28 +273,44 @@ PlotErrors <- function(errors, errors2=NULL, no.info=0.5, ylim=range(c(errors, e
 
 
 ```{r testing}
+X = as.data.frame(t(Expression)) 
+y = factor(Pheno$description)
+test = cbind(y,X)
 input = test
+
 nfold = 10
 nrows = nrow(input)
 folds = rep(1:nfold, len=nrows)[sample(nrows)]
 folds = lapply(1:nfold, function(x) which(folds == x))
 results = lapply(folds, svmRFE.wrap, input, k=10, cut.above=300)
-WriteFeatures(results, input, save=F)
-
-X = as.data.frame(t(Expression)) 
-y = factor(Pheno$description)
-test = cbind(y,X)
 
 names = WriteFeatures(results = results, input = test, save = F)
 
-
-result = svmRFE(test)
 indexes = names$FeatureName[1:20]
-
 
 Genes[colnames(test[,indexes]),]$Accession
 ```
 
+```{r testing}
+X.1 = as.data.frame(t(Expression_43_normalized)) 
+y.1 = factor(Pheno_43$description)
+test.1 = cbind(y.1,X.1)
+input.1 = test.1
+
+nfold = 10
+nrows.1 = nrow(input.1)
+folds = rep(1:nfold, len=nrows.1)[sample(nrows.1)]
+folds = lapply(1:nfold, function(x) which(folds == x))
+results.1 = lapply(folds, svmRFE.wrap, input.1, k=10, cut.above=300)
+
+names.1 = WriteFeatures(results = results.1, input = test.1, save = F)
+
+indexes.1 = names.1$FeatureName[1:20]
+test.1
+Genes[colnames(test.1[,indexes.1]),]$Accession
+
+as.data.frame(Genes$Symbol)
+```
 
 
 
