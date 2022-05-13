@@ -76,7 +76,14 @@ rnames = row.names(Expression)
 cnames = colnames(Expression)
 
 Expression_normalized <- as.data.frame(normalize.quantiles(exprs(Origin)))
-Expression_43 <- Expression%>% as.data.frame()%>%mutate(GSM1230946=(GSM1230903 + GSM1230904)/2)%>%dplyr::select(-GSM1230903)%>%dplyr::select(-GSM1230904)%>%relocate(GSM1230946,.after=GSM1230902)%>%dplyr::rename(GSM1230903=GSM1230946)
+Expression_43 <- Expression %>% 
+  as.data.frame() %>% 
+  mutate(GSM1230946=(GSM1230903 + GSM1230904)/2) %>%
+  dplyr::select(-GSM1230903) %>%
+  dplyr::select(-GSM1230904) %>%
+  relocate(GSM1230946,.after = GSM1230902) %>%
+  dplyr::rename(GSM1230903=GSM1230946)
+
 Expression_43_normalized <- as.data.frame(normalize.quantiles(as.matrix(Expression_43)))
 Pheno_43 <- Pheno[-c(3),]
 
@@ -95,21 +102,19 @@ Expression_43_normalized %>%
   filter_all(all_vars(. < 1000)) %>% 
   boxplot()
 
-as.data.frame(Expression["ILMN_3241953","GSM1230902"])
-
 Expression_normal = normalize.quantiles(Expression) %>% as.data.frame()
+
 row.names(Expression_normal) = rnames
 colnames(Expression_normal) = cnames
 
 row.names(Expression_43_normalized) = rnames
 colnames(Expression_43_normalized) = cnames[-3]
-
-
-Expression_43_normalized
 ```
 
 
-```{r}
+```{r maximum foldchange}
+
+#calculating fold change between samples for all genes 
 data = Expression_43_normalized
 
 Keep = c()
@@ -142,9 +147,8 @@ for (row in 1:nrow(data)) {
   }
   
   Keep = c(Keep, truth)
-  
 }
-foldchange
+
 table(Keep)
 ```
 
