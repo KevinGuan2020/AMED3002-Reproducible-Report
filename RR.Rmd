@@ -67,6 +67,7 @@ Pheno_43_description <- factor(Pheno_43$description)
 Test <- cbind(Pheno_43_description, Expression_43_normalized_t)
 ```
 
+
 ```{r}
 tune_svm <- tune.svm(Pheno_43_description~., data=Test, gamma=seq(0.01,0.1,by=0.01, cost=seq(0.1,1,by=0.1)), kernel="linear")
 
@@ -85,6 +86,7 @@ lmFuncs$fit<-function (x, y, first, last, ...){
  svm(y ~ ., data = tmp,data=Test, kernel="linear", gamma=1, cost=1)   
 }
 ```
+
 
 ```{r}
 parts = createDataPartition(Test$Pheno_43_description, p=0.8, list=FALSE)
