@@ -207,11 +207,11 @@ for (row in 1:nrow(data1)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange1 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange1$max <- apply(foldchange1, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange1$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -257,11 +257,11 @@ for (row in 1:nrow(data2)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange2 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange2$max <- apply(foldchange2, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange2$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -308,11 +308,11 @@ for (row in 1:nrow(data3)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange3 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange3$max <- apply(foldchange3, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange3$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -359,11 +359,11 @@ for (row in 1:nrow(data4)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange4 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange4$max <- apply(foldchange4, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange4$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -410,11 +410,11 @@ for (row in 1:nrow(data5)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange5 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange5$max <- apply(foldchange5, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange5$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -461,11 +461,11 @@ for (row in 1:nrow(data6)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange6 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange6$max <- apply(foldchange6, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange6$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -512,11 +512,11 @@ for (row in 1:nrow(data7)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange7 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange7$max <- apply(foldchange7, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange7$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -563,11 +563,11 @@ for (row in 1:nrow(data8)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange8 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange8$max <- apply(foldchange8, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange8$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -614,11 +614,11 @@ for (row in 1:nrow(data9)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange9 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange9$max <- apply(foldchange9, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange9$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -665,11 +665,11 @@ for (row in 1:nrow(data10)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange10 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange10$max <- apply(foldchange10, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange10$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -716,11 +716,11 @@ for (row in 1:nrow(data11)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange11 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange11$max <- apply(foldchange11, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange11$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -767,11 +767,11 @@ for (row in 1:nrow(data12)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange12 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange12$max <- apply(foldchange12, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange12$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -818,11 +818,11 @@ for (row in 1:nrow(data13)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange13 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange13$max <- apply(foldchange13, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange13$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -869,11 +869,11 @@ for (row in 1:nrow(data14)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange14 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange14$max <- apply(foldchange14, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange14$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -920,11 +920,11 @@ for (row in 1:nrow(data15)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange15 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange15$max <- apply(foldchange15, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange15$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -971,11 +971,11 @@ for (row in 1:nrow(data16)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange16 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange16$max <- apply(foldchange16, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange16$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -1022,11 +1022,11 @@ for (row in 1:nrow(data17)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange17 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange17$max <- apply(foldchange17, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange17$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -1072,11 +1072,11 @@ for (row in 1:nrow(data18)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange18 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange18$max <- apply(foldchange18, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange18$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -1121,11 +1121,11 @@ for (row in 1:nrow(data19)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange19 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange19$max <- apply(foldchange19, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange19$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -1171,11 +1171,11 @@ for (row in 1:nrow(data20)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange20 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange20$max <- apply(foldchange20, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange20$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -1220,11 +1220,11 @@ for (row in 1:nrow(data21)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange21 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange21$max <- apply(foldchange21, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange21$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -1269,11 +1269,11 @@ for (row in 1:nrow(data22)) {
       changes_backward = c(changes_backward, fc_backward)
     }
   }
-  foldchange = data.frame(change_f = changes_forward, 
+  foldchange22 = data.frame(change_f = changes_forward, 
                           change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
+  foldchange22$max <- apply(foldchange22, MARGIN = 1, FUN = max)
   
-  if (max(foldchange$max) <1.2) {
+  if (max(foldchange22$max) <1.2) {
     truth = FALSE
   }
   else {
@@ -1309,54 +1309,6 @@ genes_to_delete.1 <- dput(genes_to_delete)
 Expression_genes_deleted <- Expression_43_normalized[!(rownames(Expression_43_normalized) %in% genes_to_delete.1),]
 
 ```
-
-
-
-
-
-
-
-```{r}
-
-#calculating fold change between samples for all genes 
-data = hiv1_hivtb
-Keep = c()
-forloop <- for (row in 1:nrow(data)) {
-  changes_forward = c()
-  names_forward = c()
-  changes_backward = c()
-  names_backward = c()
-  for (a in 1:(ncol(data)-1)){
-    col1 = 1
-    col2 = a
-    while(col2 <= ncol(data)-1) {
-      col2 = col2 + 1
-      fc_forward = data[row,col1]/data[row,col2]
-      changes_forward = c(changes_forward, fc_forward)
-      
-      fc_backward = data[row,col2]/data[row,col1]
-      changes_backward = c(changes_backward, fc_backward)
-    }
-  }
-  foldchange = data.frame(change_f = changes_forward, 
-                          change_b = changes_backward)
-  foldchange$max <- apply(foldchange, MARGIN = 1, FUN = max)
-  
-  if (max(foldchange$max) <1.2) {
-    truth = FALSE
-  }
-  else {
-    truth = TRUE
-  }
-  
-  Keep = c(Keep, truth)
-}
-
-table(Keep)
-
-
-```
-
 
 ```{r functions}
 svmRFE.wrap <- function(test.fold, X, ...) {
@@ -1534,8 +1486,6 @@ indexes.1 = names.1$FeatureName[1:20]
 test.1
 Genes[colnames(test.1[,indexes.1]),]$Accession
 
-Genes_Ranked <- as.data.frame(Genes$Symbol)
-Genes_Ranked_251 <- head(Genes_Ranked, 251)
 
 
 ```
@@ -1559,11 +1509,44 @@ indexes.2 = names.2$FeatureName[1:20]
 test.2
 Genes[colnames(test.2[,indexes.2]),]$Accession
 
-Genes_Ranked <- as.data.frame(Genes$Symbol)
-Genes_Ranked_251 <- head(Genes_Ranked, 251)
+names.2$FeatureName
 
+Accession_251 <- as.data.frame(Genes[colnames(test.2[,1:252]),]$Accession) %>% na.omit()
+
+Symbol_251 <- as.data.frame(Genes[colnames(test.2[,1:252]),]$Symbol) %>% na.omit()
+
+GeneName_251 <- as.data.frame(Genes[colnames(test.2[,1:252]),]$Definition) %>% na.omit()
 
 ```
 
+
+```{r}
+#max fold change
+fc1 <- foldchange1 %>% dplyr::select(3)
+fc2 <- foldchange2 %>% dplyr::select(3)
+fc3 <- foldchange3 %>% dplyr::select(3)
+fc4 <- foldchange4 %>% dplyr::select(3)
+fc5 <- foldchange5 %>% dplyr::select(3)
+fc6 <- foldchange6 %>% dplyr::select(3)
+fc7 <- foldchange7 %>% dplyr::select(3)
+fc8 <- foldchange8 %>% dplyr::select(3)
+fc9 <- foldchange9 %>% dplyr::select(3)
+fc10 <- foldchange10 %>% dplyr::select(3)
+fc11 <- foldchange11 %>% dplyr::select(3)
+fc12 <- foldchange12 %>% dplyr::select(3)
+fc13 <- foldchange13 %>% dplyr::select(3)
+fc14 <- foldchange14 %>% dplyr::select(3)
+fc15 <- foldchange15 %>% dplyr::select(3)
+fc16 <- foldchange16 %>% dplyr::select(3)
+fc17 <- foldchange17 %>% dplyr::select(3)
+fc18 <- foldchange18 %>% dplyr::select(3)
+fc19 <- foldchange19 %>% dplyr::select(3)
+fc20 <- foldchange20 %>% dplyr::select(3)
+fc21 <- foldchange21 %>% dplyr::select(3)
+fc22 <- foldchange22 %>% dplyr::select(3)
+
+pmax(fc1,fc2,fc3,fc4,fc5,fc6,fc7,fc8,fc9,fc10,fc11,fc12,fc13,fc14,fc15,fc16,fc17,fc18,fc19,fc20,fc21,fc22)
+
+```
 
 
