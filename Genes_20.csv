@@ -1,0 +1,21 @@
+"Accession","Symbol","Gene Name","Rank","Fold Change"
+"NM_002046.3","GAPDH","Homo sapiens glyceraldehyde-3-phosphate dehydrogenase (GAPDH), mRNA.",1,3.29001239791547
+"NM_001031.4","RPS28","Homo sapiens ribosomal protein S28 (RPS28), mRNA.",2,1.85493982616396
+"NM_014652.2","IPO13","Homo sapiens importin 13 (IPO13), mRNA.",3,2.04395937515178
+"NM_030928.2","CDT1","Homo sapiens chromatin licensing and DNA replication factor 1 (CDT1), mRNA.",4,3.0799907105408
+"NM_005578.2","LPP","Homo sapiens LIM domain containing preferred translocation partner in lipoma (LPP), mRNA.",5,2.68393343480678
+"NM_004499.3","HNRNPAB","Homo sapiens heterogeneous nuclear ribonucleoprotein A/B (HNRNPAB), transcript variant 2, mRNA.",6,1.75312820173784
+"NM_024700.2","SNIP1","Homo sapiens Smad nuclear interacting protein 1 (SNIP1), mRNA.",7,2.35207532230504
+"XM_001127524.1","LOC143666","PREDICTED: Homo sapiens hypothetical protein LOC143666 (LOC143666), mRNA.",8,1.84902034383926
+"NM_006339.1","HMG20B","Homo sapiens high-mobility group 20B (HMG20B), mRNA.",9,2.03339508591647
+"NM_001781.1","CD69","Homo sapiens CD69 molecule (CD69), mRNA.",10,4.90091883902033
+"XR_001385.1","LAT1-3TM","PREDICTED: Homo sapiens SLC7A5 pseudogene, transcript variant 2 (LAT1-3TM), misc RNA.",11,2.56095177368717
+"NM_021649.3","TICAM2","Homo sapiens toll-like receptor adaptor molecule 2 (TICAM2), mRNA.",12,3.41215589152166
+"NM_014755.1","SERTAD2","Homo sapiens SERTA domain containing 2 (SERTAD2), mRNA.",13,2.36929227712266
+"NM_032151.3","PCBD2","Homo sapiens pterin-4 alpha-carbinolamine dehydratase/dimerization cofactor of hepatocyte nuclear factor 1 alpha (TCF1) 2 (PCBD2), mRNA.",14,1.64530829980992
+"NM_181575.3","AUP1","Homo sapiens ancient ubiquitous protein 1 (AUP1), mRNA.",15,2.65910294773194
+"NM_014874.2","MFN2","Homo sapiens mitofusin 2 (MFN2), nuclear gene encoding mitochondrial protein, mRNA.",16,1.9154312656737
+"XM_936316.1","LOC642161","PREDICTED: Homo sapiens similar to T-cell receptor beta chain V region CTL-L17 precursor (LOC642161), mRNA.",17,3.67392843595323
+"NM_023924.3","BRD9","Homo sapiens bromodomain containing 9 (BRD9), transcript variant 1, mRNA.",18,2.96786846006987
+"NM_080430.2","SELM","Homo sapiens selenoprotein M (SELM), mRNA.",19,2.02388608067788
+"NM_000788.1","DCK","Homo sapiens deoxycytidine kinase (DCK), mRNA.",20,1.79259342701239

@@ -1,0 +1,252 @@
+"Accession","Symbol","Gene Name","Rank","Fold Change"
+"NM_002046.3","GAPDH","Homo sapiens glyceraldehyde-3-phosphate dehydrogenase (GAPDH), mRNA.",1,3.29001239791547
+"NM_001031.4","RPS28","Homo sapiens ribosomal protein S28 (RPS28), mRNA.",2,1.85493982616396
+"NM_014652.2","IPO13","Homo sapiens importin 13 (IPO13), mRNA.",3,2.04395937515178
+"NM_030928.2","CDT1","Homo sapiens chromatin licensing and DNA replication factor 1 (CDT1), mRNA.",4,3.0799907105408
+"NM_005578.2","LPP","Homo sapiens LIM domain containing preferred translocation partner in lipoma (LPP), mRNA.",5,2.68393343480678
+"NM_004499.3","HNRNPAB","Homo sapiens heterogeneous nuclear ribonucleoprotein A/B (HNRNPAB), transcript variant 2, mRNA.",6,1.75312820173784
+"NM_024700.2","SNIP1","Homo sapiens Smad nuclear interacting protein 1 (SNIP1), mRNA.",7,2.35207532230504
+"XM_001127524.1","LOC143666","PREDICTED: Homo sapiens hypothetical protein LOC143666 (LOC143666), mRNA.",8,1.84902034383926
+"NM_006339.1","HMG20B","Homo sapiens high-mobility group 20B (HMG20B), mRNA.",9,2.03339508591647
+"NM_001781.1","CD69","Homo sapiens CD69 molecule (CD69), mRNA.",10,4.90091883902033
+"XR_001385.1","LAT1-3TM","PREDICTED: Homo sapiens SLC7A5 pseudogene, transcript variant 2 (LAT1-3TM), misc RNA.",11,2.56095177368717
+"NM_021649.3","TICAM2","Homo sapiens toll-like receptor adaptor molecule 2 (TICAM2), mRNA.",12,3.41215589152166
+"NM_014755.1","SERTAD2","Homo sapiens SERTA domain containing 2 (SERTAD2), mRNA.",13,2.36929227712266
+"NM_032151.3","PCBD2","Homo sapiens pterin-4 alpha-carbinolamine dehydratase/dimerization cofactor of hepatocyte nuclear factor 1 alpha (TCF1) 2 (PCBD2), mRNA.",14,1.64530829980992
+"NM_181575.3","AUP1","Homo sapiens ancient ubiquitous protein 1 (AUP1), mRNA.",15,2.65910294773194
+"NM_014874.2","MFN2","Homo sapiens mitofusin 2 (MFN2), nuclear gene encoding mitochondrial protein, mRNA.",16,1.9154312656737
+"XM_936316.1","LOC642161","PREDICTED: Homo sapiens similar to T-cell receptor beta chain V region CTL-L17 precursor (LOC642161), mRNA.",17,3.67392843595323
+"NM_023924.3","BRD9","Homo sapiens bromodomain containing 9 (BRD9), transcript variant 1, mRNA.",18,2.96786846006987
+"NM_080430.2","SELM","Homo sapiens selenoprotein M (SELM), mRNA.",19,2.02388608067788
+"NM_000788.1","DCK","Homo sapiens deoxycytidine kinase (DCK), mRNA.",20,1.79259342701239
+"NM_153813.2","ZFPM1","Homo sapiens zinc finger protein, multitype 1 (ZFPM1), mRNA.",21,1.7734404640663
+"NM_138720.1","HIST1H2BD","Homo sapiens histone cluster 1, H2bd (HIST1H2BD), transcript variant 2, mRNA.",22,8.52605996795119
+"NM_006705.2","GADD45G","Homo sapiens growth arrest and DNA-damage-inducible, gamma (GADD45G), mRNA.",23,4.65358217550803
+"NM_020462.1","ERGIC1","Homo sapiens endoplasmic reticulum-golgi intermediate compartment (ERGIC) 1 (ERGIC1), transcript variant 2, mRNA.",24,3.5634737965769
+"NM_003704.3","FAM193A","Homo sapiens family with sequence similarity 193, member A (FAM193A), mRNA.",25,1.53845319003737
+"NM_024831.5","NCOA6IP","Homo sapiens nuclear receptor coactivator 6 interacting protein (NCOA6IP), mRNA.",26,2.17286948355183
+"XR_015408.1","LOC642732","PREDICTED: Homo sapiens misc_RNA (LOC642732), miscRNA.",27,1.96355921848414
+"NM_015360.3","SKIV2L2","Homo sapiens superkiller viralicidic activity 2-like 2 (S. cerevisiae) (SKIV2L2), mRNA.",28,2.17288684033819
+"NM_153705.4","KDELC2","Homo sapiens KDEL (Lys-Asp-Glu-Leu) containing 2 (KDELC2), mRNA.",29,3.41538418591649
+"NM_019053.3","EXOC6","Homo sapiens exocyst complex component 6 (EXOC6), transcript variant 1, mRNA.",30,1.97479763136298
+"XR_019269.1","LOC649150","PREDICTED: Homo sapiens similar to eukaryotic translation elongation factor 1 alpha 2 (LOC649150), mRNA.",31,1.91341841817297
+"NM_014749.2","KIAA0586","Homo sapiens KIAA0586 (KIAA0586), mRNA.",32,1.7758003696995
+"NM_005990.3","STK10","Homo sapiens serine/threonine kinase 10 (STK10), mRNA.",33,1.91232745768143
+"NM_004447.4","EPS8","Homo sapiens epidermal growth factor receptor pathway substrate 8 (EPS8), mRNA.",34,2.37057182848991
+"NM_001752.2","CAT","Homo sapiens catalase (CAT), mRNA.",35,2.52898880375998
+"NM_003791.2","MBTPS1","Homo sapiens membrane-bound transcription factor peptidase, site 1 (MBTPS1), mRNA.",36,1.49780398479498
+"NM_006464.2","TGOLN2","Homo sapiens trans-golgi network protein 2 (TGOLN2), mRNA.",37,1.74131266603986
+"NM_025159.1","CXorf21","Homo sapiens chromosome X open reading frame 21 (CXorf21), mRNA.",38,1.72489930837764
+"NM_020831.3","MKL1","Homo sapiens megakaryoblastic leukemia (translocation) 1 (MKL1), mRNA.",39,1.76507110466273
+"NM_014733.2","ZFYVE16","Homo sapiens zinc finger, FYVE domain containing 16 (ZFYVE16), mRNA.",40,1.65371906941265
+"NM_013241.2","FHOD1","Homo sapiens formin homology 2 domain containing 1 (FHOD1), mRNA.",41,2.71598078401933
+"NM_002419.3","MAP3K11","Homo sapiens mitogen-activated protein kinase kinase kinase 11 (MAP3K11), mRNA.",42,2.50123732995913
+"NM_018976.3","SLC38A2","Homo sapiens solute carrier family 38, member 2 (SLC38A2), mRNA.",43,3.66061054748657
+"NM_147148.1","GSTM4","Homo sapiens glutathione S-transferase M4 (GSTM4), transcript variant 2, mRNA.",44,2.99774866926075
+"NM_022087.2","GALNT11","Homo sapiens UDP-N-acetyl-alpha-D-galactosamine:polypeptide N-acetylgalactosaminyltransferase 11 (GalNAc-T11) (GALNT11), mRNA.",45,2.63516049983137
+"NM_006317.3","BASP1","Homo sapiens brain abundant, membrane attached signal protein 1 (BASP1), mRNA.",46,4.48431099060232
+"NM_001008800.1","CCT3","Homo sapiens chaperonin containing TCP1, subunit 3 (gamma) (CCT3), transcript variant 3, mRNA.",47,2.53643383247884
+"NM_006795.2","EHD1","Homo sapiens EH-domain containing 1 (EHD1), mRNA.",48,1.62844952286365
+"NM_013319.1","UBIAD1","Homo sapiens UbiA prenyltransferase domain containing 1 (UBIAD1), mRNA.",49,1.85016780600057
+"NM_018294.3","CWF19L1","Homo sapiens CWF19-like 1, cell cycle control (S. pombe) (CWF19L1), mRNA.",50,1.78452125457215
+"NM_001080544.2","LOC653314","Homo sapiens similar to ribosomal protein L19 (LOC653314), mRNA.",51,1.60954406788028
+"NM_020423.4","SCYL3","Homo sapiens SCY1-like 3 (S. cerevisiae) (SCYL3), transcript variant 1, mRNA.",52,2.09176754305571
+"NM_001023587.1","ABCC5","Homo sapiens ATP-binding cassette, sub-family C (CFTR/MRP), member 5 (ABCC5), transcript variant 2, mRNA.",53,2.28302727276512
+"NM_138493.2","C6orf129","Homo sapiens chromosome 6 open reading frame 129 (C6orf129), mRNA.",54,3.1007579721443
+"NM_014138.3","FAM156A","Homo sapiens family with sequence similarity 156, member A (FAM156A), mRNA.",55,1.75763248272832
+"NM_001017998.2","GNG10","Homo sapiens guanine nucleotide binding protein (G protein), gamma 10 (GNG10), mRNA.",56,2.90959770030155
+"NM_006306.2","SMC1A","Homo sapiens structural maintenance of chromosomes 1A (SMC1A), mRNA.",57,1.75806227529667
+"NM_033286.1","C15orf23","Homo sapiens chromosome 15 open reading frame 23 (C15orf23), mRNA.",58,1.84379696663932
+"NM_001031812.2","CSNK1G3","Homo sapiens casein kinase 1, gamma 3 (CSNK1G3), transcript variant 2, mRNA.",59,2.22546138168199
+"NM_004137.2","KCNMB1","Homo sapiens potassium large conductance calcium-activated channel, subfamily M, beta member 1 (KCNMB1), mRNA.",60,3.55302971539732
+"XM_939687.2","LOC653658","PREDICTED: Homo sapiens similar to ribosomal protein S23 (LOC653658), mRNA.",61,1.84832465763665
+"NM_001421.2","ELF4","Homo sapiens E74-like factor 4 (ets domain transcription factor) (ELF4), mRNA.",62,2.49787135047429
+"NM_005791.1","MPHOSPH10","Homo sapiens M-phase phosphoprotein 10 (U3 small nucleolar ribonucleoprotein) (MPHOSPH10), mRNA.",63,2.15962732161951
+"XM_935766.1","LOC641989","PREDICTED: Homo sapiens hypothetical protein LOC641989 (LOC641989), mRNA.",64,1.73067475049435
+"NM_004965.6","HMGN1","Homo sapiens high-mobility group nucleosome binding domain 1 (HMGN1), mRNA.",65,2.14457144956928
+"NM_018368.2","LMBRD1","Homo sapiens LMBR1 domain containing 1 (LMBRD1), mRNA.",66,1.69850355715368
+"NM_176792.1","MRPL43","Homo sapiens mitochondrial ribosomal protein L43 (MRPL43), nuclear gene encoding mitochondrial protein, transcript variant 2, mRNA.",67,1.5116169266077
+"NM_006726.2","LRBA","Homo sapiens LPS-responsive vesicle trafficking, beach and anchor containing (LRBA), mRNA.",68,1.70309805273025
+"NM_004422.2","DVL2","Homo sapiens dishevelled, dsh homolog 2 (Drosophila) (DVL2), mRNA.",69,2.06873194597985
+"NM_000418.2","IL4R","Homo sapiens interleukin 4 receptor (IL4R), transcript variant 1, mRNA.",70,3.11558636712732
+"XM_936253.1","LOC642113","PREDICTED: Homo sapiens similar to Ig kappa chain V-III region HAH precursor (LOC642113), mRNA.",71,6.57684637209333
+"NM_001861.2","COX4I1","Homo sapiens cytochrome c oxidase subunit IV isoform 1 (COX4I1), mRNA.",72,1.66169581881957
+"XM_938150.2","LOC644310","PREDICTED: Homo sapiens similar to ubiquinol-cytochrome c reductase complex (LOC644310), mRNA.",73,1.67965313907528
+"NM_014149.2","WDR91","Homo sapiens WD repeat domain 91 (WDR91), mRNA.",74,1.77688704597358
+"XM_936430.2","LOC647361","PREDICTED: Homo sapiens similar to 40S ribosomal protein S29 (LOC647361), mRNA.",75,1.60424057871528
+"NM_058229.2","FBXO32","Homo sapiens F-box protein 32 (FBXO32), transcript variant 1, mRNA.",76,1.77270789302666
+"NM_014910.3","ZNF507","Homo sapiens zinc finger protein 507 (ZNF507), mRNA.",77,1.84206946677006
+"NM_024619.2","FN3KRP","Homo sapiens fructosamine-3-kinase-related protein (FN3KRP), mRNA.",78,2.18547965864279
+"NM_003477.1","PDHX","Homo sapiens pyruvate dehydrogenase complex, component X (PDHX), nuclear gene encoding mitochondrial protein, mRNA.",79,1.67990496143483
+"NM_152748.2","KIAA1324L","Homo sapiens KIAA1324-like (KIAA1324L), transcript variant 2, mRNA.",80,3.50254818911945
+"NM_003848.1","SUCLG2","Homo sapiens succinate-CoA ligase, GDP-forming, beta subunit (SUCLG2), mRNA.",81,1.77532159225482
+"NM_002865.1","RAB2A","Homo sapiens RAB2A, member RAS oncogene family (RAB2A), mRNA.",82,2.01526535305354
+"NM_183047.1","ZMYND8","Homo sapiens zinc finger, MYND-type containing 8 (ZMYND8), transcript variant 1, mRNA.",83,2.15072285776409
+"NM_001040428.2","SPATA7","Homo sapiens spermatogenesis associated 7 (SPATA7), transcript variant 2, mRNA.",84,2.23059982702239
+"NM_001031835.1","PHKB","Homo sapiens phosphorylase kinase, beta (PHKB), transcript variant 2, mRNA.",85,2.38668889836385
+"XM_942523.1","DC36","PREDICTED: Homo sapiens COBW-like placental protein (DC36), mRNA.",86,1.79848209556898
+"NM_001738.1","CA1","Homo sapiens carbonic anhydrase I (CA1), mRNA.",87,82.8480687906612
+"NM_001004346.2","MTHFD2L","Homo sapiens methylenetetrahydrofolate dehydrogenase (NADP+ dependent) 2-like (MTHFD2L), mRNA.",88,1.99002767895038
+"XM_944884.1","LOC654161","PREDICTED: Homo sapiens similar to AAA-ATPase  TOB3, transcript variant 2 (LOC654161), mRNA.",89,1.59000546267065
+"NM_030573.2","THAP7","Homo sapiens THAP domain containing 7 (THAP7), transcript variant 1, mRNA.",90,1.74733419883272
+"NM_031480.2","RIOK1","Homo sapiens RIO kinase 1 (yeast) (RIOK1), transcript variant 1, mRNA.",91,1.63931189714478
+"NM_014481.2","APEX2","Homo sapiens APEX nuclease (apurinic/apyrimidinic endonuclease) 2 (APEX2), nuclear gene encoding mitochondrial protein, mRNA.",92,2.04814662418667
+"NM_015500.1","C2CD2","Homo sapiens C2 calcium-dependent domain containing 2 (C2CD2), transcript variant 1, mRNA.",93,2.10124131910824
+"NM_015458.3","MTMR9","Homo sapiens myotubularin related protein 9 (MTMR9), mRNA.",94,1.99276029134192
+"NM_033446.1","FAM125B","Homo sapiens family with sequence similarity 125, member B (FAM125B), transcript variant 1, mRNA.",95,2.85476252697616
+"NM_001029950.1","DKFZp434K191","Homo sapiens hypothetical protein DKFZp434K191 (DKFZp434K191), mRNA.",96,2.97293485978339
+"NM_173828.3","RELL2","Homo sapiens RELT-like 2 (RELL2), mRNA.",97,1.52241264351929
+"NM_002691.1","POLD1","Homo sapiens polymerase (DNA directed), delta 1, catalytic subunit 125kDa (POLD1), mRNA.",98,1.98439081195139
+"NM_024855.3","ACTR5","Homo sapiens ARP5 actin-related protein 5 homolog (yeast) (ACTR5), mRNA.",99,2.97778406447197
+"NM_022343.2","GLIPR2","Homo sapiens GLI pathogenesis-related 2 (GLIPR2), mRNA.",100,2.66501862491926
+"NM_004027.1","INPP4A","Homo sapiens inositol polyphosphate-4-phosphatase, type I, 107kDa (INPP4A), transcript variant a, mRNA.",101,1.58700321886226
+"NM_001024666.1","SH3KBP1","Homo sapiens SH3-domain kinase binding protein 1 (SH3KBP1), transcript variant 2, mRNA.",102,2.22470665134993
+"XR_001273.1","LOC647357","PREDICTED: Homo sapiens similar to CG14980-PB, transcript variant 1 (LOC647357), misc RNA.",103,2.05155916812054
+"NM_198552.1","FAM89A","Homo sapiens family with sequence similarity 89, member A (FAM89A), mRNA.",104,2.44553558683074
+"XM_942152.1","LOC652616","PREDICTED: Homo sapiens similar to neutrophil cytosolic factor 1 (LOC652616), mRNA.",105,2.09696940751448
+"NM_153332.2","THEX1","Homo sapiens three prime histone mRNA exonuclease 1 (THEX1), mRNA.",106,2.11818208110397
+"NM_004894.1","C14orf2","Homo sapiens chromosome 14 open reading frame 2 (C14orf2), mRNA.",107,2.07801068562415
+"NM_004586.2","RPS6KA3","Homo sapiens ribosomal protein S6 kinase, 90kDa, polypeptide 3 (RPS6KA3), mRNA.",108,2.22625173885524
+"NM_006494.1","ERF","Homo sapiens Ets2 repressor factor (ERF), mRNA.",109,2.37893054884828
+"NM_025155.1","PAAF1","Homo sapiens proteasomal ATPase-associated factor 1 (PAAF1), mRNA.",110,1.97218482967313
+"NM_182498.2","ZNF428","Homo sapiens zinc finger protein 428 (ZNF428), mRNA.",111,2.78326079039347
+"NM_015094.2","HIC2","Homo sapiens hypermethylated in cancer 2 (HIC2), mRNA.",112,2.61935066300363
+"XM_942424.2","LOC440589","PREDICTED: Homo sapiens similar to ribosomal protein S2, transcript variant 3 (LOC440589), mRNA.",113,1.84409224791917
+"NM_152309.2","PIK3AP1","Homo sapiens phosphoinositide-3-kinase adaptor protein 1 (PIK3AP1), mRNA.",114,2.75974906136946
+"NM_004071.2","CLK1","Homo sapiens CDC-like kinase 1 (CLK1), mRNA.",115,5.37881133892302
+"NM_001003703.1","ATP5J","Homo sapiens ATP synthase, H+ transporting, mitochondrial F0 complex, subunit F6 (ATP5J), nuclear gene encoding mitochondrial protein, transcript variant 1, mRNA.",116,1.8002152969765
+"NM_001558.2","IL10RA","Homo sapiens interleukin 10 receptor, alpha (IL10RA), mRNA.",117,1.88468075195081
+"NM_002861.2","PCYT2","Homo sapiens phosphate cytidylyltransferase 2, ethanolamine (PCYT2), mRNA.",118,2.046676668256
+"NM_021996.3","GBGT1","Homo sapiens globoside alpha-1,3-N-acetylgalactosaminyltransferase 1 (GBGT1), mRNA.",119,2.85303369607836
+"NM_001253.2","CDC5L","Homo sapiens CDC5 cell division cycle 5-like (S. pombe) (CDC5L), mRNA.",120,2.02515300423483
+"NM_004456.3","EZH2","Homo sapiens enhancer of zeste homolog 2 (Drosophila) (EZH2), transcript variant 1, mRNA.",121,1.84390133238176
+"NM_019034.2","RHOF","Homo sapiens ras homolog gene family, member F (in filopodia) (RHOF), mRNA.",122,1.78681343054448
+"NM_015100.2","POGZ","Homo sapiens pogo transposable element with ZNF domain (POGZ), transcript variant 1, mRNA.",123,1.94708212124021
+"XM_937691.1","LOC648622","PREDICTED: Homo sapiens similar to ribosomal protein S27 (LOC648622), mRNA.",124,2.09994754999493
+"NM_015231.1","NUP160","Homo sapiens nucleoporin 160kDa (NUP160), mRNA.",125,2.0295520283897
+"NM_016619.1","PLAC8","Homo sapiens placenta-specific 8 (PLAC8), mRNA.",126,5.51360765201775
+"XM_942991.2","LOC642934","PREDICTED: Homo sapiens hypothetical LOC642934 (LOC642934), mRNA.",127,4.34771535291096
+"NM_024612.3","DHX40","Homo sapiens DEAH (Asp-Glu-Ala-His) box polypeptide 40 (DHX40), mRNA.",128,1.70234017695952
+"NM_001398.2","ECH1","Homo sapiens enoyl Coenzyme A hydratase 1, peroxisomal (ECH1), mRNA.",129,2.44339665239511
+"NM_002616.1","PER1","Homo sapiens period homolog 1 (Drosophila) (PER1), mRNA.",130,3.76317512883547
+"NM_001325.2","CSTF2","Homo sapiens cleavage stimulation factor, 3' pre-RNA, subunit 2, 64kDa (CSTF2), mRNA.",131,1.67357471864488
+"NM_153261.4","TMEM188","Homo sapiens transmembrane protein 188 (TMEM188), mRNA.",132,1.94991660461527
+"NM_007265.1","ECD","Homo sapiens ecdysoneless homolog (Drosophila) (ECD), mRNA.",133,1.5515330354972
+"NM_001007072.1","ZSCAN2","Homo sapiens zinc finger and SCAN domain containing 2 (ZSCAN2), transcript variant 3, mRNA.",134,1.58921277057868
+"NM_001087.3","AAMP","Homo sapiens angio-associated, migratory cell protein (AAMP), mRNA.",135,1.60681712702658
+"NM_003290.1","TPM4","Homo sapiens tropomyosin 4 (TPM4), mRNA.",136,2.44435063660694
+"XM_001128785.1","LOC731196","PREDICTED: Homo sapiens similar to Proprotein convertase subtilisin/kexin type 7 precursor (Proprotein convertase PC7) (Subtilisin/kexin-like protease PC7) (Prohormone convertase PC7) (PC8) (hPC8) (Lymphoma proprotein convertase) (LOC731196), mRNA.",137,1.59285874174692
+"NM_016938.2","EFEMP2","Homo sapiens EGF-containing fibulin-like extracellular matrix protein 2 (EFEMP2), mRNA.",138,1.73452371669531
+"NM_001099672.1","C8orf59","Homo sapiens chromosome 8 open reading frame 59 (C8orf59), transcript variant 3, mRNA.",139,1.90076548784388
+"NM_004910.1","PITPNM1","Homo sapiens phosphatidylinositol transfer protein, membrane-associated 1 (PITPNM1), mRNA.",140,1.82981035299534
+"NM_152533.1","C3orf22","Homo sapiens chromosome 3 open reading frame 22 (C3orf22), mRNA.",141,2.08886143653429
+"NM_024920.3","DNAJB14","Homo sapiens DnaJ (Hsp40) homolog, subfamily B, member 14 (DNAJB14), transcript variant 2, mRNA.",142,2.93201890624595
+"NM_004567.2","PFKFB4","Homo sapiens 6-phosphofructo-2-kinase/fructose-2,6-biphosphatase 4 (PFKFB4), mRNA.",143,4.96106366656964
+"NM_002386.2","MC1R","Homo sapiens melanocortin 1 receptor (alpha melanocyte stimulating hormone receptor) (MC1R), mRNA.",144,2.55809717470452
+"NM_022156.3","DUS1L","Homo sapiens dihydrouridine synthase 1-like (S. cerevisiae) (DUS1L), mRNA.",145,1.6899710282651
+"NM_005644.2","TAF12","Homo sapiens TAF12 RNA polymerase II, TATA box binding protein (TBP)-associated factor, 20kDa (TAF12), mRNA.",146,1.87825910668786
+"NM_017595.4","NKIRAS2","Homo sapiens NFKB inhibitor interacting Ras-like 2 (NKIRAS2), transcript variant 2, mRNA.",147,2.32787783655191
+"NM_032753.2","RAXL1","Homo sapiens retina and anterior neural fold homeobox like 1 (RAXL1), mRNA.",148,2.90086148575915
+"NM_012243.1","SLC35A3","Homo sapiens solute carrier family 35 (UDP-N-acetylglucosamine (UDP-GlcNAc) transporter), member A3 (SLC35A3), mRNA.",149,2.18302522064432
+"NR_003249.1","HNRPDL","Homo sapiens heterogeneous nuclear ribonucleoprotein D-like (HNRPDL), transcript variant 3, transcribed RNA.",150,2.54615993478241
+"NM_001007157.1","PHF14","Homo sapiens PHD finger protein 14 (PHF14), transcript variant 1, mRNA.",151,2.28229235661923
+"NM_021170.2","HES4","Homo sapiens hairy and enhancer of split 4 (Drosophila) (HES4), mRNA.",152,10.0318399622035
+"NM_000976.2","RPL12","Homo sapiens ribosomal protein L12 (RPL12), mRNA.",153,1.99610574573631
+"NM_001033056.1","GLUL","Homo sapiens glutamate-ammonia ligase (glutamine synthetase) (GLUL), transcript variant 3, mRNA.",154,1.69480739980428
+"NM_005849.1","IGSF6","Homo sapiens immunoglobulin superfamily, member 6 (IGSF6), mRNA.",155,4.96270042126414
+"NM_001400.3","EDG1","Homo sapiens endothelial differentiation, sphingolipid G-protein-coupled receptor, 1 (EDG1), mRNA.",156,4.96117966040763
+"NM_005610.1","RBBP4","Homo sapiens retinoblastoma binding protein 4 (RBBP4), mRNA.",157,2.06554668841865
+"NM_017746.2","TEX10","Homo sapiens testis expressed 10 (TEX10), mRNA.",158,2.08832751402803
+"NM_173608.1","C14orf80","Homo sapiens chromosome 14 open reading frame 80 (C14orf80), mRNA.",159,2.38187516291485
+"NM_001687.4","ATP5D","Homo sapiens ATP synthase, H+ transporting, mitochondrial F1 complex, delta subunit (ATP5D), nuclear gene encoding mitochondrial protein, transcript variant 1, mRNA.",160,1.77734624455474
+"XM_935294.1","LOC646144","PREDICTED: Homo sapiens similar to tousled-like kinase 2, transcript variant 1 (LOC646144), mRNA.",161,1.502907407527
+"NM_017634.2","KCTD9","Homo sapiens potassium channel tetramerisation domain containing 9 (KCTD9), mRNA.",162,1.75940126630271
+"NM_015534.4","ZZZ3","Homo sapiens zinc finger, ZZ-type containing 3 (ZZZ3), mRNA.",163,1.96403612746674
+"XM_944654.2","LOC648716","PREDICTED: Homo sapiens hypothetical LOC648716, transcript variant 2 (LOC648716), mRNA.",164,1.56339530974532
+"NM_080923.2","PTPRC","Homo sapiens protein tyrosine phosphatase, receptor type, C (PTPRC), transcript variant 4, mRNA.",165,2.70893887156699
+"NM_001018070.1","CORO1B","Homo sapiens coronin, actin binding protein, 1B (CORO1B), transcript variant 2, mRNA.",166,2.87996014832348
+"NM_012460.2","TIMM9","Homo sapiens translocase of inner mitochondrial membrane 9 homolog (yeast) (TIMM9), nuclear gene encoding mitochondrial protein, mRNA.",167,2.13346763746057
+"NM_207309.1","UAP1L1","Homo sapiens UDP-N-acteylglucosamine pyrophosphorylase 1-like 1 (UAP1L1), mRNA.",168,2.83940752566407
+"NM_138802.1","ZFAND2B","Homo sapiens zinc finger, AN1-type domain 2B (ZFAND2B), mRNA.",169,2.07259675642019
+"NM_033547.3","INTS4","Homo sapiens integrator complex subunit 4 (INTS4), mRNA.",170,1.70489340567116
+"NM_145172.2","WDR63","Homo sapiens WD repeat domain 63 (WDR63), mRNA.",171,2.90687409930922
+"NM_002613.3","PDPK1","Homo sapiens 3-phosphoinositide dependent protein kinase-1 (PDPK1), transcript variant 1, mRNA.",172,2.16539445947341
+"XM_943699.1","C6orf160","PREDICTED: Homo sapiens chromosome 6 open reading frame 160, transcript variant 4 (C6orf160), mRNA.",173,5.33106461384575
+"NM_030939.3","C6orf62","Homo sapiens chromosome 6 open reading frame 62 (C6orf62), mRNA.",174,1.66845453228851
+"NR_001589.1","HBBP1","Homo sapiens hemoglobin, beta pseudogene 1 (HBBP1), non-coding RNA.",175,1.98459640042695
+"NM_018223.1","CHFR","Homo sapiens checkpoint with forkhead and ring finger domains (CHFR), mRNA.",176,1.61529943307733
+"NM_032873.3","STS-1","Homo sapiens Cbl-interacting protein Sts-1 (STS-1), mRNA.",177,1.83206540533892
+"NM_001031694.1","SCMH1","Homo sapiens sex comb on midleg homolog 1 (Drosophila) (SCMH1), transcript variant 1, mRNA.",178,1.76418013330303
+"NM_005746.2","NAMPT","Homo sapiens nicotinamide phosphoribosyltransferase (NAMPT), mRNA.",179,5.2065980972895
+"XM_945607.1","SPG21","PREDICTED: Homo sapiens spastic paraplegia 21 (autosomal recessive, Mast syndrome), transcript variant 3 (SPG21), mRNA.",180,1.73925703941499
+"NM_032166.2","ATRIP","Homo sapiens ATR interacting protein (ATRIP), transcript variant 2, mRNA.",181,2.36700255626916
+"NM_024624.4","SMC6","Homo sapiens structural maintenance of chromosomes 6 (SMC6), mRNA.",182,5.51073479113669
+"NM_033546.2","MRLC2","Homo sapiens myosin regulatory light chain MRLC2 (MRLC2), mRNA.",183,2.27587770218488
+"NM_006336.2","ZER1","Homo sapiens zer-1 homolog (C. elegans) (ZER1), mRNA.",184,1.57720354261557
+"NM_199054.2","MKNK2","Homo sapiens MAP kinase interacting serine/threonine kinase 2 (MKNK2), transcript variant 2, mRNA.",185,2.36316781769755
+"NM_014813.1","LRIG2","Homo sapiens leucine-rich repeats and immunoglobulin-like domains 2 (LRIG2), mRNA.",186,1.73556015996873
+"NM_001037281.1","PARD6A","Homo sapiens par-6 partitioning defective 6 homolog alpha (C. elegans) (PARD6A), transcript variant 2, mRNA.",187,2.09075965423349
+"NM_138578.1","BCL2L1","Homo sapiens BCL2-like 1 (BCL2L1), nuclear gene encoding mitochondrial protein, transcript variant 1, mRNA.",188,8.07868919636436
+"NM_153251.2","ZDHHC20","Homo sapiens zinc finger, DHHC-type containing 20 (ZDHHC20), mRNA.",189,1.98785699372707
+"NM_004374.2","COX6C","Homo sapiens cytochrome c oxidase subunit VIc (COX6C), mRNA.",190,1.64032026975613
+"NM_181453.2","GCC2","Homo sapiens GRIP and coiled-coil domain containing 2 (GCC2), transcript variant 1, mRNA.",191,2.34861760250076
+"NM_001765.2","CD1C","Homo sapiens CD1c molecule (CD1C), mRNA.",192,3.20473718131982
+"NM_181512.1","MRPL21","Homo sapiens mitochondrial ribosomal protein L21 (MRPL21), nuclear gene encoding mitochondrial protein, transcript variant 2, mRNA.",193,1.47466025310369
+"NM_152240.1","ZMAT3","Homo sapiens zinc finger, matrin type 3 (ZMAT3), transcript variant 2, mRNA.",194,2.38758350703452
+"NM_002129.2","HMGB2","Homo sapiens high-mobility group box 2 (HMGB2), mRNA.",195,2.3578447414084
+"NM_001116.2","ADCY9","Homo sapiens adenylate cyclase 9 (ADCY9), mRNA.",196,2.70773129525021
+"NM_005229.2","ELK1","Homo sapiens ELK1, member of ETS oncogene family (ELK1), mRNA.",197,2.04459388387787
+"XM_001130291.1","LOC730995","PREDICTED: Homo sapiens similar to ankyrin repeat domain 36 (LOC730995), mRNA.",198,2.36203935838906
+"NM_015466.1","PTPN23","Homo sapiens protein tyrosine phosphatase, non-receptor type 23 (PTPN23), mRNA.",199,1.86747367565584
+"NM_178232.2","HAPLN3","Homo sapiens hyaluronan and proteoglycan link protein 3 (HAPLN3), mRNA.",200,3.04661713573022
+"XM_929199.1","LOC644250","PREDICTED: Homo sapiens hypothetical protein LOC644250 (LOC644250), mRNA.",201,3.04320917258545
+"NM_001679.2","ATP1B3","Homo sapiens ATPase, Na+/K+ transporting, beta 3 polypeptide (ATP1B3), mRNA. XM_945518",202,2.21861056388763
+"NM_006965.1","ZNF24","Homo sapiens zinc finger protein 24 (ZNF24), mRNA.",203,2.24459913066936
+"NM_007170.2","TESK2","Homo sapiens testis-specific kinase 2 (TESK2), mRNA.",204,1.86626384931125
+"XM_001128342.1","LOC728744","PREDICTED: Homo sapiens hypothetical LOC728744 (LOC728744), mRNA.",205,4.66940483319655
+"NM_015299.2","KHNYN","Homo sapiens KH and NYN domain containing (KHNYN), mRNA.",206,2.2236921305413
+"NM_000211.1","ITGB2","Homo sapiens integrin, beta 2 (antigen CD18 (p95), lymphocyte function-associated antigen 1; macrophage antigen 1 (mac-1) beta subunit) (ITGB2), mRNA.",207,1.96275827225652
+"NM_015149.3","RGL1","Homo sapiens ral guanine nucleotide dissociation stimulator-like 1 (RGL1), mRNA.",208,3.89851170441704
+"NM_004457.3","ACSL3","Homo sapiens acyl-CoA synthetase long-chain family member 3 (ACSL3), transcript variant 1, mRNA.",209,1.59493142450173
+"NM_022782.2","MPHOSPH9","Homo sapiens M-phase phosphoprotein 9 (MPHOSPH9), mRNA.",210,1.72902512383349
+"NM_000274.1","OAT","Homo sapiens ornithine aminotransferase (gyrate atrophy) (OAT), nuclear gene encoding mitochondrial protein, mRNA.",211,2.81406302567015
+"XM_294581.3","LOC347292","PREDICTED: Homo sapiens similar to ribosomal protein L36 (LOC347292), mRNA.",212,1.81612341382022
+"NM_012473.3","TXN2","Homo sapiens thioredoxin 2 (TXN2), nuclear gene encoding mitochondrial protein, mRNA.",213,2.15070374953543
+"NM_021140.1","UTX","Homo sapiens ubiquitously transcribed tetratricopeptide repeat, X chromosome (UTX), mRNA.",214,2.90707008005006
+"XM_939742.2","LOC649169","PREDICTED: Homo sapiens similar to WD repeat domain 74, transcript variant 1 (LOC649169), mRNA.",215,1.64909615378509
+"NM_032810.2","ATAD1","Homo sapiens ATPase family, AAA domain containing 1 (ATAD1), mRNA.",216,1.92617375628105
+"NM_197954.2","CLEC7A","Homo sapiens C-type lectin domain family 7, member A (CLEC7A), transcript variant 6, mRNA.",217,9.69292729968085
+"NM_031925.1","TMEM120A","Homo sapiens transmembrane protein 120A (TMEM120A), mRNA.",218,1.81335341500054
+"NM_002319.2","LRCH4","Homo sapiens leucine-rich repeats and calponin homology (CH) domain containing 4 (LRCH4), mRNA.",219,2.41355361557245
+"NM_032042.3","C5orf21","Homo sapiens chromosome 5 open reading frame 21 (C5orf21), mRNA.",220,2.44170051218969
+"NM_005466.2","MED6","Homo sapiens mediator complex subunit 6 (MED6), mRNA.",221,2.24661944064805
+"NM_013291.2","CPSF1","Homo sapiens cleavage and polyadenylation specific factor 1, 160kDa (CPSF1), mRNA.",222,2.19075750866962
+"NM_005830.2","MRPS31","Homo sapiens mitochondrial ribosomal protein S31 (MRPS31), nuclear gene encoding mitochondrial protein, mRNA.",223,2.4891190006451
+"NM_006068.2","TLR6","Homo sapiens toll-like receptor 6 (TLR6), mRNA.",224,3.71607692380077
+"NM_005527.3","HSPA1L","Homo sapiens heat shock 70kDa protein 1-like (HSPA1L), mRNA.",225,2.2550442774075
+"NM_015122.1","FCHO1","Homo sapiens FCH domain only 1 (FCHO1), mRNA.",226,2.24467938935767
+"NM_001270.2","CHD1","Homo sapiens chromodomain helicase DNA binding protein 1 (CHD1), mRNA.",227,2.93886152301665
+"NM_007368.2","RASA3","Homo sapiens RAS p21 protein activator 3 (RASA3), mRNA.",228,2.40827781112467
+"NR_003264.1","SDHALP1","Homo sapiens succinate dehydrogenase complex, subunit A, flavoprotein pseudogene 1 (SDHALP1) on chromosome 3.",229,1.6310094394662
+"NM_053000.1","TIGA1","Homo sapiens TIGA1 (TIGA1), mRNA.",230,1.97392907548316
+"NM_016089.2","ZNF589","Homo sapiens zinc finger protein 589 (ZNF589), mRNA.",231,3.20999830320482
+"NM_032326.2","TMEM175","Homo sapiens transmembrane protein 175 (TMEM175), mRNA.",232,2.92456746521371
+"NM_019057.3","FAM193B","Homo sapiens family with sequence similarity 193, member B (FAM193B), transcript variant 1, mRNA. XM_944464 XM_944467 XM_944470",233,1.90546764336465
+"NM_017912.3","HERC6","Homo sapiens hect domain and RLD 6 (HERC6), transcript variant 1, mRNA.",234,4.87860139829625
+"NM_024717.3","MCTP1","Homo sapiens multiple C2 domains, transmembrane 1 (MCTP1), transcript variant L, mRNA.",235,2.96470493583758
+"NM_006991.3","ZNF197","Homo sapiens zinc finger protein 197 (ZNF197), transcript variant 1, mRNA.",236,1.71637196254937
+"NM_033070.2","CECR5","Homo sapiens cat eye syndrome chromosome region, candidate 5 (CECR5), transcript variant 2, mRNA.",237,2.14970810435865
+"NM_002013.2","FKBP3","Homo sapiens FK506 binding protein 3, 25kDa (FKBP3), mRNA.",238,1.71146218374646
+"NM_018037.1","RALGPS2","Homo sapiens Ral GEF with PH domain and SH3 binding motif 2 (RALGPS2), transcript variant 1, mRNA.",239,3.96821787339318
+"NM_032413.2","C15orf48","Homo sapiens chromosome 15 open reading frame 48 (C15orf48), transcript variant 2, mRNA.",240,3.43559179943232
+"NM_013272.2","SLCO3A1","Homo sapiens solute carrier organic anion transporter family, member 3A1 (SLCO3A1), mRNA.",241,2.46771675211691
+"NM_003688.1","CASK","Homo sapiens calcium/calmodulin-dependent serine protein kinase (MAGUK family) (CASK), mRNA.",242,1.6246664188276
+"NM_001013253.1","LSP1","Homo sapiens lymphocyte-specific protein 1 (LSP1), transcript variant 2, mRNA.",243,2.28544197862455
+"NM_016089.2","ZNF589","Homo sapiens zinc finger protein 589 (ZNF589), mRNA.",244,1.68102232432197
+"NM_001098.2","ACO2","Homo sapiens aconitase 2, mitochondrial (ACO2), nuclear gene encoding mitochondrial protein, mRNA.",245,1.69473538550977
+"NM_006267.4","RANBP2","Homo sapiens RAN binding protein 2 (RANBP2), mRNA.",246,2.82059047469977
+"NM_052925.1","LENG8","Homo sapiens leukocyte receptor cluster (LRC) member 8 (LENG8), mRNA.",247,1.97747461786395
+"NM_005697.3","SCAMP2","Homo sapiens secretory carrier membrane protein 2 (SCAMP2), mRNA.",248,1.81119712902059
+"XM_929738.1","LOC646786","PREDICTED: Homo sapiens similar to Afadin (AF-6 protein) (LOC646786), mRNA.",249,2.99060569855657
+"NM_012207.1","HNRPH3","Homo sapiens heterogeneous nuclear ribonucleoprotein H3 (2H9) (HNRPH3), transcript variant 2H9, mRNA.",250,2.03889979552004
+"NM_006815.3","TMED2","Homo sapiens transmembrane emp24 domain trafficking protein 2 (TMED2), mRNA.",251,2.34485155350042
