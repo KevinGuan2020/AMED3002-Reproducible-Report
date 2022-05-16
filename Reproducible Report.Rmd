@@ -190,6 +190,7 @@ table(Keep)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data1 = hiv1_hivtb
 Keep1 = c()
+Keep1.1 = c()
 for (row in 1:nrow(data1)) {
   changes_forward = c()
   names_forward = c()
@@ -219,27 +220,33 @@ for (row in 1:nrow(data1)) {
   }
   
   Keep1 = c(Keep1, truth)
+  Keep1.1 = c(Keep1.1, max(foldchange1$max))
 }
 
 table(Keep1)
 Keep_hiv1_hivtb <- as.data.frame(Keep1)
+Keep1.1.df <- as.data.frame(Keep1.1) %>% dplyr::rename(Fold_Change =Keep1.1)
 
-Keep_hiv1_hivtb_withgenes <- cbind(Keep_hiv1_hivtb, Expression_43_normalized)
+Keep_hiv1_hivtb_withgenes <- cbind(Keep_hiv1_hivtb,  Expression_43_normalized)
 Keep_hiv1_hivtb_withgenes$Keep1 = as.character(Keep_hiv1_hivtb_withgenes$Keep1)
-Keep_hiv1_hivtb_withgenes %>% filter(Keep1 == "TRUE")
+t1 <- Keep_hiv1_hivtb_withgenes %>% filter(Keep1 == "TRUE")
 
 f1 <- Keep_hiv1_hivtb_withgenes %>% filter(Keep1 == "FALSE")
 
 f1g <- tibble::rownames_to_column(f1, "Gene")
 f1_gene <- f1g%>% dplyr::select(Gene) 
 
+gene_fc_1<- Keep_hiv1_hivtb_withgenes %>% cbind(Keep1.1.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
+
 ```
+
 
 ```{r hiv2}
 
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data2 = hiv2_hivtb
 Keep2 = c()
+Keep2.2 = c()
 for (row in 1:nrow(data2)) {
   changes_forward = c()
   names_forward = c()
@@ -269,19 +276,23 @@ for (row in 1:nrow(data2)) {
   }
   
   Keep2 = c(Keep2, truth)
+  Keep2.2 = c(Keep2.2, max(foldchange2$max))
 }
 
 table(Keep2)
 Keep_hiv2_hivtb <- as.data.frame(Keep2)
+Keep2.2.df <- as.data.frame(Keep2.2) %>% dplyr::rename(Fold_Change =Keep2.2)
 
-Keep_hiv2_hivtb_withgenes <- cbind(Keep_hiv2_hivtb, Expression_43_normalized)
+Keep_hiv2_hivtb_withgenes <- cbind(Keep_hiv2_hivtb,  Expression_43_normalized)
 Keep_hiv2_hivtb_withgenes$Keep2 = as.character(Keep_hiv2_hivtb_withgenes$Keep2)
-Keep_hiv2_hivtb_withgenes %>% filter(Keep2 == "TRUE")
+t2 <- Keep_hiv2_hivtb_withgenes %>% filter(Keep2 == "TRUE")
 
 f2 <- Keep_hiv2_hivtb_withgenes %>% filter(Keep2 == "FALSE")
 
 f2g <- tibble::rownames_to_column(f2, "Gene")
 f2_gene <- f2g%>% dplyr::select(Gene) 
+
+gene_fc_2<- Keep_hiv2_hivtb_withgenes %>% cbind(Keep2.2.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -291,6 +302,7 @@ f2_gene <- f2g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data3 = hiv3_hivtb
 Keep3 = c()
+Keep3.3=c()
 for (row in 1:nrow(data3)) {
   changes_forward = c()
   names_forward = c()
@@ -320,19 +332,23 @@ for (row in 1:nrow(data3)) {
   }
   
   Keep3 = c(Keep3, truth)
+  Keep3.3 = c(Keep3.3, max(foldchange3$max))
 }
 
 table(Keep3)
 Keep_hiv3_hivtb <- as.data.frame(Keep3)
+Keep3.3.df <- as.data.frame(Keep3.3) %>% dplyr::rename(Fold_Change =Keep3.3)
 
-Keep_hiv3_hivtb_withgenes <- cbind(Keep_hiv3_hivtb, Expression_43_normalized)
+Keep_hiv3_hivtb_withgenes <- cbind(Keep_hiv3_hivtb,  Expression_43_normalized)
 Keep_hiv3_hivtb_withgenes$Keep3 = as.character(Keep_hiv3_hivtb_withgenes$Keep3)
-Keep_hiv3_hivtb_withgenes %>% filter(Keep3 == "TRUE")
+t3 <- Keep_hiv3_hivtb_withgenes %>% filter(Keep3 == "TRUE")
 
 f3 <- Keep_hiv3_hivtb_withgenes %>% filter(Keep3 == "FALSE")
 
 f3g <- tibble::rownames_to_column(f3, "Gene")
 f3_gene <- f3g%>% dplyr::select(Gene) 
+
+gene_fc_3<- Keep_hiv3_hivtb_withgenes %>% cbind(Keep3.3.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -342,6 +358,7 @@ f3_gene <- f3g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data4 = hiv4_hivtb
 Keep4 = c()
+Keep4.4 = c()
 for (row in 1:nrow(data4)) {
   changes_forward = c()
   names_forward = c()
@@ -371,19 +388,23 @@ for (row in 1:nrow(data4)) {
   }
   
   Keep4 = c(Keep4, truth)
+  Keep4.4 = c(Keep4.4, max(foldchange4$max))
 }
 
 table(Keep4)
 Keep_hiv4_hivtb <- as.data.frame(Keep4)
+Keep4.4.df <- as.data.frame(Keep4.4) %>% dplyr::rename(Fold_Change =Keep4.4)
 
-Keep_hiv4_hivtb_withgenes <- cbind(Keep_hiv4_hivtb, Expression_43_normalized)
+Keep_hiv4_hivtb_withgenes <- cbind(Keep_hiv4_hivtb,  Expression_43_normalized)
 Keep_hiv4_hivtb_withgenes$Keep4 = as.character(Keep_hiv4_hivtb_withgenes$Keep4)
-Keep_hiv4_hivtb_withgenes %>% filter(Keep4 == "TRUE")
+t4 <- Keep_hiv4_hivtb_withgenes %>% filter(Keep4 == "TRUE")
 
 f4 <- Keep_hiv4_hivtb_withgenes %>% filter(Keep4 == "FALSE")
 
 f4g <- tibble::rownames_to_column(f4, "Gene")
 f4_gene <- f4g%>% dplyr::select(Gene) 
+
+gene_fc_4<- Keep_hiv4_hivtb_withgenes %>% cbind(Keep4.4.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -393,6 +414,7 @@ f4_gene <- f4g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data5 = hiv5_hivtb
 Keep5 = c()
+Keep5.5=c()
 for (row in 1:nrow(data5)) {
   changes_forward = c()
   names_forward = c()
@@ -422,19 +444,23 @@ for (row in 1:nrow(data5)) {
   }
   
   Keep5 = c(Keep5, truth)
+  Keep5.5 = c(Keep5.5, max(foldchange5$max))
 }
 
 table(Keep5)
 Keep_hiv5_hivtb <- as.data.frame(Keep5)
+Keep5.5.df <- as.data.frame(Keep5.5) %>% dplyr::rename(Fold_Change =Keep5.5)
 
-Keep_hiv5_hivtb_withgenes <- cbind(Keep_hiv5_hivtb, Expression_43_normalized)
+Keep_hiv5_hivtb_withgenes <- cbind(Keep_hiv5_hivtb,  Expression_43_normalized)
 Keep_hiv5_hivtb_withgenes$Keep5 = as.character(Keep_hiv5_hivtb_withgenes$Keep5)
-Keep_hiv5_hivtb_withgenes %>% filter(Keep5 == "TRUE")
+t5 <- Keep_hiv5_hivtb_withgenes %>% filter(Keep5 == "TRUE")
 
 f5 <- Keep_hiv5_hivtb_withgenes %>% filter(Keep5 == "FALSE")
 
 f5g <- tibble::rownames_to_column(f5, "Gene")
 f5_gene <- f5g%>% dplyr::select(Gene) 
+
+gene_fc_5<- Keep_hiv5_hivtb_withgenes %>% cbind(Keep5.5.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -444,6 +470,7 @@ f5_gene <- f5g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data6 = hiv6_hivtb
 Keep6 = c()
+Keep6.6=c()
 for (row in 1:nrow(data6)) {
   changes_forward = c()
   names_forward = c()
@@ -473,19 +500,23 @@ for (row in 1:nrow(data6)) {
   }
   
   Keep6 = c(Keep6, truth)
+  Keep6.6 = c(Keep6.6, max(foldchange6$max))
 }
 
 table(Keep6)
 Keep_hiv6_hivtb <- as.data.frame(Keep6)
+Keep6.6.df <- as.data.frame(Keep6.6) %>% dplyr::rename(Fold_Change =Keep6.6)
 
-Keep_hiv6_hivtb_withgenes <- cbind(Keep_hiv6_hivtb, Expression_43_normalized)
+Keep_hiv6_hivtb_withgenes <- cbind(Keep_hiv6_hivtb,  Expression_43_normalized)
 Keep_hiv6_hivtb_withgenes$Keep6 = as.character(Keep_hiv6_hivtb_withgenes$Keep6)
-Keep_hiv6_hivtb_withgenes %>% filter(Keep6 == "TRUE")
+t6 <- Keep_hiv6_hivtb_withgenes %>% filter(Keep6 == "TRUE")
 
 f6 <- Keep_hiv6_hivtb_withgenes %>% filter(Keep6 == "FALSE")
 
 f6g <- tibble::rownames_to_column(f6, "Gene")
 f6_gene <- f6g%>% dplyr::select(Gene) 
+
+gene_fc_6<- Keep_hiv6_hivtb_withgenes %>% cbind(Keep6.6.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -495,6 +526,7 @@ f6_gene <- f6g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data7 = hiv7_hivtb
 Keep7 = c()
+Keep7.7 =c()
 for (row in 1:nrow(data7)) {
   changes_forward = c()
   names_forward = c()
@@ -524,19 +556,23 @@ for (row in 1:nrow(data7)) {
   }
   
   Keep7 = c(Keep7, truth)
+  Keep7.7 = c(Keep7.7, max(foldchange7$max))
 }
 
 table(Keep7)
 Keep_hiv7_hivtb <- as.data.frame(Keep7)
+Keep7.7.df <- as.data.frame(Keep7.7) %>% dplyr::rename(Fold_Change =Keep7.7)
 
-Keep_hiv7_hivtb_withgenes <- cbind(Keep_hiv7_hivtb, Expression_43_normalized)
+Keep_hiv7_hivtb_withgenes <- cbind(Keep_hiv7_hivtb,  Expression_43_normalized)
 Keep_hiv7_hivtb_withgenes$Keep7 = as.character(Keep_hiv7_hivtb_withgenes$Keep7)
-Keep_hiv7_hivtb_withgenes %>% filter(Keep7 == "TRUE")
+t7 <- Keep_hiv7_hivtb_withgenes %>% filter(Keep7 == "TRUE")
 
 f7 <- Keep_hiv7_hivtb_withgenes %>% filter(Keep7 == "FALSE")
 
 f7g <- tibble::rownames_to_column(f7, "Gene")
 f7_gene <- f7g%>% dplyr::select(Gene) 
+
+gene_fc_7<- Keep_hiv7_hivtb_withgenes %>% cbind(Keep7.7.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change)  
 
 ```
 
@@ -546,6 +582,7 @@ f7_gene <- f7g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data8 = hiv8_hivtb
 Keep8 = c()
+Keep8.8=c()
 for (row in 1:nrow(data8)) {
   changes_forward = c()
   names_forward = c()
@@ -575,19 +612,23 @@ for (row in 1:nrow(data8)) {
   }
   
   Keep8 = c(Keep8, truth)
+  Keep8.8 = c(Keep8.8, max(foldchange8$max))
 }
 
 table(Keep8)
 Keep_hiv8_hivtb <- as.data.frame(Keep8)
+Keep8.8.df <- as.data.frame(Keep8.8) %>% dplyr::rename(Fold_Change =Keep8.8)
 
-Keep_hiv8_hivtb_withgenes <- cbind(Keep_hiv8_hivtb, Expression_43_normalized)
+Keep_hiv8_hivtb_withgenes <- cbind(Keep_hiv8_hivtb,  Expression_43_normalized)
 Keep_hiv8_hivtb_withgenes$Keep8 = as.character(Keep_hiv8_hivtb_withgenes$Keep8)
-Keep_hiv8_hivtb_withgenes %>% filter(Keep8 == "TRUE")
+t8 <- Keep_hiv8_hivtb_withgenes %>% filter(Keep8 == "TRUE")
 
 f8 <- Keep_hiv8_hivtb_withgenes %>% filter(Keep8 == "FALSE")
 
 f8g <- tibble::rownames_to_column(f8, "Gene")
 f8_gene <- f8g%>% dplyr::select(Gene) 
+
+gene_fc_8<- Keep_hiv8_hivtb_withgenes %>% cbind(Keep8.8.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -597,6 +638,7 @@ f8_gene <- f8g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data9 = hiv9_hivtb
 Keep9 = c()
+Keep9.9=c()
 for (row in 1:nrow(data9)) {
   changes_forward = c()
   names_forward = c()
@@ -626,19 +668,23 @@ for (row in 1:nrow(data9)) {
   }
   
   Keep9 = c(Keep9, truth)
+  Keep9.9 = c(Keep9.9, max(foldchange9$max))
 }
 
 table(Keep9)
 Keep_hiv9_hivtb <- as.data.frame(Keep9)
+Keep9.9.df <- as.data.frame(Keep9.9) %>% dplyr::rename(Fold_Change =Keep9.9)
 
-Keep_hiv9_hivtb_withgenes <- cbind(Keep_hiv9_hivtb, Expression_43_normalized)
+Keep_hiv9_hivtb_withgenes <- cbind(Keep_hiv9_hivtb,  Expression_43_normalized)
 Keep_hiv9_hivtb_withgenes$Keep9 = as.character(Keep_hiv9_hivtb_withgenes$Keep9)
-Keep_hiv9_hivtb_withgenes %>% filter(Keep9 == "TRUE")
+t9 <- Keep_hiv9_hivtb_withgenes %>% filter(Keep9 == "TRUE")
 
 f9 <- Keep_hiv9_hivtb_withgenes %>% filter(Keep9 == "FALSE")
 
 f9g <- tibble::rownames_to_column(f9, "Gene")
 f9_gene <- f9g%>% dplyr::select(Gene) 
+
+gene_fc_9<- Keep_hiv9_hivtb_withgenes %>% cbind(Keep9.9.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -648,6 +694,7 @@ f9_gene <- f9g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data10 = hiv10_hivtb
 Keep10 = c()
+Keep10.10 =c()
 for (row in 1:nrow(data10)) {
   changes_forward = c()
   names_forward = c()
@@ -677,19 +724,23 @@ for (row in 1:nrow(data10)) {
   }
   
   Keep10 = c(Keep10, truth)
+  Keep10.10 = c(Keep10.10, max(foldchange10$max))
 }
 
 table(Keep10)
 Keep_hiv10_hivtb <- as.data.frame(Keep10)
+Keep10.10.df <- as.data.frame(Keep10.10) %>% dplyr::rename(Fold_Change =Keep10.10)
 
-Keep_hiv10_hivtb_withgenes <- cbind(Keep_hiv10_hivtb, Expression_43_normalized)
+Keep_hiv10_hivtb_withgenes <- cbind(Keep_hiv10_hivtb,  Expression_43_normalized)
 Keep_hiv10_hivtb_withgenes$Keep10 = as.character(Keep_hiv10_hivtb_withgenes$Keep10)
-Keep_hiv10_hivtb_withgenes %>% filter(Keep10 == "TRUE")
+t10 <- Keep_hiv10_hivtb_withgenes %>% filter(Keep10 == "TRUE")
 
 f10 <- Keep_hiv10_hivtb_withgenes %>% filter(Keep10 == "FALSE")
 
 f10g <- tibble::rownames_to_column(f10, "Gene")
 f10_gene <- f10g%>% dplyr::select(Gene) 
+
+gene_fc_10<- Keep_hiv10_hivtb_withgenes %>% cbind(Keep10.10.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change)  
 
 ```
 
@@ -699,6 +750,7 @@ f10_gene <- f10g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data11 = hiv11_hivtb
 Keep11 = c()
+Keep11.11 = c()
 for (row in 1:nrow(data11)) {
   changes_forward = c()
   names_forward = c()
@@ -728,19 +780,23 @@ for (row in 1:nrow(data11)) {
   }
   
   Keep11 = c(Keep11, truth)
+  Keep11.11 = c(Keep11.11, max(foldchange11$max))
 }
 
 table(Keep11)
 Keep_hiv11_hivtb <- as.data.frame(Keep11)
+Keep11.11.df <- as.data.frame(Keep11.11) %>% dplyr::rename(Fold_Change =Keep11.11)
 
-Keep_hiv11_hivtb_withgenes <- cbind(Keep_hiv11_hivtb, Expression_43_normalized)
+Keep_hiv11_hivtb_withgenes <- cbind(Keep_hiv11_hivtb,  Expression_43_normalized)
 Keep_hiv11_hivtb_withgenes$Keep11 = as.character(Keep_hiv11_hivtb_withgenes$Keep11)
-Keep_hiv11_hivtb_withgenes %>% filter(Keep11 == "TRUE")
+t11 <- Keep_hiv11_hivtb_withgenes %>% filter(Keep11 == "TRUE")
 
 f11 <- Keep_hiv11_hivtb_withgenes %>% filter(Keep11 == "FALSE")
 
 f11g <- tibble::rownames_to_column(f11, "Gene")
 f11_gene <- f11g%>% dplyr::select(Gene) 
+
+gene_fc_11<- Keep_hiv11_hivtb_withgenes %>% cbind(Keep11.11.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -750,6 +806,7 @@ f11_gene <- f11g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data12 = hiv12_hivtb
 Keep12 = c()
+Keep12.12 =c()
 for (row in 1:nrow(data12)) {
   changes_forward = c()
   names_forward = c()
@@ -779,19 +836,23 @@ for (row in 1:nrow(data12)) {
   }
   
   Keep12 = c(Keep12, truth)
+  Keep12.12 = c(Keep12.12, max(foldchange12$max))
 }
 
 table(Keep12)
 Keep_hiv12_hivtb <- as.data.frame(Keep12)
+Keep12.12.df <- as.data.frame(Keep12.12) %>% dplyr::rename(Fold_Change =Keep12.12)
 
-Keep_hiv12_hivtb_withgenes <- cbind(Keep_hiv12_hivtb, Expression_43_normalized)
+Keep_hiv12_hivtb_withgenes <- cbind(Keep_hiv12_hivtb,  Expression_43_normalized)
 Keep_hiv12_hivtb_withgenes$Keep12 = as.character(Keep_hiv12_hivtb_withgenes$Keep12)
-Keep_hiv12_hivtb_withgenes %>% filter(Keep12 == "TRUE")
+t12 <- Keep_hiv12_hivtb_withgenes %>% filter(Keep12 == "TRUE")
 
-f12 <- Keep_hiv4_hivtb_withgenes %>% filter(Keep12 == "FALSE")
+f12 <- Keep_hiv12_hivtb_withgenes %>% filter(Keep12 == "FALSE")
 
 f12g <- tibble::rownames_to_column(f12, "Gene")
 f12_gene <- f12g%>% dplyr::select(Gene) 
+
+gene_fc_12<- Keep_hiv12_hivtb_withgenes %>% cbind(Keep12.12.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -801,6 +862,7 @@ f12_gene <- f12g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data13 = hiv13_hivtb
 Keep13 = c()
+Keep13.13 = c()
 for (row in 1:nrow(data13)) {
   changes_forward = c()
   names_forward = c()
@@ -830,19 +892,23 @@ for (row in 1:nrow(data13)) {
   }
   
   Keep13 = c(Keep13, truth)
+  Keep13.13 = c(Keep13.13, max(foldchange13$max))
 }
 
 table(Keep13)
 Keep_hiv13_hivtb <- as.data.frame(Keep13)
+Keep13.13.df <- as.data.frame(Keep13.13) %>% dplyr::rename(Fold_Change =Keep13.13)
 
-Keep_hiv13_hivtb_withgenes <- cbind(Keep_hiv13_hivtb, Expression_43_normalized)
+Keep_hiv13_hivtb_withgenes <- cbind(Keep_hiv13_hivtb,  Expression_43_normalized)
 Keep_hiv13_hivtb_withgenes$Keep13 = as.character(Keep_hiv13_hivtb_withgenes$Keep13)
-Keep_hiv13_hivtb_withgenes %>% filter(Keep13 == "TRUE")
+t13 <- Keep_hiv13_hivtb_withgenes %>% filter(Keep13 == "TRUE")
 
 f13 <- Keep_hiv13_hivtb_withgenes %>% filter(Keep13 == "FALSE")
 
 f13g <- tibble::rownames_to_column(f13, "Gene")
 f13_gene <- f13g%>% dplyr::select(Gene) 
+
+gene_fc_13<- Keep_hiv13_hivtb_withgenes %>% cbind(Keep13.13.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -852,6 +918,7 @@ f13_gene <- f13g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data14 = hiv14_hivtb
 Keep14 = c()
+Keep14.14 = c()
 for (row in 1:nrow(data14)) {
   changes_forward = c()
   names_forward = c()
@@ -881,19 +948,23 @@ for (row in 1:nrow(data14)) {
   }
   
   Keep14 = c(Keep14, truth)
+  Keep14.14 = c(Keep14.14, max(foldchange14$max))
 }
 
 table(Keep14)
 Keep_hiv14_hivtb <- as.data.frame(Keep14)
+Keep14.14.df <- as.data.frame(Keep14.14) %>% dplyr::rename(Fold_Change =Keep14.14)
 
-Keep_hiv14_hivtb_withgenes <- cbind(Keep_hiv14_hivtb, Expression_43_normalized)
+Keep_hiv14_hivtb_withgenes <- cbind(Keep_hiv14_hivtb,  Expression_43_normalized)
 Keep_hiv14_hivtb_withgenes$Keep14 = as.character(Keep_hiv14_hivtb_withgenes$Keep14)
-Keep_hiv14_hivtb_withgenes %>% filter(Keep14 == "TRUE")
+t14 <- Keep_hiv14_hivtb_withgenes %>% filter(Keep14 == "TRUE")
 
 f14 <- Keep_hiv14_hivtb_withgenes %>% filter(Keep14 == "FALSE")
 
 f14g <- tibble::rownames_to_column(f14, "Gene")
 f14_gene <- f14g%>% dplyr::select(Gene) 
+
+gene_fc_14<- Keep_hiv14_hivtb_withgenes %>% cbind(Keep14.14.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -903,6 +974,7 @@ f14_gene <- f14g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data15 = hiv15_hivtb
 Keep15 = c()
+Keep15.15 = c()
 for (row in 1:nrow(data15)) {
   changes_forward = c()
   names_forward = c()
@@ -932,19 +1004,23 @@ for (row in 1:nrow(data15)) {
   }
   
   Keep15 = c(Keep15, truth)
+  Keep15.15 = c(Keep15.15, max(foldchange15$max))
 }
 
 table(Keep15)
 Keep_hiv15_hivtb <- as.data.frame(Keep15)
+Keep15.15.df <- as.data.frame(Keep15.15) %>% dplyr::rename(Fold_Change =Keep15.15)
 
-Keep_hiv15_hivtb_withgenes <- cbind(Keep_hiv15_hivtb, Expression_43_normalized)
+Keep_hiv15_hivtb_withgenes <- cbind(Keep_hiv15_hivtb,  Expression_43_normalized)
 Keep_hiv15_hivtb_withgenes$Keep15 = as.character(Keep_hiv15_hivtb_withgenes$Keep15)
-Keep_hiv15_hivtb_withgenes %>% filter(Keep15 == "TRUE")
+t15 <- Keep_hiv15_hivtb_withgenes %>% filter(Keep15 == "TRUE")
 
 f15 <- Keep_hiv15_hivtb_withgenes %>% filter(Keep15 == "FALSE")
 
 f15g <- tibble::rownames_to_column(f15, "Gene")
 f15_gene <- f15g%>% dplyr::select(Gene) 
+
+gene_fc_15<- Keep_hiv15_hivtb_withgenes %>% cbind(Keep15.15.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -954,6 +1030,7 @@ f15_gene <- f15g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data16 = hiv16_hivtb
 Keep16 = c()
+Keep16.16 = c()
 for (row in 1:nrow(data16)) {
   changes_forward = c()
   names_forward = c()
@@ -983,19 +1060,23 @@ for (row in 1:nrow(data16)) {
   }
   
   Keep16 = c(Keep16, truth)
+  Keep16.16 = c(Keep16.16, max(foldchange16$max))
 }
 
 table(Keep16)
 Keep_hiv16_hivtb <- as.data.frame(Keep16)
+Keep16.16.df <- as.data.frame(Keep16.16) %>% dplyr::rename(Fold_Change =Keep16.16)
 
-Keep_hiv16_hivtb_withgenes <- cbind(Keep_hiv16_hivtb, Expression_43_normalized)
+Keep_hiv16_hivtb_withgenes <- cbind(Keep_hiv16_hivtb,  Expression_43_normalized)
 Keep_hiv16_hivtb_withgenes$Keep16 = as.character(Keep_hiv16_hivtb_withgenes$Keep16)
-Keep_hiv16_hivtb_withgenes %>% filter(Keep16 == "TRUE")
+t16 <- Keep_hiv16_hivtb_withgenes %>% filter(Keep16 == "TRUE")
 
 f16 <- Keep_hiv16_hivtb_withgenes %>% filter(Keep16 == "FALSE")
 
 f16g <- tibble::rownames_to_column(f16, "Gene")
 f16_gene <- f16g%>% dplyr::select(Gene) 
+
+gene_fc_16<- Keep_hiv16_hivtb_withgenes %>% cbind(Keep16.16.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -1005,6 +1086,7 @@ f16_gene <- f16g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data17 = hiv17_hivtb
 Keep17 = c()
+Keep17.17 = c()
 for (row in 1:nrow(data17)) {
   changes_forward = c()
   names_forward = c()
@@ -1034,19 +1116,23 @@ for (row in 1:nrow(data17)) {
   }
   
   Keep17 = c(Keep17, truth)
+  Keep17.17 = c(Keep17.17, max(foldchange17$max))
 }
 
 table(Keep17)
 Keep_hiv17_hivtb <- as.data.frame(Keep17)
+Keep17.17.df <- as.data.frame(Keep17.17) %>% dplyr::rename(Fold_Change =Keep17.17)
 
-Keep_hiv17_hivtb_withgenes <- cbind(Keep_hiv17_hivtb, Expression_43_normalized)
+Keep_hiv17_hivtb_withgenes <- cbind(Keep_hiv17_hivtb,  Expression_43_normalized)
 Keep_hiv17_hivtb_withgenes$Keep17 = as.character(Keep_hiv17_hivtb_withgenes$Keep17)
-Keep_hiv17_hivtb_withgenes %>% filter(Keep17 == "TRUE")
+t17 <- Keep_hiv17_hivtb_withgenes %>% filter(Keep17 == "TRUE")
 
 f17 <- Keep_hiv17_hivtb_withgenes %>% filter(Keep17 == "FALSE")
 
 f17g <- tibble::rownames_to_column(f17, "Gene")
 f17_gene <- f17g%>% dplyr::select(Gene) 
+
+gene_fc_17<- Keep_hiv17_hivtb_withgenes %>% cbind(Keep17.17.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
 
 ```
 
@@ -1055,6 +1141,7 @@ f17_gene <- f17g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data18 = hiv18_hivtb
 Keep18 = c()
+Keep18.18 =c()
 for (row in 1:nrow(data18)) {
   changes_forward = c()
   names_forward = c()
@@ -1084,19 +1171,23 @@ for (row in 1:nrow(data18)) {
   }
   
   Keep18 = c(Keep18, truth)
+  Keep18.18 = c(Keep18.18, max(foldchange18$max))
 }
 
 table(Keep18)
 Keep_hiv18_hivtb <- as.data.frame(Keep18)
+Keep18.18.df <- as.data.frame(Keep18.18) %>% dplyr::rename(Fold_Change =Keep18.18)
 
-Keep_hiv18_hivtb_withgenes <- cbind(Keep_hiv18_hivtb, Expression_43_normalized)
+Keep_hiv18_hivtb_withgenes <- cbind(Keep_hiv18_hivtb,  Expression_43_normalized)
 Keep_hiv18_hivtb_withgenes$Keep18 = as.character(Keep_hiv18_hivtb_withgenes$Keep18)
-Keep_hiv18_hivtb_withgenes %>% filter(Keep18 == "TRUE")
+t18 <- Keep_hiv18_hivtb_withgenes %>% filter(Keep18 == "TRUE")
 
 f18 <- Keep_hiv18_hivtb_withgenes %>% filter(Keep18 == "FALSE")
 
 f18g <- tibble::rownames_to_column(f18, "Gene")
 f18_gene <- f18g%>% dplyr::select(Gene) 
+
+gene_fc_18<- Keep_hiv18_hivtb_withgenes %>% cbind(Keep18.18.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change)  
 ```
 
 
@@ -1104,6 +1195,7 @@ f18_gene <- f18g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data19 = hiv19_hivtb
 Keep19 = c()
+Keep19.19 =c()
 for (row in 1:nrow(data19)) {
   changes_forward = c()
   names_forward = c()
@@ -1133,19 +1225,26 @@ for (row in 1:nrow(data19)) {
   }
   
   Keep19 = c(Keep19, truth)
+  Keep19.19 = c(Keep19.19, max(foldchange19$max))
 }
 
 table(Keep19)
 Keep_hiv19_hivtb <- as.data.frame(Keep19)
+Keep19.19.df <- as.data.frame(Keep19.19) %>% dplyr::rename(Fold_Change =Keep19.19)
 
-Keep_hiv19_hivtb_withgenes <- cbind(Keep_hiv19_hivtb, Expression_43_normalized)
+Keep_hiv19_hivtb_withgenes <- cbind(Keep_hiv19_hivtb,  Expression_43_normalized)
 Keep_hiv19_hivtb_withgenes$Keep19 = as.character(Keep_hiv19_hivtb_withgenes$Keep19)
-Keep_hiv19_hivtb_withgenes %>% filter(Keep19 == "TRUE")
+t19 <- Keep_hiv19_hivtb_withgenes %>% filter(Keep19 == "TRUE")
 
 f19 <- Keep_hiv19_hivtb_withgenes %>% filter(Keep19 == "FALSE")
 
 f19g <- tibble::rownames_to_column(f19, "Gene")
 f19_gene <- f19g%>% dplyr::select(Gene) 
+
+gene_fc_19<- Keep_hiv19_hivtb_withgenes %>% 
+  cbind(Keep19.19.df) %>% 
+  tibble::rownames_to_column("Gene") %>% 
+  dplyr::select(Gene, Fold_Change) 
 ```
 
 
@@ -1154,6 +1253,7 @@ f19_gene <- f19g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data20 = hiv20_hivtb
 Keep20 = c()
+Keep20.20 = c()
 for (row in 1:nrow(data20)) {
   changes_forward = c()
   names_forward = c()
@@ -1183,19 +1283,26 @@ for (row in 1:nrow(data20)) {
   }
   
   Keep20 = c(Keep20, truth)
+  Keep20.20 = c(Keep20.20, max(foldchange20$max))
 }
 
 table(Keep20)
 Keep_hiv20_hivtb <- as.data.frame(Keep20)
+Keep20.20.df <- as.data.frame(Keep20.20) %>% dplyr::rename(Fold_Change =Keep20.20)
 
-Keep_hiv20_hivtb_withgenes <- cbind(Keep_hiv20_hivtb, Expression_43_normalized)
+Keep_hiv20_hivtb_withgenes <- cbind(Keep_hiv20_hivtb,  Expression_43_normalized)
 Keep_hiv20_hivtb_withgenes$Keep20 = as.character(Keep_hiv20_hivtb_withgenes$Keep20)
-Keep_hiv20_hivtb_withgenes %>% filter(Keep20 == "TRUE")
+t20 <- Keep_hiv20_hivtb_withgenes %>% filter(Keep20 == "TRUE")
 
 f20 <- Keep_hiv20_hivtb_withgenes %>% filter(Keep20 == "FALSE")
 
 f20g <- tibble::rownames_to_column(f20, "Gene")
 f20_gene <- f20g%>% dplyr::select(Gene) 
+
+gene_fc_20<- Keep_hiv20_hivtb_withgenes %>% 
+  cbind(Keep20.20.df) %>% 
+  tibble::rownames_to_column("Gene") %>%
+  dplyr::select(Gene, Fold_Change)
 ```
 
 
@@ -1203,6 +1310,7 @@ f20_gene <- f20g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data21 = hiv21_hivtb
 Keep21 = c()
+Keep21.21 = c()
 for (row in 1:nrow(data21)) {
   changes_forward = c()
   names_forward = c()
@@ -1232,19 +1340,26 @@ for (row in 1:nrow(data21)) {
   }
   
   Keep21 = c(Keep21, truth)
+  Keep21.21 = c(Keep21.21, max(foldchange21$max))
 }
 
 table(Keep21)
 Keep_hiv21_hivtb <- as.data.frame(Keep21)
+Keep21.21.df <- as.data.frame(Keep21.21) %>% dplyr::rename(Fold_Change =Keep21.21)
 
-Keep_hiv21_hivtb_withgenes <- cbind(Keep_hiv21_hivtb, Expression_43_normalized)
+Keep_hiv21_hivtb_withgenes <- cbind(Keep_hiv21_hivtb,  Expression_43_normalized)
 Keep_hiv21_hivtb_withgenes$Keep21 = as.character(Keep_hiv21_hivtb_withgenes$Keep21)
-Keep_hiv21_hivtb_withgenes %>% filter(Keep21 == "TRUE")
+t21 <- Keep_hiv21_hivtb_withgenes %>% filter(Keep21 == "TRUE")
 
 f21 <- Keep_hiv21_hivtb_withgenes %>% filter(Keep21 == "FALSE")
 
 f21g <- tibble::rownames_to_column(f21, "Gene")
 f21_gene <- f21g%>% dplyr::select(Gene) 
+
+gene_fc_21<- Keep_hiv21_hivtb_withgenes %>% 
+  cbind(Keep21.21.df) %>% 
+  tibble::rownames_to_column("Gene") %>%
+  dplyr::select(Gene, Fold_Change)
 ```
 
 
@@ -1252,6 +1367,7 @@ f21_gene <- f21g%>% dplyr::select(Gene)
 #calculating fold change between hiv/hiv+tb samples for all genes 
 data22 = hiv22_hivtb
 Keep22 = c()
+Keep22.22 = c()
 for (row in 1:nrow(data22)) {
   changes_forward = c()
   names_forward = c()
@@ -1281,25 +1397,56 @@ for (row in 1:nrow(data22)) {
   }
   
   Keep22 = c(Keep22, truth)
+  Keep22.22 = c(Keep22.22, max(foldchange22$max))
 }
 
 table(Keep22)
 Keep_hiv22_hivtb <- as.data.frame(Keep22)
+Keep22.22.df <- as.data.frame(Keep22.22) %>% dplyr::rename(Fold_Change =Keep22.22)
 
-Keep_hiv22_hivtb_withgenes <- cbind(Keep_hiv22_hivtb, Expression_43_normalized)
+Keep_hiv22_hivtb_withgenes <- cbind(Keep_hiv22_hivtb,  Expression_43_normalized)
 Keep_hiv22_hivtb_withgenes$Keep22 = as.character(Keep_hiv22_hivtb_withgenes$Keep22)
-Keep_hiv22_hivtb_withgenes %>% filter(Keep22 == "TRUE")
+t22 <- Keep_hiv22_hivtb_withgenes %>% filter(Keep22 == "TRUE")
 
 f22 <- Keep_hiv22_hivtb_withgenes %>% filter(Keep22 == "FALSE")
 
 f22g <- tibble::rownames_to_column(f22, "Gene")
 f22_gene <- f22g%>% dplyr::select(Gene) 
+
+gene_fc_22<- Keep_hiv22_hivtb_withgenes %>% 
+  cbind(Keep22.22.df) %>% 
+  tibble::rownames_to_column("Gene") %>% 
+  dplyr::select(Gene, Fold_Change)
+
+#%>% dplyr::rename(truestatus = Keep22) %>% filter(truestatus == "TRUE")
 ```
+
 
 
 ```{r}
 #Genes to delete
-Genes_to_delete <- f1_gene %>% full_join(f2_gene) %>% full_join(f3_gene) %>% full_join(f4_gene) %>% full_join(f5_gene) %>% full_join(f6_gene) %>% full_join(f7_gene) %>% full_join(f8_gene) %>% full_join(f9_gene) %>% full_join(f10_gene) %>% full_join(f11_gene) %>% full_join(f12_gene) %>% full_join(f13_gene) %>% full_join(f14_gene) %>% full_join(f15_gene) %>% full_join(f16_gene) %>% full_join(f17_gene) %>% full_join(f18_gene) %>% full_join(f19_gene) %>% full_join(f20_gene) %>% full_join(f21_gene) %>% full_join(f22_gene)
+Genes_to_delete <- f1_gene %>% 
+  full_join(f2_gene) %>% 
+  full_join(f3_gene) %>% 
+  full_join(f4_gene) %>% 
+  full_join(f5_gene) %>% 
+  full_join(f6_gene) %>% 
+  full_join(f7_gene) %>% 
+  full_join(f8_gene) %>% 
+  full_join(f9_gene) %>% 
+  full_join(f10_gene) %>% 
+  full_join(f11_gene) %>% 
+  full_join(f12_gene) %>% 
+  full_join(f13_gene) %>% 
+  full_join(f14_gene) %>% 
+  full_join(f15_gene) %>% 
+  full_join(f16_gene) %>% 
+  full_join(f17_gene) %>% 
+  full_join(f18_gene) %>% 
+  full_join(f19_gene) %>% 
+  full_join(f20_gene) %>% 
+  full_join(f21_gene) %>% 
+  full_join(f22_gene)
 
 #Delete genes 
 genes_to_delete <- as.vector(Genes_to_delete$Gene)
@@ -1309,6 +1456,7 @@ genes_to_delete.1 <- dput(genes_to_delete)
 Expression_genes_deleted <- Expression_43_normalized[!(rownames(Expression_43_normalized) %in% genes_to_delete.1),]
 
 ```
+
 
 ```{r functions}
 svmRFE.wrap <- function(test.fold, X, ...) {
@@ -1520,33 +1668,68 @@ GeneName_251 <- as.data.frame(Genes[colnames(test.2[,1:252]),]$Definition) %>% n
 ```
 
 
-```{r}
+```{r 251 gene table}
+Expression_genes_deleted_fc <- Expression_genes_deleted %>% 
+  tibble::rownames_to_column("Gene") %>% 
+  left_join(gene_fc_1) %>% 
+  left_join(gene_fc_2, by="Gene") %>% 
+  left_join(gene_fc_3, by="Gene") %>% 
+  left_join(gene_fc_4, by="Gene") %>% 
+  left_join(gene_fc_5, by="Gene") %>% 
+  left_join(gene_fc_6, by="Gene") %>% 
+  left_join(gene_fc_7, by="Gene") %>% 
+  left_join(gene_fc_8, by="Gene") %>% 
+  left_join(gene_fc_9, by="Gene") %>% 
+  left_join(gene_fc_10, by="Gene") %>% 
+  left_join(gene_fc_11, by="Gene") %>% 
+  left_join(gene_fc_12, by="Gene") %>% 
+  left_join(gene_fc_13, by="Gene") %>% 
+  left_join(gene_fc_14, by="Gene") %>% 
+  left_join(gene_fc_15, by="Gene") %>% 
+  left_join(gene_fc_16, by="Gene") %>% 
+  left_join(gene_fc_17, by="Gene") %>% 
+  left_join(gene_fc_18, by="Gene") %>% 
+  left_join(gene_fc_19, by="Gene") %>% 
+  left_join(gene_fc_20, by="Gene") %>% 
+  left_join(gene_fc_21, by="Gene") %>% 
+  left_join(gene_fc_22, by="Gene") 
+
+fc1 <- Expression_genes_deleted_fc %>% dplyr::select(45)%>% dplyr::rename(Fold_Change=1)
+fc2 <- Expression_genes_deleted_fc %>% dplyr::select(46)%>% dplyr::rename(Fold_Change=1)
+fc3 <- Expression_genes_deleted_fc %>% dplyr::select(47)%>% dplyr::rename(Fold_Change=1)
+fc4 <- Expression_genes_deleted_fc %>% dplyr::select(48)%>% dplyr::rename(Fold_Change=1)
+fc5 <- Expression_genes_deleted_fc %>% dplyr::select(49)%>% dplyr::rename(Fold_Change=1)
+fc6 <- Expression_genes_deleted_fc %>% dplyr::select(50)%>% dplyr::rename(Fold_Change=1)
+fc7 <- Expression_genes_deleted_fc %>% dplyr::select(51)%>% dplyr::rename(Fold_Change=1)
+fc8 <- Expression_genes_deleted_fc %>% dplyr::select(52)%>% dplyr::rename(Fold_Change=1)
+fc9 <- Expression_genes_deleted_fc %>% dplyr::select(53)%>% dplyr::rename(Fold_Change=1)
+fc10 <- Expression_genes_deleted_fc %>% dplyr::select(54)%>% dplyr::rename(Fold_Change=1)
+fc11 <- Expression_genes_deleted_fc %>% dplyr::select(55)%>% dplyr::rename(Fold_Change=1)
+fc12 <- Expression_genes_deleted_fc %>% dplyr::select(56)%>% dplyr::rename(Fold_Change=1)
+fc13 <- Expression_genes_deleted_fc %>% dplyr::select(57)%>% dplyr::rename(Fold_Change=1)
+fc14 <- Expression_genes_deleted_fc %>% dplyr::select(58)%>% dplyr::rename(Fold_Change=1)
+fc15 <- Expression_genes_deleted_fc %>% dplyr::select(59)%>% dplyr::rename(Fold_Change=1)
+fc16 <- Expression_genes_deleted_fc %>% dplyr::select(60)%>% dplyr::rename(Fold_Change=1)
+fc17 <- Expression_genes_deleted_fc %>% dplyr::select(61)%>% dplyr::rename(Fold_Change=1)
+fc18 <- Expression_genes_deleted_fc %>% dplyr::select(62)%>% dplyr::rename(Fold_Change=1)
+fc19 <- Expression_genes_deleted_fc %>% dplyr::select(63)%>% dplyr::rename(Fold_Change=1)
+fc20 <- Expression_genes_deleted_fc %>% dplyr::select(64)%>% dplyr::rename(Fold_Change=1)
+fc21 <- Expression_genes_deleted_fc %>% dplyr::select(65)%>% dplyr::rename(Fold_Change=1)
+fc22 <- Expression_genes_deleted_fc %>% dplyr::select(66)%>% dplyr::rename(Fold_Change=1)
+
 #max fold change
-fc1 <- foldchange1 %>% dplyr::select(3)
-fc2 <- foldchange2 %>% dplyr::select(3)
-fc3 <- foldchange3 %>% dplyr::select(3)
-fc4 <- foldchange4 %>% dplyr::select(3)
-fc5 <- foldchange5 %>% dplyr::select(3)
-fc6 <- foldchange6 %>% dplyr::select(3)
-fc7 <- foldchange7 %>% dplyr::select(3)
-fc8 <- foldchange8 %>% dplyr::select(3)
-fc9 <- foldchange9 %>% dplyr::select(3)
-fc10 <- foldchange10 %>% dplyr::select(3)
-fc11 <- foldchange11 %>% dplyr::select(3)
-fc12 <- foldchange12 %>% dplyr::select(3)
-fc13 <- foldchange13 %>% dplyr::select(3)
-fc14 <- foldchange14 %>% dplyr::select(3)
-fc15 <- foldchange15 %>% dplyr::select(3)
-fc16 <- foldchange16 %>% dplyr::select(3)
-fc17 <- foldchange17 %>% dplyr::select(3)
-fc18 <- foldchange18 %>% dplyr::select(3)
-fc19 <- foldchange19 %>% dplyr::select(3)
-fc20 <- foldchange20 %>% dplyr::select(3)
-fc21 <- foldchange21 %>% dplyr::select(3)
-fc22 <- foldchange22 %>% dplyr::select(3)
+Maxfc_gene_251 <- pmax(fc1,fc2,fc3,fc4,fc5,fc6,fc7,fc8,fc9,fc10,fc11,fc12,fc13,fc14,fc15,fc16,fc17,fc18,fc19,fc20,fc21,fc22) %>% head(251)
 
-pmax(fc1,fc2,fc3,fc4,fc5,fc6,fc7,fc8,fc9,fc10,fc11,fc12,fc13,fc14,fc15,fc16,fc17,fc18,fc19,fc20,fc21,fc22)
+Genes_251_Rank <- cbind(Accession_251, Symbol_251, GeneName_251, Maxfc_gene_251) %>% 
+  tibble::rownames_to_column("Rank") 
+Genes_251_Rank$Rank = as.numeric(Genes_251_Rank$Rank)
 
+#Top 251 Genes
+Genes_251 <- Genes_251_Rank %>% mutate(Rank = Rank -1) %>%
+  dplyr::rename(Accession=2, Symbol=3,`Gene Name`=4, `Fold Change`=5) %>%
+  relocate(Rank,.after=`Gene Name`)
+#Top 20 Genes
+Genes_20 <- Genes_251 %>% head(20)%>%
+  relocate(Rank ,.after=`Gene Name`)
 ```
-
 
