@@ -1731,5 +1731,9 @@ Genes_251 <- Genes_251_Rank %>% mutate(Rank = Rank -1) %>%
 #Top 20 Genes
 Genes_20 <- Genes_251 %>% head(20)%>%
   relocate(Rank ,.after=`Gene Name`)
+
+
+write.csv(Genes_251,"C:\\Users\\lauwc\\OneDrive\\Documents\\Uni 2022-\\AMED3002\\Reproducible_Report\\AMED3002-Reproducible-Report\\Genes_251.csv", row.names = FALSE)
+write.csv(Genes_20,"C:\\Users\\lauwc\\OneDrive\\Documents\\Uni 2022-\\AMED3002\\Reproducible_Report\\AMED3002-Reproducible-Report\\Genes_20.csv", row.names = FALSE)
 ```
 
