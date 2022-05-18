@@ -1,0 +1,606 @@
+---
+title: "Reproducible_Report_TS1-6"
+author: "Christina Lauw"
+date: '2022-05-17'
+output: html_document
+---
+
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
+
+library(tidyverse)
+library(GEOquery)
+library(org.Hs.eg.db)
+library(limma)
+library(edgeR)
+library(Glimma)
+library(Homo.sapiens)
+library(phyloseq)
+library(gtools)
+library(e1071)
+library(preprocessCore)
+```
+
+
+```{r}
+TS1 <- getGEO("GSE19435", GSEMatrix = TRUE)[[1]]
+TS3 <- getGEO("GSE19439", GSEMatrix = TRUE)[[1]]
+TS4<- getGEO("GSE19444", GSEMatrix = TRUE)[[1]]
+TS5 <- getGEO("GSE19442", GSEMatrix = TRUE)[[1]]
+TS6 <- getGEO("GSE40553", GSEMatrix = TRUE)[[1]]
+```
+
+
+```{r TS1}
+#Sample(patient) data
+Pheno_TS1 = pData(TS1)
+
+#Gene data 
+Genes_TS1 = fData(TS1)
+
+#gene expression data
+Expression_TS1 <- exprs(TS1)
+rnames_TS1 = row.names(Expression_TS1)
+cnames_TS1 = colnames(Expression_TS1)
+
+TS1_mean.df <- as.data.frame(Expression_TS1) %>% 
+  rowwise() %>% 
+  mutate(TS1_mean = mean(c_across(1:33))) 
+
+Expression_TS1_gene <- as.data.frame(Expression_TS1) %>% tibble::rownames_to_column("Gene") 
+E_TS1_gene <- Expression_TS1_gene %>% dplyr::select(Gene)
+
+TS1_mean_gene <- cbind(E_TS1_gene, TS1_mean.df)
+
+```
+
+
+```{r TS3}
+#Sample(patient) data
+Pheno_TS3 = pData(TS3)
+
+#Gene data 
+Genes_TS3 = fData(TS3)
+
+#gene expression data
+Expression_TS3 <- exprs(TS3)
+rnames_TS3 = row.names(Expression_TS3)
+cnames_TS3 = colnames(Expression_TS3)
+
+
+TS3_mean.df <- as.data.frame(Expression_TS3) %>% 
+  rowwise() %>% 
+  mutate(TS3_mean = mean(c_across(1:33))) 
+
+Expression_TS3_gene <- as.data.frame(Expression_TS3) %>% tibble::rownames_to_column("Gene") 
+E_TS3_gene <- Expression_TS3_gene %>% dplyr::select(Gene)
+
+TS3_mean_gene <- cbind(E_TS3_gene, TS3_mean.df)
+```
+
+
+```{r TS4}
+#Sample(patient) data
+Pheno_TS4 = pData(TS4)
+
+#Gene data 
+Genes_TS4 = fData(TS4)
+
+#gene expression data
+Expression_TS4 <- exprs(TS4)
+rnames_TS4 = row.names(Expression_TS4)
+cnames_TS4 = colnames(Expression_TS4)
+
+TS4_mean.df <- as.data.frame(Expression_TS4) %>% 
+  rowwise() %>% 
+  mutate(TS4_mean = mean(c_across(1:33)))
+
+Expression_TS4_gene <- as.data.frame(Expression_TS4) %>% tibble::rownames_to_column("Gene") 
+E_TS4_gene <- Expression_TS4_gene %>% dplyr::select(Gene)
+
+TS4_mean_gene <- cbind(E_TS4_gene, TS4_mean.df)
+```
+
+
+```{r TS5}
+#Sample(patient) data
+Pheno_TS5 = pData(TS5)
+
+#Gene data 
+Genes_TS5 = fData(TS5)
+
+#gene expression data
+Expression_TS5 <- exprs(TS5)
+rnames_TS5 = row.names(Expression_TS5)
+cnames_TS5 = colnames(Expression_TS5)
+
+TS5_mean.df <- as.data.frame(Expression_TS5) %>% 
+  rowwise() %>% 
+  mutate(TS5_mean = mean(c_across(1:33))) 
+
+Expression_TS5_gene <- as.data.frame(Expression_TS5) %>% tibble::rownames_to_column("Gene") 
+E_TS5_gene <- Expression_TS5_gene %>% dplyr::select(Gene)
+
+TS5_mean_gene <- cbind(E_TS5_gene, TS5_mean.df)
+
+```
+
+
+```{r TS6}
+#Sample(patient) data
+Pheno_TS6 = pData(TS6)
+
+#Gene data 
+Genes_TS6 = fData(TS6)
+
+#gene expression data
+Expression_TS6 <- exprs(TS6)
+rnames_TS6 = row.names(Expression_TS6)
+cnames_TS6 = colnames(Expression_TS6)
+
+TS6_quantile_normalized <- as.data.frame(normalize.quantiles(exprs(TS6)))
+
+Expression_TS6 %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 1000)) %>% 
+  boxplot()
+
+TS6_quantile_normalized %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 1000)) %>% 
+  boxplot()
+
+row.names(TS6_quantile_normalized) = rnames_TS6
+colnames(TS6_quantile_normalized) = cnames_TS6
+
+TS6_mean.df <- TS6_quantile_normalized %>% rowwise() %>% dplyr::mutate(TS6_mean = mean(c_across(1:204)))
+
+Expression_TS6_gene <- as.data.frame(Expression_TS6) %>% tibble::rownames_to_column("Gene") 
+E_TS6_gene <- Expression_TS6_gene %>% dplyr::select(Gene)
+
+TS6_mean_gene <- cbind(E_TS6_gene, TS6_mean.df)
+
+```
+
+
+```{r}
+TS1_5 <- TS1_mean_gene %>% full_join(TS3_mean_gene) %>% 
+  full_join(TS3_mean_gene) %>%
+  full_join(TS4_mean_gene) %>%
+  full_join(TS5_mean_gene)
+# average and difference across all samples from the 4 datasets (TS1,3,4,5)
+TS1_5_average_and_diff <- TS1_5 %>% dplyr::select(Gene, TS1_mean, TS3_mean, TS4_mean, TS5_mean) %>% 
+  rowwise %>%
+  mutate(TS1_3_4_5_mean = mean(c_across(2:5))) %>%
+  mutate(TS1_diff = TS1_3_4_5_mean - TS1_mean) %>%
+  mutate(TS3_diff = TS1_3_4_5_mean - TS3_mean) %>%
+  mutate(TS4_diff = TS1_3_4_5_mean - TS4_mean) %>%
+  mutate(TS5_diff = TS1_3_4_5_mean - TS5_mean)
+
+#TS1 normalized
+TS1_normalized<- TS1_mean_gene %>% left_join(TS1_5_average_and_diff) %>% 
+  dplyr::select(-TS3_mean, -TS4_mean, -TS5_mean, -TS3_diff, -TS4_diff, -TS5_diff, -TS1_mean, -TS1_3_4_5_mean) %>%
+  rowwise() %>%
+  mutate(GSM484368 = GSM484368 + TS1_diff) %>%
+  mutate(GSM484369 = GSM484369 + TS1_diff) %>%
+  mutate(GSM484370 = GSM484370 + TS1_diff) %>%
+  mutate(GSM484371 = GSM484371 + TS1_diff) %>%
+  mutate(GSM484372 = GSM484372 + TS1_diff) %>%
+  mutate(GSM484373 = GSM484373 + TS1_diff) %>%
+  mutate(GSM484374 = GSM484374 + TS1_diff) %>%
+  mutate(GSM484375 = GSM484375 + TS1_diff) %>%
+  mutate(GSM484376 = GSM484376 + TS1_diff) %>%
+  mutate(GSM484377 = GSM484377 + TS1_diff) %>%
+  mutate(GSM484378 = GSM484378 + TS1_diff) %>%
+  mutate(GSM484379 = GSM484379 + TS1_diff) %>%
+  mutate(GSM484380 = GSM484380 + TS1_diff) %>%
+  mutate(GSM484381 = GSM484381 + TS1_diff) %>%
+  mutate(GSM484382 = GSM484382 + TS1_diff) %>%
+  mutate(GSM484383 = GSM484383 + TS1_diff) %>%
+  mutate(GSM484384 = GSM484384 + TS1_diff) %>%
+  mutate(GSM484385 = GSM484385 + TS1_diff) %>%
+  mutate(GSM484386 = GSM484386 + TS1_diff) %>%
+  mutate(GSM484387 = GSM484387 + TS1_diff) %>%
+  mutate(GSM484388 = GSM484388 + TS1_diff) %>%
+  mutate(GSM484389 = GSM484389 + TS1_diff) %>%
+  mutate(GSM484390 = GSM484390 + TS1_diff) %>%
+  mutate(GSM484391 = GSM484391 + TS1_diff) %>%
+  mutate(GSM484392 = GSM484392 + TS1_diff) %>%
+  mutate(GSM484393 = GSM484393 + TS1_diff) %>%
+  mutate(GSM484394 = GSM484394 + TS1_diff) %>%
+  mutate(GSM484395 = GSM484395 + TS1_diff) %>%
+  mutate(GSM484396 = GSM484396 + TS1_diff) %>%
+  mutate(GSM484397 = GSM484397 + TS1_diff) %>%
+  mutate(GSM484398 = GSM484398 + TS1_diff) %>%
+  mutate(GSM484399 = GSM484399 + TS1_diff) %>%
+  mutate(GSM484400 = GSM484400 + TS1_diff) %>%
+  dplyr::select(-TS1_diff)
+
+#TS3 normalized
+TS3_normalized<- TS3_mean_gene %>% left_join(TS1_5_average_and_diff) %>% 
+  dplyr::select(-TS1_mean, -TS4_mean, -TS5_mean, -TS1_diff, -TS4_diff, -TS5_diff, -TS3_mean, -TS1_3_4_5_mean) %>%
+  rowwise() %>%
+  mutate(GSM484448 = GSM484448 + TS3_diff) %>%
+  mutate(GSM484449 = GSM484449 + TS3_diff) %>%
+  mutate(GSM484450 = GSM484450 + TS3_diff) %>%
+  mutate(GSM484451 = GSM484451 + TS3_diff) %>%
+  mutate(GSM484452 = GSM484452 + TS3_diff) %>%
+  mutate(GSM484453 = GSM484453 + TS3_diff) %>%
+  mutate(GSM484454 = GSM484454 + TS3_diff) %>%
+  mutate(GSM484455 = GSM484455 + TS3_diff) %>%
+  mutate(GSM484456 = GSM484456 + TS3_diff) %>%
+  mutate(GSM484457 = GSM484457 + TS3_diff) %>%
+  mutate(GSM484458 = GSM484458 + TS3_diff) %>%
+  mutate(GSM484459 = GSM484459 + TS3_diff) %>%
+  mutate(GSM484460 = GSM484460 + TS3_diff) %>%
+  mutate(GSM484461 = GSM484461 + TS3_diff) %>%
+  mutate(GSM484462 = GSM484462 + TS3_diff) %>%
+  mutate(GSM484463 = GSM484463 + TS3_diff) %>%
+  mutate(GSM484464 = GSM484464 + TS3_diff) %>%
+  mutate(GSM484465 = GSM484465 + TS3_diff) %>%
+  mutate(GSM484466 = GSM484466 + TS3_diff) %>%
+  mutate(GSM484467 = GSM484467 + TS3_diff) %>%
+  mutate(GSM484468 = GSM484468 + TS3_diff) %>%
+  mutate(GSM484469 = GSM484469 + TS3_diff) %>%
+  mutate(GSM484470 = GSM484470 + TS3_diff) %>%
+  mutate(GSM484471 = GSM484471 + TS3_diff) %>%
+  mutate(GSM484472 = GSM484472 + TS3_diff) %>%
+  mutate(GSM484473 = GSM484473 + TS3_diff) %>%
+  mutate(GSM484474 = GSM484474 + TS3_diff) %>%
+  mutate(GSM484475 = GSM484475 + TS3_diff) %>%
+  mutate(GSM484476 = GSM484476 + TS3_diff) %>%
+  mutate(GSM484477 = GSM484477 + TS3_diff) %>%
+  mutate(GSM484478 = GSM484478 + TS3_diff) %>%
+  mutate(GSM484479 = GSM484479 + TS3_diff) %>%
+  mutate(GSM484480 = GSM484480 + TS3_diff) %>%
+  mutate(GSM484481 = GSM484481 + TS3_diff) %>%
+  mutate(GSM484482 = GSM484482 + TS3_diff) %>%
+  mutate(GSM484483 = GSM484483 + TS3_diff) %>%
+  mutate(GSM484484 = GSM484484 + TS3_diff) %>%
+  mutate(GSM484485 = GSM484485 + TS3_diff) %>%
+  mutate(GSM484486 = GSM484486 + TS3_diff) %>%
+  mutate(GSM484487 = GSM484487 + TS3_diff) %>%
+  mutate(GSM484488 = GSM484488 + TS3_diff) %>%
+  mutate(GSM484489 = GSM484489 + TS3_diff) %>%
+  dplyr::select(-TS3_diff)
+  
+
+#TS4 normalized
+TS4_normalized<- TS4_mean_gene %>% left_join(TS1_5_average_and_diff) %>% 
+  dplyr::select(-TS1_mean, -TS3_mean, -TS5_mean, -TS1_diff, -TS3_diff, -TS5_diff, -TS4_mean, -TS1_3_4_5_mean) %>%
+  rowwise() %>%
+  mutate(GSM484595 = GSM484595 + TS4_diff) %>%
+  mutate(GSM484596 = GSM484596 + TS4_diff) %>%
+  mutate(GSM484597 = GSM484597 + TS4_diff) %>%
+  mutate(GSM484598 = GSM484598 + TS4_diff) %>%
+  mutate(GSM484599 = GSM484599 + TS4_diff) %>%
+  mutate(GSM484600 = GSM484600 + TS4_diff) %>%
+  mutate(GSM484601 = GSM484601 + TS4_diff) %>%
+  mutate(GSM484602 = GSM484602 + TS4_diff) %>%
+  mutate(GSM484603 = GSM484603 + TS4_diff) %>%
+  mutate(GSM484604 = GSM484604 + TS4_diff) %>%
+  mutate(GSM484605 = GSM484605 + TS4_diff) %>%
+  mutate(GSM484606 = GSM484606 + TS4_diff) %>%
+  mutate(GSM484607 = GSM484607 + TS4_diff) %>%
+  mutate(GSM484608 = GSM484608 + TS4_diff) %>%
+  mutate(GSM484609 = GSM484609 + TS4_diff) %>%
+  mutate(GSM484610 = GSM484610 + TS4_diff) %>%
+  mutate(GSM484611 = GSM484611 + TS4_diff) %>%
+  mutate(GSM484612 = GSM484612 + TS4_diff) %>%
+  mutate(GSM484613 = GSM484613 + TS4_diff) %>%
+  mutate(GSM484614 = GSM484614 + TS4_diff) %>%
+  mutate(GSM484615 = GSM484615 + TS4_diff) %>%
+  mutate(GSM484616 = GSM484616 + TS4_diff) %>%
+  mutate(GSM484617 = GSM484617 + TS4_diff) %>%
+  mutate(GSM484618 = GSM484618 + TS4_diff) %>%
+  mutate(GSM484619 = GSM484619 + TS4_diff) %>%
+  mutate(GSM484620 = GSM484620 + TS4_diff) %>%
+  mutate(GSM484621 = GSM484621 + TS4_diff) %>%
+  mutate(GSM484622 = GSM484622 + TS4_diff) %>%
+  mutate(GSM484623 = GSM484623 + TS4_diff) %>%
+  mutate(GSM484624 = GSM484624 + TS4_diff) %>%
+  mutate(GSM484625 = GSM484625 + TS4_diff) %>%
+  mutate(GSM484626 = GSM484626 + TS4_diff) %>%
+  mutate(GSM484627 = GSM484627 + TS4_diff) %>%
+  mutate(GSM484628 = GSM484628 + TS4_diff) %>%
+  mutate(GSM484629 = GSM484629 + TS4_diff) %>%
+  mutate(GSM484630 = GSM484630 + TS4_diff) %>%
+  mutate(GSM484631 = GSM484631 + TS4_diff) %>%
+  mutate(GSM484632 = GSM484632 + TS4_diff) %>%
+  mutate(GSM484633 = GSM484633 + TS4_diff) %>%
+  mutate(GSM484634 = GSM484634 + TS4_diff) %>%
+  mutate(GSM484635 = GSM484635 + TS4_diff) %>%
+  mutate(GSM484636 = GSM484636 + TS4_diff) %>%
+  mutate(GSM484637 = GSM484637 + TS4_diff) %>%
+  mutate(GSM484638 = GSM484638 + TS4_diff) %>%
+  mutate(GSM484639 = GSM484639 + TS4_diff) %>%
+  mutate(GSM484640 = GSM484640 + TS4_diff) %>%
+  mutate(GSM484641 = GSM484641 + TS4_diff) %>%
+  mutate(GSM484642 = GSM484642 + TS4_diff) %>%
+  mutate(GSM484643 = GSM484643 + TS4_diff) %>%
+  mutate(GSM484644 = GSM484644 + TS4_diff) %>%
+  mutate(GSM484645 = GSM484645 + TS4_diff) %>%
+  mutate(GSM484646 = GSM484646 + TS4_diff) %>%
+  mutate(GSM484647 = GSM484647 + TS4_diff) %>%
+  mutate(GSM484648 = GSM484648 + TS4_diff) %>%
+  dplyr::select(-TS4_diff)
+
+
+#TS5 normalized
+TS5_normalized<- TS5_mean_gene %>% left_join(TS1_5_average_and_diff) %>% 
+  dplyr::select(-TS1_mean, -TS3_mean, -TS4_mean, -TS1_diff, -TS3_diff, -TS4_diff, -TS5_mean, -TS1_3_4_5_mean) %>%
+  rowwise() %>%
+  mutate(GSM484500 = GSM484500 + TS5_diff) %>%
+  mutate(GSM484501 = GSM484501 + TS5_diff) %>%
+  mutate(GSM484502 = GSM484502 + TS5_diff) %>%
+  mutate(GSM484503 = GSM484503 + TS5_diff) %>%
+  mutate(GSM484504 = GSM484504 + TS5_diff) %>%
+  mutate(GSM484505 = GSM484505 + TS5_diff) %>%
+  mutate(GSM484506 = GSM484506 + TS5_diff) %>%
+  mutate(GSM484507 = GSM484507 + TS5_diff) %>%
+  mutate(GSM484508 = GSM484508 + TS5_diff) %>%
+  mutate(GSM484509 = GSM484509 + TS5_diff) %>%
+  mutate(GSM484510 = GSM484510 + TS5_diff) %>%
+  mutate(GSM484511 = GSM484511 + TS5_diff) %>%
+  mutate(GSM484512 = GSM484512 + TS5_diff) %>%
+  mutate(GSM484513 = GSM484513 + TS5_diff) %>%
+  mutate(GSM484514 = GSM484514 + TS5_diff) %>%
+  mutate(GSM484515 = GSM484515 + TS5_diff) %>%
+  mutate(GSM484516 = GSM484516 + TS5_diff) %>%
+  mutate(GSM484517 = GSM484517 + TS5_diff) %>%
+  mutate(GSM484518 = GSM484518 + TS5_diff) %>%
+  mutate(GSM484519 = GSM484519 + TS5_diff) %>%
+  mutate(GSM484520 = GSM484520 + TS5_diff) %>%
+  mutate(GSM484521 = GSM484521 + TS5_diff) %>%
+  mutate(GSM484522 = GSM484522 + TS5_diff) %>%
+  mutate(GSM484523 = GSM484523 + TS5_diff) %>%
+  mutate(GSM484524 = GSM484524 + TS5_diff) %>%
+  mutate(GSM484525 = GSM484525 + TS5_diff) %>%
+  mutate(GSM484526 = GSM484526 + TS5_diff) %>%
+  mutate(GSM484527 = GSM484527 + TS5_diff) %>%
+  mutate(GSM484528 = GSM484528 + TS5_diff) %>%
+  mutate(GSM484529 = GSM484529 + TS5_diff) %>%
+  mutate(GSM484530 = GSM484530 + TS5_diff) %>%
+  mutate(GSM484531 = GSM484531 + TS5_diff) %>%
+  mutate(GSM484532 = GSM484532 + TS5_diff) %>%
+  mutate(GSM484533 = GSM484533 + TS5_diff) %>%
+  mutate(GSM484534 = GSM484534 + TS5_diff) %>%
+  mutate(GSM484535 = GSM484535 + TS5_diff) %>%
+  mutate(GSM484536 = GSM484536 + TS5_diff) %>%
+  mutate(GSM484537 = GSM484537 + TS5_diff) %>%
+  mutate(GSM484538 = GSM484538 + TS5_diff) %>%
+  mutate(GSM484539 = GSM484539 + TS5_diff) %>%
+  mutate(GSM484540 = GSM484540 + TS5_diff) %>%
+  mutate(GSM484541 = GSM484541 + TS5_diff) %>%
+  mutate(GSM484542 = GSM484542 + TS5_diff) %>%
+  mutate(GSM484543 = GSM484543 + TS5_diff) %>%
+  mutate(GSM484544 = GSM484544 + TS5_diff) %>%
+  mutate(GSM484545 = GSM484545 + TS5_diff) %>%
+  mutate(GSM484546 = GSM484546 + TS5_diff) %>%
+  mutate(GSM484547 = GSM484547 + TS5_diff) %>%
+  mutate(GSM484548 = GSM484548 + TS5_diff) %>%
+  mutate(GSM484549 = GSM484549 + TS5_diff) %>%
+  mutate(GSM484550 = GSM484500 + TS5_diff) %>%
+  dplyr::select(-TS5_diff)
+
+
+#TS6 normalized
+TS6_mean_diff<- TS6_mean_gene %>% left_join(TS1_5_average_and_diff) %>% 
+  dplyr::select(-TS1_mean, -TS3_mean, -TS4_mean, -TS1_diff, -TS3_diff, -TS4_diff, -TS5_mean, -TS5_diff) %>% rowwise() %>% mutate(TS6_diff = TS1_3_4_5_mean - TS6_mean)
+
+TS6_normalized <- TS6_mean_diff %>%
+  rowwise() %>%
+  mutate(GSM996267 = GSM996267 + TS6_diff) %>%
+  mutate(GSM996268 = GSM996268 + TS6_diff) %>%
+  mutate(GSM996269 = GSM996269 + TS6_diff) %>%
+  mutate(GSM996270 = GSM996270 + TS6_diff) %>%
+  mutate(GSM996271 = GSM996271 + TS6_diff) %>%
+  mutate(GSM996272 = GSM996272 + TS6_diff) %>%
+  mutate(GSM996273 = GSM996273 + TS6_diff) %>%
+  mutate(GSM996274 = GSM996274 + TS6_diff) %>%
+  mutate(GSM996275 = GSM996275 + TS6_diff) %>%
+  mutate(GSM996276 = GSM996276 + TS6_diff) %>%
+  mutate(GSM996277 = GSM996277 + TS6_diff) %>%
+  mutate(GSM996278 = GSM996278 + TS6_diff) %>%
+  mutate(GSM996279 = GSM996279 + TS6_diff) %>%
+  mutate(GSM996280 = GSM996280 + TS6_diff) %>%
+  mutate(GSM996281 = GSM996281 + TS6_diff) %>%
+  mutate(GSM996282 = GSM996282 + TS6_diff) %>%
+  mutate(GSM996283 = GSM996283 + TS6_diff) %>%
+  mutate(GSM996284 = GSM996284 + TS6_diff) %>%
+  mutate(GSM996285 = GSM996285 + TS6_diff) %>%
+  mutate(GSM996286 = GSM996286 + TS6_diff) %>%
+  mutate(GSM996287 = GSM996287 + TS6_diff) %>%
+  mutate(GSM996288 = GSM996288 + TS6_diff) %>%
+  mutate(GSM996289 = GSM996289 + TS6_diff) %>%
+  mutate(GSM996290 = GSM996290 + TS6_diff) %>%
+  mutate(GSM996291 = GSM996291 + TS6_diff) %>%
+  mutate(GSM996292 = GSM996292 + TS6_diff) %>%
+  mutate(GSM996293 = GSM996293 + TS6_diff) %>%
+  mutate(GSM996294 = GSM996294 + TS6_diff) %>%
+  mutate(GSM996295 = GSM996295 + TS6_diff) %>%
+  mutate(GSM996296 = GSM996296 + TS6_diff) %>%
+  mutate(GSM996297 = GSM996297 + TS6_diff) %>%
+  mutate(GSM996298 = GSM996298 + TS6_diff) %>%
+  mutate(GSM996299 = GSM996299 + TS6_diff) %>%
+  mutate(GSM996300 = GSM996300 + TS6_diff) %>%
+  mutate(GSM996311 = GSM996311 + TS6_diff) %>%
+  mutate(GSM996312 = GSM996312 + TS6_diff) %>%
+  mutate(GSM996313 = GSM996313 + TS6_diff) %>%
+  mutate(GSM996314 = GSM996314 + TS6_diff) %>%
+  mutate(GSM996315 = GSM996315 + TS6_diff) %>%
+  mutate(GSM996316 = GSM996316 + TS6_diff) %>%
+  mutate(GSM996317 = GSM996317 + TS6_diff) %>%
+  mutate(GSM996318 = GSM996318 + TS6_diff) %>%
+  mutate(GSM996319 = GSM996319 + TS6_diff) %>%
+  mutate(GSM996320 = GSM996320 + TS6_diff) %>%
+  mutate(GSM996321 = GSM996321 + TS6_diff) %>%
+  mutate(GSM996322 = GSM996322 + TS6_diff) %>%
+  mutate(GSM996323 = GSM996323 + TS6_diff) %>%
+  mutate(GSM996324 = GSM996324 + TS6_diff) %>%
+  mutate(GSM996325 = GSM996325 + TS6_diff) %>%
+  mutate(GSM996326 = GSM996326 + TS6_diff) %>%
+  mutate(GSM996327 = GSM996327 + TS6_diff) %>%
+  mutate(GSM996328 = GSM996328 + TS6_diff) %>%
+  mutate(GSM996329 = GSM996329 + TS6_diff) %>%
+  mutate(GSM996330 = GSM996330 + TS6_diff) %>%
+  mutate(GSM996331 = GSM996331 + TS6_diff) %>%
+  mutate(GSM996332 = GSM996332 + TS6_diff) %>%
+  mutate(GSM996333 = GSM996333 + TS6_diff) %>%
+  mutate(GSM996334 = GSM996334 + TS6_diff) %>%
+  mutate(GSM996335 = GSM996335 + TS6_diff) %>%
+  mutate(GSM996336 = GSM996336 + TS6_diff) %>%
+  mutate(GSM996337 = GSM996337 + TS6_diff) %>%
+  mutate(GSM996338 = GSM996338 + TS6_diff) %>%
+  mutate(GSM996339 = GSM996339 + TS6_diff) %>%
+  mutate(GSM996340 = GSM996340 + TS6_diff) %>%
+  mutate(GSM996341 = GSM996341 + TS6_diff) %>%
+  mutate(GSM996342 = GSM996342 + TS6_diff) %>%
+  mutate(GSM996343 = GSM996343 + TS6_diff) %>%
+  mutate(GSM996344 = GSM996344 + TS6_diff) %>%
+  mutate(GSM996345 = GSM996345 + TS6_diff) %>%
+  mutate(GSM996346 = GSM996346 + TS6_diff) %>%
+  mutate(GSM996347 = GSM996347 + TS6_diff) %>%
+  mutate(GSM996348 = GSM996348 + TS6_diff) %>%
+  mutate(GSM996349 = GSM996349 + TS6_diff) %>%
+  mutate(GSM996350 = GSM996350 + TS6_diff) %>%
+  mutate(GSM996351 = GSM996351 + TS6_diff) %>%
+  mutate(GSM996352 = GSM996352 + TS6_diff) %>%
+  mutate(GSM996353 = GSM996353 + TS6_diff) %>%
+  mutate(GSM996354 = GSM996354 + TS6_diff) %>%
+  mutate(GSM996355 = GSM996355 + TS6_diff) %>%
+  mutate(GSM996356 = GSM996356 + TS6_diff) %>%
+  mutate(GSM996357 = GSM996357 + TS6_diff) %>%
+  mutate(GSM996358 = GSM996358 + TS6_diff) %>%
+  mutate(GSM996359 = GSM996359 + TS6_diff) %>%
+  mutate(GSM996360 = GSM996360 + TS6_diff) %>%
+  mutate(GSM996361 = GSM996361 + TS6_diff) %>%
+  mutate(GSM996362 = GSM996362 + TS6_diff) %>%
+  mutate(GSM996363 = GSM996363 + TS6_diff) %>%
+  mutate(GSM996364 = GSM996364 + TS6_diff) %>%
+  mutate(GSM996365 = GSM996365 + TS6_diff) %>%
+  mutate(GSM996366 = GSM996366 + TS6_diff) %>%
+  mutate(GSM996367 = GSM996367 + TS6_diff) %>%
+  mutate(GSM996368 = GSM996368 + TS6_diff) %>%
+  mutate(GSM996369 = GSM996369 + TS6_diff) %>%
+  mutate(GSM996370 = GSM996370 + TS6_diff) %>%
+  mutate(GSM996371 = GSM996371 + TS6_diff) %>%
+  mutate(GSM996372 = GSM996372 + TS6_diff) %>%
+  mutate(GSM996373 = GSM996373 + TS6_diff) %>%
+  mutate(GSM996374 = GSM996374 + TS6_diff) %>%
+  mutate(GSM996375 = GSM996375 + TS6_diff) %>%
+  mutate(GSM996376 = GSM996376 + TS6_diff) %>%
+  mutate(GSM996377 = GSM996377 + TS6_diff) %>%
+  mutate(GSM996378 = GSM996378 + TS6_diff) %>%
+  mutate(GSM996379 = GSM996379 + TS6_diff) %>%
+  mutate(GSM996380 = GSM996380 + TS6_diff) %>%
+  mutate(GSM996381 = GSM996381 + TS6_diff) %>%
+  mutate(GSM996382 = GSM996382 + TS6_diff) %>%
+  mutate(GSM996383 = GSM996383 + TS6_diff) %>%
+  mutate(GSM996384 = GSM996384 + TS6_diff) %>%
+  mutate(GSM996385 = GSM996385 + TS6_diff) %>%
+  mutate(GSM996386 = GSM996386 + TS6_diff) %>%
+  mutate(GSM996387 = GSM996387 + TS6_diff) %>%
+  mutate(GSM996388 = GSM996388 + TS6_diff) %>%
+  mutate(GSM996389 = GSM996389 + TS6_diff) %>%
+  mutate(GSM996390 = GSM996390 + TS6_diff) %>%
+  mutate(GSM996391 = GSM996391 + TS6_diff) %>%
+  mutate(GSM996392 = GSM996392 + TS6_diff) %>%
+  mutate(GSM996393 = GSM996393 + TS6_diff) %>%
+  mutate(GSM996394 = GSM996394 + TS6_diff) %>%
+  mutate(GSM996395 = GSM996395 + TS6_diff) %>%
+  mutate(GSM996396 = GSM996396 + TS6_diff) %>%
+  mutate(GSM996397 = GSM996397 + TS6_diff) %>%
+  mutate(GSM996398 = GSM996398 + TS6_diff) %>%
+  mutate(GSM996399 = GSM996399 + TS6_diff) %>%
+  mutate(GSM996400 = GSM996400 + TS6_diff) %>%
+  mutate(GSM996401 = GSM996401 + TS6_diff) %>%
+  mutate(GSM996402 = GSM996402 + TS6_diff) %>%
+  mutate(GSM996403 = GSM996403 + TS6_diff) %>%
+  mutate(GSM996404 = GSM996404 + TS6_diff) %>%
+  mutate(GSM996405 = GSM996405 + TS6_diff) %>%
+  mutate(GSM996406 = GSM996406 + TS6_diff) %>%
+  mutate(GSM996407 = GSM996407 + TS6_diff) %>%
+  mutate(GSM996408 = GSM996408 + TS6_diff) %>%
+  mutate(GSM996409 = GSM996409 + TS6_diff) %>%
+  mutate(GSM996410 = GSM996410 + TS6_diff) %>%
+  mutate(GSM996411 = GSM996411 + TS6_diff) %>%
+  mutate(GSM996412 = GSM996412 + TS6_diff) %>%
+  mutate(GSM996413 = GSM996413 + TS6_diff) %>%
+  mutate(GSM996414 = GSM996414 + TS6_diff) %>%
+  mutate(GSM996415 = GSM996415 + TS6_diff) %>%
+  mutate(GSM996416 = GSM996416 + TS6_diff) %>%
+  mutate(GSM996417 = GSM996417 + TS6_diff) %>%
+  mutate(GSM996418 = GSM996418 + TS6_diff) %>%
+  mutate(GSM996419 = GSM996419 + TS6_diff) %>%
+  mutate(GSM996420 = GSM996420 + TS6_diff) %>%
+  mutate(GSM996421 = GSM996421 + TS6_diff) %>%
+  mutate(GSM996422 = GSM996422 + TS6_diff) %>%
+  mutate(GSM996423 = GSM996423 + TS6_diff) %>%
+  mutate(GSM996424 = GSM996424 + TS6_diff) %>%
+  mutate(GSM996425 = GSM996425 + TS6_diff) %>%
+  mutate(GSM996426 = GSM996426 + TS6_diff) %>%
+  mutate(GSM996427 = GSM996427 + TS6_diff) %>%
+  mutate(GSM996428 = GSM996428 + TS6_diff) %>%
+  mutate(GSM996429 = GSM996429 + TS6_diff) %>%
+  mutate(GSM996430 = GSM996430 + TS6_diff) %>%
+  mutate(GSM996431 = GSM996431 + TS6_diff) %>%
+  mutate(GSM996432 = GSM996432 + TS6_diff) %>%
+  mutate(GSM996433 = GSM996433 + TS6_diff) %>%
+  mutate(GSM996434 = GSM996434 + TS6_diff) %>%
+  mutate(GSM996435 = GSM996435 + TS6_diff) %>%
+  mutate(GSM996436 = GSM996436 + TS6_diff) %>%
+  mutate(GSM996437 = GSM996437 + TS6_diff) %>%
+  mutate(GSM996438 = GSM996438 + TS6_diff) %>%
+  mutate(GSM996439 = GSM996439 + TS6_diff) %>%
+  mutate(GSM996440 = GSM996440 + TS6_diff) %>%
+  mutate(GSM996441 = GSM996441 + TS6_diff) %>%
+  mutate(GSM996442 = GSM996442 + TS6_diff) %>%
+  mutate(GSM996443 = GSM996443 + TS6_diff) %>%
+  mutate(GSM996444 = GSM996444 + TS6_diff) %>%
+  mutate(GSM996445 = GSM996445 + TS6_diff) %>%
+  mutate(GSM996446 = GSM996446 + TS6_diff) %>%
+  mutate(GSM996447 = GSM996447 + TS6_diff) %>%
+  mutate(GSM996448 = GSM996448 + TS6_diff) %>%
+  mutate(GSM996449 = GSM996449 + TS6_diff) %>%
+  mutate(GSM996450 = GSM996450 + TS6_diff) %>%
+  mutate(GSM996451 = GSM996451 + TS6_diff) %>%
+  mutate(GSM996452 = GSM996452 + TS6_diff) %>%
+  mutate(GSM996453 = GSM996453 + TS6_diff) %>%
+  mutate(GSM996454 = GSM996454 + TS6_diff) %>%
+  mutate(GSM996455 = GSM996455 + TS6_diff) %>%
+  mutate(GSM996456 = GSM996456 + TS6_diff) %>%
+  mutate(GSM996457 = GSM996457 + TS6_diff) %>%
+  mutate(GSM996458 = GSM996458 + TS6_diff) %>%
+  mutate(GSM996459 = GSM996459 + TS6_diff) %>%
+  mutate(GSM996460 = GSM996460 + TS6_diff) %>%
+  mutate(GSM996461 = GSM996461 + TS6_diff) %>%
+  mutate(GSM996462 = GSM996462 + TS6_diff) %>%
+  mutate(GSM996463 = GSM996463 + TS6_diff) %>%
+  mutate(GSM996464 = GSM996464 + TS6_diff) %>%
+  mutate(GSM996465 = GSM996465 + TS6_diff) %>%
+  mutate(GSM996466 = GSM996466 + TS6_diff) %>%
+  mutate(GSM996467 = GSM996467 + TS6_diff) %>%
+  mutate(GSM996468 = GSM996468 + TS6_diff) %>%
+  mutate(GSM996469 = GSM996469 + TS6_diff) %>%
+  mutate(GSM996470 = GSM996470 + TS6_diff) %>%
+  mutate(GSM996471 = GSM996471 + TS6_diff) %>%
+  mutate(GSM996472 = GSM996472 + TS6_diff) %>%
+  mutate(GSM996473 = GSM996473 + TS6_diff) %>%
+  mutate(GSM996474 = GSM996474 + TS6_diff) %>%
+  mutate(GSM996475 = GSM996475 + TS6_diff) %>%
+  mutate(GSM996476 = GSM996476 + TS6_diff) %>%
+  mutate(GSM996477 = GSM996477 + TS6_diff) %>%
+  mutate(GSM996478 = GSM996478 + TS6_diff) %>%
+  mutate(GSM996479 = GSM996479 + TS6_diff) %>%
+  mutate(GSM996480 = GSM996480 + TS6_diff) %>%
+  dplyr::select(-TS6_diff, -TS1_3_4_5_mean, -TS6_mean)
+
+```
+
+
+```{r}
+
+```
+
