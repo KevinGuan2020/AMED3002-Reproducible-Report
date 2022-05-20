@@ -53,6 +53,8 @@ E_TS1_gene <- Expression_TS1_gene %>% dplyr::select(Gene)
 
 TS1_mean_gene <- cbind(E_TS1_gene, TS1_mean.df)
 
+Expression_TS1_gene %>% filter(Gene == "ILMN_1762337")
+
 ```
 
 
@@ -71,7 +73,7 @@ cnames_TS3 = colnames(Expression_TS3)
 
 TS3_mean.df <- as.data.frame(Expression_TS3) %>% 
   rowwise() %>% 
-  mutate(TS3_mean = mean(c_across(1:33))) 
+  mutate(TS3_mean = mean(c_across(1:42))) 
 
 Expression_TS3_gene <- as.data.frame(Expression_TS3) %>% tibble::rownames_to_column("Gene") 
 E_TS3_gene <- Expression_TS3_gene %>% dplyr::select(Gene)
@@ -94,7 +96,7 @@ cnames_TS4 = colnames(Expression_TS4)
 
 TS4_mean.df <- as.data.frame(Expression_TS4) %>% 
   rowwise() %>% 
-  mutate(TS4_mean = mean(c_across(1:33)))
+  mutate(TS4_mean = mean(c_across(1:54)))
 
 Expression_TS4_gene <- as.data.frame(Expression_TS4) %>% tibble::rownames_to_column("Gene") 
 E_TS4_gene <- Expression_TS4_gene %>% dplyr::select(Gene)
@@ -117,7 +119,7 @@ cnames_TS5 = colnames(Expression_TS5)
 
 TS5_mean.df <- as.data.frame(Expression_TS5) %>% 
   rowwise() %>% 
-  mutate(TS5_mean = mean(c_across(1:33))) 
+  mutate(TS5_mean = mean(c_across(1:51))) 
 
 Expression_TS5_gene <- as.data.frame(Expression_TS5) %>% tibble::rownames_to_column("Gene") 
 E_TS5_gene <- Expression_TS5_gene %>% dplyr::select(Gene)
