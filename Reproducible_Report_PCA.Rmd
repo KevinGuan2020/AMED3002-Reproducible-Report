@@ -37,14 +37,25 @@ rownames(PCA_samples.2) <- PCA_samples.1[,1]
 
 
 ```{r}
-#counts data 
-PCA_counts.2 
+#counts data - use PCA_counts_3
+has_neg <- apply(PCA_counts.2, 1, function(row) any(row < 0))
+genes_with_negative_counts_df <- which(has_neg) %>% as.data.frame() %>% tibble::rownames_to_column("Gene")
+length(which(has.neg))
 
-#genes data 
-PCA_genes.2 
+genes_with_negative_counts_vector <- genes_with_negative_counts_df [, "Gene"]
+genes_with_negative_counts <- dput(as.character(genes_with_negative_counts_vector))
+PCA_counts_3 <- PCA_counts.2[!rownames(PCA_counts.2) %in% genes_with_negative_counts,]
+
+
+#genes data - use PCA_genes_3
+PCA_counts_3_gene_df <- PCA_counts_3 %>% tibble::rownames_to_column("Gene")
+PCA_counts_3_gene_vector <- PCA_counts_3_gene_df[, "Gene"]
+PCA_counts_3_gene <- dput(as.character(PCA_counts_3_gene_vector))
+PCA_genes_3 <- PCA_genes.2[rownames(PCA_genes.2) %in% PCA_counts_3_gene,]
 
 #samples data 
-PCA_samples.2 
+PCA_samples_3_sampleid <- dput(as.character(colnames(PCA_counts_3)))
+PCA_samples_3 <- PCA_samples.2[rownames(PCA_samples.2) %in% PCA_samples_3_sampleid,]
 ```
 
 ```{r}
@@ -71,3 +82,13 @@ ggplot(pca1, aes(x = PC2, y = PC3, colour = samples$Disease_State, shape = PCA_s
 
 ```
 
+```{r}
+dgelist <- DGEList(counts = PCA_counts_3, samples = PCA_samples_3, genes = PCA_genes_3)
+normalizationfactors <- calcNormFactors(dgelist, method = "TMM")
+keep <- filterByExpr(normalizationfactors)
+keep.1 <- normalizationfactors[keep,]
+cpm <- cpm(keep.1)
+lcpm <- cpm(keep.1, log = T)
+pca <- prcomp(t(lcpm), scale=T)
+autoplot(pca, data = PCA_samples.2, colour = "Disease_State", shape = "Data")
+```
