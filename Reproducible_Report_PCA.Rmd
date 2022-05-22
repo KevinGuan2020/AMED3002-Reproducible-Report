@@ -47,3 +47,27 @@ PCA_genes.2
 PCA_samples.2 
 ```
 
+```{r}
+library(egg)
+
+counts = PCA_counts.2 
+genes = PCA_genes.2 
+samples = PCA_samples.2 
+
+pca1 = prcomp(t(counts))
+
+```
+
+```{r}
+autoplot(pca1, data = samples, colour = "Disease_State", shape = "Data") + theme_article() + scale_colour_grey() 
+
+
+## I can't get shape to work with ggplot
+ggplot(pca1, aes(x = PC1, y = PC2, colour = samples$Disease_State, shape = PCA_samples.2$Data)) + geom_point(pch=15, cex=4)
+
+##trying PC2 and PC3 to see if this matches the PCA plot
+ggplot(pca1, aes(x = PC2, y = PC3, colour = samples$Disease_State, shape = PCA_samples.2$Data)) + geom_point(pch=15, cex=4)
+
+
+```
+
