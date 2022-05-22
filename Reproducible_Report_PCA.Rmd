@@ -1,0 +1,49 @@
+---
+title: "Reproducible_Report_PCA"
+author: "Christina Lauw,..."
+date: '2022-05-22'
+output: html_document
+---
+
+
+```{r}
+library(tidyverse)
+library(ggfortify)
+library(RColorBrewer)
+library(GEOquery)
+library(org.Hs.eg.db)
+library(limma)
+library(edgeR)
+library(Glimma)
+library(Homo.sapiens)
+library(gplots)
+library(dplyr)
+```
+
+
+```{r}
+PCA_counts.1 <- read.csv("PCA_counts.csv") 
+PCA_counts.2 <- PCA_counts.1[,-1]
+rownames(PCA_counts.2) <- PCA_counts.1[,1]
+
+PCA_genes.1 <- read.csv("PCA_genes.csv") 
+PCA_genes.2 <- PCA_genes.1[,-1]
+rownames(PCA_genes.2) <- PCA_genes.1[,1]
+
+PCA_samples.1 <- read.csv("PCA_samples.csv") 
+PCA_samples.2 <- PCA_samples.1[,-1]
+rownames(PCA_samples.2) <- PCA_samples.1[,1]
+```
+
+
+```{r}
+#counts data 
+PCA_counts.2 
+
+#genes data 
+PCA_genes.2 
+
+#samples data 
+PCA_samples.2 
+```
+

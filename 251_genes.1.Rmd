@@ -117,7 +117,7 @@ summary(tune_svm)
 
 ```{r fit1}
 fit.1 = svm(Pheno_cut_description ~ ., data=svm_data, kernel="linear", cost=0.1)  
-weights.1 = t(fit.1$coefs) %*% fit$SV %>% as.data.frame()
+weights.1 = t(fit.1$coefs) %*% fit.1$SV %>% as.data.frame()
 
 absolute_weights_sorted.1 <- as.data.frame(t(sort(abs(weights.1))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
 
@@ -292,7 +292,7 @@ Genes_251_after10svm <- absolute_weights_sorted.10 %>% arrange(desc(weight)) %>%
 
 Gene_genes251.vector <- as.vector(Genes_251_after10svm$Gene)
 Gene_genes251 <- dput(Gene_genes251.vector)
-Genesdata_genes251 <- Genes[rownames(Genes) %in% Gene_genes251,]
+Genesdata_genes251.0 <- Genes[rownames(Genes) %in% Gene_genes251,]
 
 paper_251genes <- read.csv("Paper_251genes.csv")
 
@@ -300,10 +300,20 @@ paper_251genes_symbol <- paper_251genes %>% dplyr::select(Symbol)
 Genesdata_genes251 <- Genesdata_genes251 %>% dplyr::select(Symbol)
 overlapping_gene_symbols <- paper_251genes_symbol %>% inner_join(Genesdata_genes251)
 
+Expression_cut_genes251 <- Expression_cut[rownames(Expression_cut) %in% Gene_genes251,]
 
 ```
 
 ```{r}
+# PCA genes and counts
+PCA_genes <- Genesdata_genes251.0 %>% dplyr::select(ID, Symbol)
+PCA_counts <- Expression_cut_genes251
+
+# PCA samples data 
+PCA_pheno_origin <- Pheno_cut %>% dplyr::select(`disease state:ch1`) %>% dplyr::rename(disease_state = `disease state:ch1`) %>% mutate(disease_state = case_when(disease_state == "HIV only" ~ "HIV", disease_state == "HIV/TB" ~ "HIV/MTB")) %>% mutate(Data = "Origin") %>% dplyr::rename(Disease_State = disease_state)
+PCA_pheno_TS1 <- Pheno_TS1 %>% dplyr::select(`time post initiation of treatment:ch1`, `illness:ch1`) %>% dplyr::rename(disease_state = `time post initiation of treatment:ch1`) %>% mutate(disease_state = case_when(disease_state == "0_months" & `illness:ch1` == "Control" ~ "Controls", disease_state == "0_months" & `illness:ch1` == "PTB" ~ "TB", disease_state == "2_months" ~ "TB (2Mo)", disease_state =="12_months" ~ "TB (12Mo)")) %>% dplyr::select(disease_state) %>% mutate(Data = "TS1") %>% dplyr::rename(Disease_State = disease_state)
+
+PCA_samples <- PCA_pheno_origin %>% rbind(PCA_pheno_TS1)
 
 ```
 
