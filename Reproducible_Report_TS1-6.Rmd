@@ -601,8 +601,56 @@ TS6_normalized <- TS6_mean_diff %>%
 
 ```
 
+```{r normalized data with only sample IDs as columns}
+#TS1 normalized
+TS1_normalized.1 <- TS1_normalized %>%`row.names<-`(., NULL) %>% column_to_rownames(var = "Gene")
+
+#TS3 normalized
+TS3_normalized.1 <- TS3_normalized %>%`row.names<-`(., NULL) %>% column_to_rownames(var = "Gene")
+
+#TS4 normalized
+TS4_normalized.1 <- TS4_normalized %>%`row.names<-`(., NULL) %>% column_to_rownames(var = "Gene")
+
+#TS5 normalized
+TS5_normalized.1 <- TS5_normalized %>%`row.names<-`(., NULL) %>% column_to_rownames(var = "Gene")
+
+#TS6 normalized
+TS6_normalized.1 <- TS6_normalized %>%`row.names<-`(., NULL) %>% column_to_rownames(var = "Gene")
+
+```
+
 
 ```{r}
+Pheno_TS1_new <- Pheno_TS1 %>% filter(`illness:ch1` == "Control" | `time post initiation of treatment:ch1` == "2_months")
+
+Pheno_TS2_part1 <- Pheno_TS1 %>% filter(`time post initiation of treatment:ch1` == "0_months" & `illness:ch1` == "PTB")
+Pheno_TS2_part2 <- Pheno_TS1 %>% filter(`time post initiation of treatment:ch1` == "12_months")
+Pheno_TS2 <- rbind(Pheno_TS2_part1, Pheno_TS2_part2)
+
+Pheno_TS1_new_sampleid.df <- Pheno_TS1_new %>% tibble::rownames_to_column("Sample_ID")
+Pheno_TS1_new_sampleid_vector <- Pheno_TS1_new_sampleid.df[, "Sample_ID"]
+Pheno_TS1_new_sampleid <- dput(as.character(Pheno_TS1_new_sampleid_vector))
+Expression_TS1_normalized_new <- TS1_normalized.1[, colnames(TS1_normalized.1) %in% Pheno_TS1_new_sampleid]
+
+Pheno_TS2_sampleid.df <- Pheno_TS2 %>% tibble::rownames_to_column("Sample_ID")
+Pheno_TS2_sampleid_vector <- Pheno_TS2_sampleid.df[, "Sample_ID"]
+Pheno_TS2_sampleid <- dput(as.character(Pheno_TS2_sampleid_vector))
+Expression_TS2_normalized <- TS1_normalized.1[, colnames(TS1_normalized.1) %in% Pheno_TS2_sampleid]
+
+```
+
+```{r TS1 and TS2 for analysis data}
+# TS1 Pheno Data
+Pheno_TS1_new
+
+#TS1 Expression Data
+Expression_TS1_normalized_new 
+
+# TS2 Pheno Data 
+Pheno_TS2
+
+#TS2 Expression Data
+Expression_TS2_normalized
 
 ```
 
