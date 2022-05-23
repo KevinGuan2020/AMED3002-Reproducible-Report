@@ -1,0 +1,79 @@
+---
+title: "Heatmap"
+author: "Kevin Guan"
+date: '2022-05-23'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ComplexHeatmap)
+library(tidyverse)
+
+Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
+
+Genes251 <- read.csv("251_gene_names.csv") %>% unlist() %>% as.vector()
+
+Pheno = pData(Origin)
+
+Genes = fData(Origin)
+
+Expression <- exprs(Origin)
+rnames = row.names(Expression)
+cnames = colnames(Expression)
+
+Expression %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 600)) %>% 
+  boxplot()
+
+Expression_cut <- Expression %>% 
+  as.data.frame() %>% 
+  mutate(GSM1230946=(GSM1230903 + GSM1230904)/2) %>%
+  dplyr::select(-GSM1230903) %>%
+  dplyr::select(-GSM1230904) %>%
+  relocate(GSM1230946,.after = GSM1230902) %>%
+  dplyr::rename(GSM1230903=GSM1230946)
+
+row.names(Expression_cut) = rnames
+colnames(Expression_cut) = cnames[-3]
+
+Pheno_cut <- Pheno %>% filter(title != "HIV infected patient 2_2")
+
+Expression_251 <- Expression_cut[rownames(Expression_cut) %in% Genes251,]
+Gene_251_fdata <- Genes[rownames(Genes) %in% keep_genes,]
+
+```
+
+```{r}
+
+Expression_251
+
+HIV_samples = row.names(filter(Pheno, description == "HIV" ))
+HIV_exprs = Expression_251[,colnames(Expression_251) %in% HIV_samples]
+HIV_avg_exprs = data.frame(HIV_avg = rowSums(HIV_exprs)/ncol(HIV_exprs))
+
+HIV_TB_samples = row.names(filter(Pheno, description == "HIV/TB co-infection" ))
+HIV_TB_exprs = Expression_251[,colnames(Expression_251) %in% HIV_TB_samples]
+HIV_TB_avg_exprs = data.frame(HIV_TB_avg = rowSums(HIV_TB_exprs)/ncol(HIV_TB_exprs))
+
+Fc_df = merge(HIV_avg_exprs, HIV_TB_avg_exprs, by = "row.names")
+
+Fc_df$FC = Fc_df$HIV_avg/Fc_df$HIV_TB_avg
+Fc_df$Class = c(rep("HIV",251),rep("HIV/TB", 251))
+
+
+
+Hamp = Expression_251[order(Expression_251$GSM1230925),]
+
+pal <- colorpanel(32, "blue", "white", "red")
+heatmap(as.matrix(log(Expression_251)), col = pal)
+
+Pheno
+scale(Expression_251)
+library(gplots)
+
+
+```
+
