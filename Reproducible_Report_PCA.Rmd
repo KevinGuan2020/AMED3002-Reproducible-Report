@@ -40,7 +40,7 @@ rownames(PCA_samples.2) <- PCA_samples.1[,1]
 #counts data - use PCA_counts_3
 has_neg <- apply(PCA_counts.2, 1, function(row) any(row < 0))
 genes_with_negative_counts_df <- which(has_neg) %>% as.data.frame() %>% tibble::rownames_to_column("Gene")
-length(which(has.neg))
+length(which(has_neg))
 
 genes_with_negative_counts_vector <- genes_with_negative_counts_df [, "Gene"]
 genes_with_negative_counts <- dput(as.character(genes_with_negative_counts_vector))
