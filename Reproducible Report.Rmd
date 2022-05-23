@@ -115,8 +115,8 @@ colnames(Expression_43_normalized) = cnames[-3]
 
 
 ```{r}
-HIV <- Expression_43_normalized %>% dplyr::select(1:22)
-HIV_TB <- Expression_43_normalized %>% dplyr::select(23:43)
+HIV <- Expression_43 %>% dplyr::select(1:22)
+HIV_TB <- Expression_43 %>% dplyr::select(23:43)
 
 hiv1_hivtb <- cbind(HIV %>% dplyr::select(1), HIV_TB)
 hiv2_hivtb <- cbind(HIV %>% dplyr::select(2), HIV_TB)
@@ -226,6 +226,58 @@ for (row in 1:nrow(data1)) {
 table(Keep1)
 Keep_hiv1_hivtb <- as.data.frame(Keep1)
 Keep1.1.df <- as.data.frame(Keep1.1) %>% dplyr::rename(Fold_Change =Keep1.1)
+
+Keep_hiv1_hivtb_withgenes <- cbind(Keep_hiv1_hivtb,  Expression_43_normalized)
+Keep_hiv1_hivtb_withgenes$Keep1 = as.character(Keep_hiv1_hivtb_withgenes$Keep1)
+t1 <- Keep_hiv1_hivtb_withgenes %>% filter(Keep1 == "TRUE")
+
+f1 <- Keep_hiv1_hivtb_withgenes %>% filter(Keep1 == "FALSE")
+
+f1g <- tibble::rownames_to_column(f1, "Gene")
+f1_gene <- f1g%>% dplyr::select(Gene) 
+
+gene_fc_1<- Keep_hiv1_hivtb_withgenes %>% cbind(Keep1.1.df) %>% tibble::rownames_to_column("Gene") %>% dplyr::select(Gene, Fold_Change) 
+
+```
+
+```{r hiv1}
+#ignore
+#calculating fold change between hiv/hiv+tb samples for all genes 
+data1 = hiv1_hivtb
+Keep1 = c()
+Keep1.1 = c()
+Keep1.fc_back = c()
+for (row in 1:nrow(data1)) {
+  changes_backward = c()
+  names_backward = c()
+  for (a in 1:(ncol(data1)-1)){
+    col1 = 1
+    col2 = a
+    while(col2 <= ncol(data1)-1) {
+      col2 = col2 + 1
+      
+      fc_backward = data1[row,col2]/data1[row,col1]
+      changes_backward = c(changes_backward, fc_backward)
+    }
+  }
+  foldchange1 = data.frame(change_b = changes_backward)
+  foldchange1$max <- apply(foldchange1, MARGIN = 1, FUN = max)
+  
+  if (max(foldchange1$max) <1.2) {
+    truth = FALSE
+  }
+  else {
+    truth = TRUE
+  }
+  
+  Keep1 = c(Keep1, truth)
+  Keep1.1 = c(Keep1.1, max(foldchange1$max))
+  Keep1.1.1 = c(Keep1.fc_back, changes_backward)
+}
+
+table(Keep1)
+Keep_hiv1_hivtb <- as.data.frame(Keep1)
+Keep1.1.1.df <- as.data.frame(Keep1.1.1) %>% dplyr::rename(Fold_Change =Keep1.1.1)
 
 Keep_hiv1_hivtb_withgenes <- cbind(Keep_hiv1_hivtb,  Expression_43_normalized)
 Keep_hiv1_hivtb_withgenes$Keep1 = as.character(Keep_hiv1_hivtb_withgenes$Keep1)
@@ -1736,4 +1788,92 @@ Genes_20 <- Genes_251 %>% head(20)%>%
 write.csv(Genes_251,"C:\\Users\\lauwc\\OneDrive\\Documents\\Uni 2022-\\AMED3002\\Reproducible_Report\\AMED3002-Reproducible-Report\\Genes_251.csv", row.names = FALSE)
 write.csv(Genes_20,"C:\\Users\\lauwc\\OneDrive\\Documents\\Uni 2022-\\AMED3002\\Reproducible_Report\\AMED3002-Reproducible-Report\\Genes_20.csv", row.names = FALSE)
 ```
+
+```{r}
+#origin genes df
+Expression_43_rowname_to_column <- Expression_43 %>% tibble::rownames_to_column("Gene")
+origin_genes_vector <- as.vector(Expression_43_rowname_to_column$Gene)
+origin_genes <- dput(origin_genes_vector)
+origin_genes_df <- as.data.frame(origin_genes)
+
+# combine origin genes with Keep1.1,Keep2.2 etc
+Keep1.1_origingenes <- cbind(origin_genes_df, Keep_1.1.df)
+Keep2.2_origingenes <- cbind(origin_genes_df, Keep_2.2.df)
+Keep3.3_origingenes <- cbind(origin_genes_df, Keep_3.3.df)
+Keep4.4_origingenes <- cbind(origin_genes_df, Keep_4.4.df)
+Keep5.5_origingenes <- cbind(origin_genes_df, Keep_5.5.df)
+Keep6.6_origingenes <- cbind(origin_genes_df, Keep_6.6.df)
+Keep7.7_origingenes <- cbind(origin_genes_df, Keep_7.7.df)
+Keep8.8_origingenes <- cbind(origin_genes_df, Keep_8.8.df)
+Keep9.9_origingenes <- cbind(origin_genes_df, Keep_9.9.df)
+Keep10.10_origingenes <- cbind(origin_genes_df, Keep_10.10.df)
+Keep11.11_origingenes <- cbind(origin_genes_df, Keep_11.11.df)
+Keep12.12_origingenes <- cbind(origin_genes_df, Keep_12.12.df)
+Keep12.12_origingenes <- cbind(origin_genes_df, Keep_12.12.df)
+Keep12.12_origingenes <- cbind(origin_genes_df, Keep_12.12.df)
+Keep12.12_origingenes <- cbind(origin_genes_df, Keep_12.12.df)
+Keep13.13_origingenes <- cbind(origin_genes_df, Keep_13.13.df)
+Keep14.14_origingenes <- cbind(origin_genes_df, Keep_14.14.df)
+Keep15.15_origingenes <- cbind(origin_genes_df, Keep_15.15.df)
+Keep16.16_origingenes <- cbind(origin_genes_df, Keep_16.16.df)
+Keep17.17_origingenes <- cbind(origin_genes_df, Keep_17.17.df)
+Keep18.18_origingenes <- cbind(origin_genes_df, Keep_18.18.df)
+Keep19.19_origingenes <- cbind(origin_genes_df, Keep_19.19.df)
+Keep20.20_origingenes <- cbind(origin_genes_df, Keep_20.20.df)
+Keep21.21_origingenes <- cbind(origin_genes_df, Keep_21.21.df)
+Keep22.22_origingenes <- cbind(origin_genes_df, Keep_22.22.df)
+
+Keep1_22_origingenes <- Keep1.1_origingenes %>% full_join(Keep2.2_origingenes, by="origin_genes") %>%
+  full_join(Keep3.3_origingenes, by="origin_genes") %>%
+  full_join(Keep4.4_origingenes, by="origin_genes") %>%
+  full_join(Keep5.5_origingenes, by="origin_genes") %>%
+  full_join(Keep6.6_origingenes, by="origin_genes") %>%
+  full_join(Keep7.7_origingenes, by="origin_genes") %>%
+  full_join(Keep8.8_origingenes, by="origin_genes") %>%
+  full_join(Keep9.9_origingenes, by="origin_genes") %>%
+  full_join(Keep10.10_origingenes, by="origin_genes") %>%
+  full_join(Keep11.11_origingenes, by="origin_genes") %>%
+  full_join(Keep12.12_origingenes, by="origin_genes") %>%
+  full_join(Keep13.13_origingenes, by="origin_genes") %>%
+  full_join(Keep14.14_origingenes, by="origin_genes") %>%
+  full_join(Keep15.15_origingenes, by="origin_genes") %>%
+  full_join(Keep16.16_origingenes, by="origin_genes") %>%
+  full_join(Keep17.17_origingenes, by="origin_genes") %>%
+  full_join(Keep18.18_origingenes, by="origin_genes") %>%
+  full_join(Keep19.19_origingenes, by="origin_genes") %>%
+  full_join(Keep20.20_origingenes, by="origin_genes") %>%
+  full_join(Keep21.21_origingenes, by="origin_genes") %>%
+  full_join(Keep22.22_origingenes, by="origin_genes") 
+  
+
+fc1.1 <- Keep1_22_origingenes %>% dplyr::select(2)%>% dplyr::rename(Fold_Change=1)
+fc2.2 <- Keep1_22_origingenes %>% dplyr::select(3)%>% dplyr::rename(Fold_Change=1)
+fc3.3 <- Keep1_22_origingenes %>% dplyr::select(4)%>% dplyr::rename(Fold_Change=1)
+fc4.4 <- Keep1_22_origingenes %>% dplyr::select(5)%>% dplyr::rename(Fold_Change=1)
+fc5.5 <- Keep1_22_origingenes %>% dplyr::select(6)%>% dplyr::rename(Fold_Change=1)
+fc6.6 <- Keep1_22_origingenes %>% dplyr::select(7)%>% dplyr::rename(Fold_Change=1)
+fc7.7 <- Keep1_22_origingenes %>% dplyr::select(8)%>% dplyr::rename(Fold_Change=1)
+fc8.8 <- Keep1_22_origingenes %>% dplyr::select(9)%>% dplyr::rename(Fold_Change=1)
+fc9.9 <- Keep1_22_origingenes %>% dplyr::select(10)%>% dplyr::rename(Fold_Change=1)
+fc10.10 <- Keep1_22_origingenes %>% dplyr::select(11)%>% dplyr::rename(Fold_Change=1)
+fc11.11 <- Keep1_22_origingenes %>% dplyr::select(12)%>% dplyr::rename(Fold_Change=1)
+fc12.12 <- Keep1_22_origingenes %>% dplyr::select(13)%>% dplyr::rename(Fold_Change=1)
+fc13.13 <- Keep1_22_origingenes %>% dplyr::select(14)%>% dplyr::rename(Fold_Change=1)
+fc14.14 <- Keep1_22_origingenes %>% dplyr::select(15)%>% dplyr::rename(Fold_Change=1)
+fc15.15 <- Keep1_22_origingenes %>% dplyr::select(16)%>% dplyr::rename(Fold_Change=1)
+fc16.16 <- Keep1_22_origingenes %>% dplyr::select(17)%>% dplyr::rename(Fold_Change=1)
+fc17.17 <- Keep1_22_origingenes %>% dplyr::select(18)%>% dplyr::rename(Fold_Change=1)
+fc18.18 <- Keep1_22_origingenes %>% dplyr::select(19)%>% dplyr::rename(Fold_Change=1)
+fc19.19 <- Keep1_22_origingenes %>% dplyr::select(20)%>% dplyr::rename(Fold_Change=1)
+fc20.20 <- Keep1_22_origingenes %>% dplyr::select(21)%>% dplyr::rename(Fold_Change=1)
+fc21.21 <- Keep1_22_origingenes %>% dplyr::select(22)%>% dplyr::rename(Fold_Change=1)
+fc22.22 <- Keep1_22_origingenes %>% dplyr::select(23)%>% dplyr::rename(Fold_Change=1)
+
+#max fc
+Maxfc_origingenes <- pmax(fc1.1,fc2.2,fc3.3,fc4.4,fc5.5,fc6.6,fc7.7,fc8.8,fc9.9,fc10.10,fc11.11,fc12.12,fc13.13,fc14.14,fc15.15,fc16.16,fc17.17,fc18.18,fc19.19,fc20.20,fc21.21,fc22.22) 
+
+Origin_genes_withfc <- cbind(Expression_43_rowname_to_column, Maxfc_origingenes) %>% dplyr::select(Gene, Fold_Change)
+
+```
+
 

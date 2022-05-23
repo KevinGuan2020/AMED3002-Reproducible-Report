@@ -27,6 +27,7 @@ library(preprocessCore)
 
 ```{r Read in 251 genes}
 Genes251 <- read.csv("251_gene_names.csv") %>% unlist() %>% as.vector()
+keep_genes <- dput(Genes251)
 
 Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
 
@@ -60,16 +61,17 @@ Expression_251 <- Expression_cut[rownames(Expression_cut) %in% Genes251,]
 Gene_251_fdata <- Genes[rownames(Genes) %in% keep_genes,]
 ```
 
+
 ```{r pca data}
 # PCA genes
 PCA_genes <- Gene_251_fdata %>% dplyr::select(ID, Symbol)
 
 #PCA counts
-PCA_counts_TS1 <- as.data.frame(Expression_TS1)[rownames(as.data.frame(Expression_TS1)) %in% Gene_genes251,]
+PCA_counts_TS1 <- as.data.frame(Expression_TS1)[rownames(as.data.frame(Expression_TS1)) %in% keep_genes,]
 PCA_counts_TS1_genes.df <- PCA_counts_TS1 %>% tibble::rownames_to_column("Gene")
 PCA_counts_TS1_vector <- PCA_counts_TS1_genes.df [, "Gene"]
 PCA_counts_TS1_genes <- dput(as.character(PCA_counts_TS1_vector))
-PCA_counts_Origin <- Expression_cut_genes251[rownames(Expression_cut_genes251) %in% PCA_counts_TS1_genes,]
+PCA_counts_Origin <- Expression_251[rownames(Expression_251) %in% PCA_counts_TS1_genes,]
 PCA_counts <- cbind(PCA_counts_Origin, PCA_counts_TS1)
 
 # PCA samples data 
@@ -84,11 +86,19 @@ write.csv(PCA_samples,"C:\\Users\\lauwc\\OneDrive\\Documents\\Uni 2022-\\AMED300
 
 ```
 
+
 ```{r svm score origin}
-svm_score_origin <- predict(fit.10, svm_data.10, decision.values = TRUE)
+Expression_251_origin_t <- as.data.frame(t(Expression_251))
+Pheno_251_origin_disease <- factor(Pheno_cut$description)
+svm_data.10_new <- cbind(Expression_251_origin_t, Pheno_251_origin_disease)
+
+fit.10_new <- svm(Pheno_251_origin_disease ~ ., data=svm_data.10_new, kernel="linear", cost=1)  
+
+svm_score_origin <- predict(fit.10_new, svm_data.10_new, decision.values = TRUE)
 svm_score_origin
 
-SVM_Scores_Origin <- read.csv("SVM_Scores_Origin.csv") %>% dplyr::rename(Sample_ID = 1) %>% mutate(Predicted_Disease = case_when(row_number() %in% c(1:22) ~ "HIV", row_number() %in% c(23:44) ~ "HIV/TB")) %>% mutate(Disease = case_when(row_number() %in% c(1:22) ~ "HIV", row_number() %in% c(23:44) ~ "HIV/TB")) %>% filter(row_number() %in% c(1:43)) %>% arrange(-SVM_Score) 
+SVM_Scores_Origin<- read.csv("SVM_Scores_Origin.csv")%>% dplyr::rename(Sample_ID = 1) %>% mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "HIV/TB co-infection", SVM_Score>=0 ~ "HIV")) %>% left_join(Pheno,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, description) %>% dplyr::rename(illness = description)
+
                                                                                      
 colour_graph <- c(rep("#636363",22), rep("#fafcfb", 21))
              
@@ -96,21 +106,44 @@ ggplot(SVM_Scores_Origin, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) +
                                                                                                     
 ```
 
-```{r}
-Genesdata_genes251.0 %>% dplyr::select(Accession, Symbol, Definition) %>% dplyr::rename(`Gene Name` = Definition)
+
+```{r 251 gene table}
+Genes_251_fc <- Origin_genes_withfc %>% filter(Gene %in% keep_genes)
+
+Gene_251_Table <- Gene_251_fdata %>% dplyr::select(Accession, Symbol, Definition, ID) %>% dplyr::rename(`Gene Name` = Definition) %>% left_join(Genes_251_fc, by=c("ID" = "Gene")) %>% mutate(Rank = 1:251) %>% dplyr::select(Accession, Symbol, `Gene Name`, Rank, Fold_Change)
+
+Gene_20_Table <- Gene_251_Table %>% head(20)
+
+
+write.csv(Gene_251_Table,"C:\\Users\\lauwc\\OneDrive\\Documents\\Uni 2022-\\AMED3002\\Reproducible_Report\\AMED3002-Reproducible-Report\\Gene_251_Table.csv", row.names = FALSE)
+write.csv(Gene_20_Table,"C:\\Users\\lauwc\\OneDrive\\Documents\\Uni 2022-\\AMED3002\\Reproducible_Report\\AMED3002-Reproducible-Report\\Gene_20_Table.csv", row.names = FALSE)
+
+
+paper_251genes <- read.csv("Paper_251_genes.csv") %>% dplyr::rename(Accession=1) %>% filter(row_number() %in% c(1:251))
+
+paper_251genesID <- Genes %>% inner_join(paper_251genes, by="Symbol") %>% dplyr::select(ID)
+
+Gene_251_fdata %>% inner_join(paper_251genesID, by="ID")
+                              
 ```
+
+
 
 ```{r svm TS1}
 Expression_TS1_t <- as.data.frame(t(Expression_TS1_normalized_new))
 Pheno_TS1_treatmenttime <- factor(Pheno_TS1_new$`time post initiation of treatment:ch1`)
 svm_data_TS1 <- cbind(Expression_TS1_t, Pheno_TS1_treatmenttime)
-svm_data_TS1_251 <- svm_data_TS1[,colnames(svm_data_TS1) %in% Gene_genes251] %>% cbind(Pheno_TS1_treatmenttime)
+svm_data_TS1_251_draft <- svm_data_TS1[,colnames(svm_data_TS1) %in% keep_genes] 
+svm_data_TS1_251 <- cbind(svm_data_TS1_251_draft, Pheno_TS1_treatmenttime) %>% dplyr::select(-ILMN_1738075)
 
-fit_TS1 = svm(Pheno_TS1_treatmenttime ~ ., data=svm_data_TS1_251, kernel="linear", cost=1)  
+sum(is.na(Expression_TS1_t))
+
+fit_TS1 = svm(Pheno_TS1_treatmenttime~., data=svm_data_TS1_251, kernel="linear", type = "C-classification", cost=1) 
+
 svm_score_TS1 <- predict(fit_TS1, svm_data_TS1_251, decision.values = TRUE)
 svm_score_TS1
 
-SVM_Scores_TS1 <- read.csv("SVM_Scores_TS1.csv")%>% dplyr::rename(Sample_ID = 1)%>% mutate(Predicted_Treatment = case_when(row_number() %in% c(1:12) ~ "0_months", row_number() %in% c(13:19) ~ "2_months")) %>% mutate(Treatment = case_when(row_number() %in% c(1:12) ~ "0_months", row_number() %in% c(13:19) ~ "2_months")) %>% arrange(-SVM_Score) 
+SVM_Scores_TS1 <- read.csv("SVM_Scores_TS1.csv")%>% dplyr::rename(Sample_ID = 1) %>% mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "TB (2 mo)", SVM_Score>=0 ~ "Controls")) %>% left_join(Pheno_TS1_new,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, `time post initiation of treatment:ch1`) %>% dplyr::rename(illness = `time post initiation of treatment:ch1`) %>% mutate(illness= case_when(illness=="0_months" ~ "Controls", illness == "2_months" ~ "TB (2 mo)"))
 
 colour_graph_TS1 <- c(rep("#636363",12), rep("#fafcfb", 7))
 
@@ -124,15 +157,15 @@ ggplot(SVM_Scores_TS1, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) + ge
 Expression_TS2_t <- as.data.frame(t(Expression_TS2_normalized))
 Pheno_TS2_treatmenttime <- factor(Pheno_TS2$`time post initiation of treatment:ch1`)
 svm_data_TS2 <- cbind(Expression_TS2_t, Pheno_TS2_treatmenttime)
-svm_data_TS2_251 <- svm_data_TS2[,colnames(svm_data_TS2) %in% Gene_genes251] %>% cbind(Pheno_TS2_treatmenttime)
+svm_data_TS2_251 <- svm_data_TS2[,colnames(svm_data_TS2) %in% keep_genes] %>% cbind(Pheno_TS2_treatmenttime) %>% dplyr::select(-ILMN_1738075) 
 
 fit_TS2 = svm(Pheno_TS2_treatmenttime ~ ., data=svm_data_TS2_251, kernel="linear", cost=1)  
 svm_score_TS2 <- predict(fit_TS2, svm_data_TS2_251, decision.values = TRUE)
 svm_score_TS2
 
-SVM_Scores_TS2<- read.csv("SVM_Scores_TS2.csv")%>% dplyr::rename(Sample_ID = 1)%>% mutate(Predicted_Treatment = case_when(row_number() %in% c(1:7) ~ "0_months", row_number() %in% c(8:14) ~ "12_months")) %>% left_join(Pheno_TS2, by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Treatment, `time post initiation of treatment:ch1`) %>% dplyr::rename(Treatment=4) %>% arrange(-SVM_Score)
+SVM_Scores_TS2<- read.csv("SVM_Scores_TS2.csv")%>% dplyr::rename(Sample_ID = 1)%>% mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "TB (12 mo)", SVM_Score>=0 ~ "TB")) %>% left_join(Pheno_TS2,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, `time post initiation of treatment:ch1`) %>% dplyr::rename(illness = `time post initiation of treatment:ch1`) %>% mutate(illness= case_when(illness=="0_months" ~ "TB", illness == "12_months" ~ "TB (12 mo)"))
 
-colour_graph_TS2 <- c(rep("#636363",4), rep("#fafcfb", 2),rep("#636363",2),rep("#fafcfb", 2),rep("#636363",1),rep("#fafcfb", 3))
+colour_graph_TS2 <- c(rep("#636363",1), rep("#fafcfb", 1),rep("#636363",1),rep("#fafcfb", 1),rep("#636363",3),rep("#fafcfb", 3), rep("#636363", 1), rep("#fafcfb", 1),rep("#636363", 1), rep("#fafcfb", 1))
 
 ggplot(SVM_Scores_TS2, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) + geom_col(stat = "identity", fill = colour_graph_TS2) +  labs(title = "Test Set 2", y = "SVM Score") + theme(plot.title=element_text(hjust=0.5, size=15), axis.title.x = element_text(hjust = 0.5), axis.title.y = element_text(size=15)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) 
 ```
@@ -146,7 +179,7 @@ Pheno_TS3_illnessupdate <- Pheno_TS3 %>% dplyr::rename(illness = `illness:ch1`) 
 Expression_TS3_t <- as.data.frame(t(TS3_normalized.1))
 Pheno_TS3_illness <- factor(Pheno_TS3_illnessupdate$illness)
 svm_data_TS3 <- cbind(Expression_TS3_t, Pheno_TS3_illness)
-svm_data_TS3_251 <- svm_data_TS3[,colnames(svm_data_TS3) %in% Gene_genes251] %>% cbind(Pheno_TS3_illness)
+svm_data_TS3_251 <- svm_data_TS3[,colnames(svm_data_TS3) %in% keep_genes] %>% cbind(Pheno_TS3_illness)
 
 fit_TS3 = svm(Pheno_TS3_illness ~ ., data=svm_data_TS3_251, kernel="linear", cost=1)  
 svm_score_TS3 <- predict(fit_TS3, svm_data_TS3_251, decision.values = TRUE)
@@ -165,7 +198,7 @@ Pheno_TS4_illnessupdate <- Pheno_TS4 %>% dplyr::rename(illness = characteristics
 Expression_TS4_t <- as.data.frame(t(TS4_normalized.1))
 Pheno_TS4_illness <- factor(Pheno_TS4_illnessupdate$illness)
 svm_data_TS4 <- cbind(Expression_TS4_t, Pheno_TS4_illness)
-svm_data_TS4_251 <- svm_data_TS4[,colnames(svm_data_TS4) %in% Gene_genes251] %>% cbind(Pheno_TS4_illness)
+svm_data_TS4_251 <- svm_data_TS4[,colnames(svm_data_TS4) %in% keep_genes] %>% cbind(Pheno_TS4_illness) %>% dplyr::select(-ILMN_1738075)
 
 fit_TS4 = svm(Pheno_TS4_illness ~ ., data=svm_data_TS4_251, kernel="linear", cost=1)  
 svm_score_TS4 <- predict(fit_TS4, svm_data_TS4_251, decision.values = TRUE)
@@ -184,7 +217,7 @@ Pheno_TS5_illnessupdate <- Pheno_TS5 %>% dplyr::rename(illness = `illness:ch1`) 
 Expression_TS5_t <- as.data.frame(t(TS5_normalized.1))
 Pheno_TS5_illness <- factor(Pheno_TS5_illnessupdate$illness)
 svm_data_TS5 <- cbind(Expression_TS5_t, Pheno_TS5_illness)
-svm_data_TS5_251 <- svm_data_TS5[,colnames(svm_data_TS5) %in% Gene_genes251] %>% cbind(Pheno_TS5_illness)
+svm_data_TS5_251 <- svm_data_TS5[,colnames(svm_data_TS5) %in% keep_genes] %>% cbind(Pheno_TS5_illness) %>% dplyr::select(-ILMN_1738075)
 
 fit_TS5 = svm(Pheno_TS5_illness ~ ., data=svm_data_TS5_251, kernel="linear", cost=1)  
 svm_score_TS5 <- predict(fit_TS5, svm_data_TS5_251, decision.values = TRUE)
@@ -204,10 +237,61 @@ Pheno_TS6_illnessupdate <- Pheno_TS6 %>% dplyr::rename(illness = characteristics
 Expression_TS6_t <- as.data.frame(t(TS6_normalized.1))
 Pheno_TS6_illness <- factor(Pheno_TS6_illnessupdate$illness)
 svm_data_TS6 <- cbind(Expression_TS6_t, Pheno_TS6_illness)
-svm_data_TS6_251 <- svm_data_TS6[,colnames(svm_data_TS6) %in% Gene_genes251] %>% cbind(Pheno_TS6_illness) 
+svm_data_TS6_251 <- svm_data_TS6[,colnames(svm_data_TS6) %in% keep_genes] %>% cbind(Pheno_TS6_illness) %>% dplyr::select(-ILMN_1738075,ILMN_3178258, -ILMN_3211935, -ILMN_3226904, -ILMN_3235593, -ILMN_3235642, -ILMN_3244240, -ILMN_3246608, -ILMN_3247781, -ILMN_3251217, -c(241:251), -ILMN_3178258)
 
 fit_TS6 = svm(Pheno_TS6_illness ~ ., data=svm_data_TS6_251, kernel="linear", cost=1)  
 svm_score_TS6 <- predict(fit_TS6, svm_data_TS6_251, decision.values = TRUE)
 svm_score_TS6
 
+SVM_Scores_TS6<- read.csv("SVM_Scores_TS6.csv")%>% dplyr::rename(Sample_ID = 1) %>% mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "Latent TB", SVM_Score>=0 ~ "TB")) %>% left_join(Pheno_TS6_illnessupdate,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, illness)
+
 ```
+
+```{r rocplot}
+
+#Origin
+
+#TS1
+
+
+
+#TS2
+
+
+
+#TS3
+
+
+
+
+#TS4
+
+
+
+#TS5
+
+
+
+#TS6
+
+
+SVM_Scores_Origin_df <- SVM_Scores_Origin %>% dplyr::select(SVM_Score) %>% mutate(labels = case_when(SVM_Score <0 ~ 0, SVM_Score >=0 ~1)) %>% dplyr::rename(predictions = SVM_Score)
+SVM_Scores_Origin_pred <- prediction(SVM_Scores_Origin_df$predictions, SVM_Scores_Origin_df$labels)
+SVM_Scores_Origin_perf <- performance(SVM_Scores_Origin_pred,"tpr","fpr")
+plot(SVM_Scores_Origin_perf,col='red')
+
+
+SVM_Scores_TS1
+SVM_Scores_TS2
+SVM_Scores_TS3
+SVM_Scores_TS4
+SVM_Scores_TS5
+SVM_Scores_TS6
+
+
+```
+
+
+
+
+

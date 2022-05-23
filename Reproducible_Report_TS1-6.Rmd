@@ -143,15 +143,15 @@ cnames_TS6 = colnames(Expression_TS6)
 
 TS6_quantile_normalized <- as.data.frame(normalize.quantiles(exprs(TS6)))
 
-Expression_TS6 %>% 
-  as.data.frame() %>% 
-  filter_all(all_vars(. < 1000)) %>% 
-  boxplot()
+#Expression_TS6 %>% 
+ # as.data.frame() %>% 
+ # filter_all(all_vars(. < 1000)) %>% 
+ # boxplot()
 
-TS6_quantile_normalized %>% 
-  as.data.frame() %>% 
-  filter_all(all_vars(. < 1000)) %>% 
-  boxplot()
+#TS6_quantile_normalized %>% 
+  #as.data.frame() %>% 
+ # filter_all(all_vars(. < 1000)) %>% 
+ # boxplot()
 
 row.names(TS6_quantile_normalized) = rnames_TS6
 colnames(TS6_quantile_normalized) = cnames_TS6
