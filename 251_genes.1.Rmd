@@ -416,6 +416,8 @@ fit_TS4 = svm(Pheno_TS4_illness ~ ., data=svm_data_TS4_251, kernel="linear", cos
 svm_score_TS4 <- predict(fit_TS4, svm_data_TS4_251, decision.values = TRUE)
 svm_score_TS4
 
+SVM_Scores_TS4<- read.csv("SVM_Scores_TS4.csv")%>% dplyr::rename(Sample_ID = 1) %>% mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "Controls/Latent TB ", SVM_Score>=0 ~ "TB")) %>% left_join(Pheno_TS4_illnessupdate,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, illness)
+
 ```
 
 
@@ -432,6 +434,8 @@ svm_data_TS5_251 <- svm_data_TS5[,colnames(svm_data_TS5) %in% Gene_genes251] %>%
 fit_TS5 = svm(Pheno_TS5_illness ~ ., data=svm_data_TS5_251, kernel="linear", cost=1)  
 svm_score_TS5 <- predict(fit_TS5, svm_data_TS5_251, decision.values = TRUE)
 svm_score_TS5
+
+SVM_Scores_TS5<- read.csv("SVM_Scores_TS5.csv")%>% dplyr::rename(Sample_ID = 1) %>% mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "Latent TB", SVM_Score>=0 ~ "TB")) %>% left_join(Pheno_TS5_illnessupdate,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, illness)
 
 ```
 
