@@ -1,0 +1,181 @@
+---
+title: "251_genes.1"
+author: "Christina Lauw"
+date: '2022-05-19'
+output: html_document
+---
+
+</style>
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
+rm(list = ls())
+library(tidyverse)
+library(GEOquery)
+library(org.Hs.eg.db)
+library(limma)
+library(edgeR)
+library(Glimma)
+library(Homo.sapiens)
+library(gtools)
+library(e1071)
+library(preprocessCore)
+```
+
+
+```{r}
+Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
+
+Pheno = pData(Origin)
+
+Genes = fData(Origin)
+
+Expression <- exprs(Origin)
+rnames = row.names(Expression)
+cnames = colnames(Expression)
+
+Expression %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 600)) %>% 
+  boxplot()
+
+Expression_cut <- Expression %>% 
+  as.data.frame() %>% 
+  mutate(GSM1230946=(GSM1230903 + GSM1230904)/2) %>%
+  dplyr::select(-GSM1230903) %>%
+  dplyr::select(-GSM1230904) %>%
+  relocate(GSM1230946,.after = GSM1230902) %>%
+  dplyr::rename(GSM1230903=GSM1230946)
+
+row.names(Expression_cut) = rnames
+colnames(Expression_cut) = cnames[-3]
+
+Pheno_cut <- Pheno %>% filter(title != "HIV infected patient 2_2")
+```
+
+
+```{r, eval = False}
+#Exploration 
+Expression 
+
+Ytrain = factor(Pheno$description[c(1,3:44)])
+
+Xtrain = t(Expression)[c(1,3:44),] %>% as.data.frame()
+
+svm_model = svm(Xtrain, Ytrain, type = "C-classification", fitted=T)
+
+weights = t(svm_model$coefs) %*% svm_model$SV %>% as.data.frame()
+
+sort(weights)
+
+svm_model_sv <- as.data.frame(svm_model$SV)
+colnames(svm_model_sv)
+svm_model_sv %>% dplyr::select(ILMN_1762666, ILMN_2185884, ILMN_1790562)
+
+t(weights %>% dplyr::select(ILMN_1762666, ILMN_2185884, ILMN_1790562, ILMN_1738075, ILMN_1806946, ILMN_2394264, ILMN_2208373, ILMN_2376723, ILMN_1714364, ILMN_1737574, ILMN_1773819, ILMN_1743396, ILMN_1668928, ILMN_1715863, ILMN_1737498, ILMN_1777915, ILMN_2157951, ILMN_1748904, ILMN_2356559, ILMN_2167416, ILMN_1666384, ILMN_1732343, ILMN_1690365, ILMN_1801931, ILMN_1653771, ILMN_1756086))
+
+svm_model$fitted
+```
+
+
+```{r}
+# Generating dataset for SVM
+Expression_data <- t(Expression_cut) %>% as.data.frame()
+Class_data <- factor(Pheno_cut$description) %>% as.data.frame()
+colnames(Class_data) = "Class"
+svm_data <- cbind(Expression_data, Class_data)
+```
+
+```{r}
+#finding best tuning parameters 
+set.seed(1)
+tune_svm <- tune.svm(Pheno_cut_description~., data=svm_data, cost=seq(1,2,by=0.1), kernel="linear")
+
+tune_svm$best.parameters
+
+summary(tune_svm)
+```
+
+
+```{r svm-RFE}
+set.seed(3002)
+
+n = 1000
+
+df = svm_data
+
+while (n > 280) {
+  
+  fit = svm(Class ~ ., data = df, kernel = "linear", cost = 1)  
+  
+  weights = t(fit$coefs) %*% fit$SV %>% as.data.frame()
+  
+  
+  absolute_weights_sorted <- 
+    t(sort(abs(weights), decreasing = T)) %>% 
+    as.data.frame() %>% 
+    dplyr::rename(weights=V1) %>% 
+    tibble::rownames_to_column("Gene")
+  
+  n = round(0.9*nrow(absolute_weights_sorted),0)
+  print(n)
+  
+  if (n < 290) {
+    Genes_251 <- absolute_weights_sorted %>% arrange(desc(weights)) %>% head(251)
+    keep_genes <- Genes_251$Gene
+  }
+  else {
+    eliminate10 <- absolute_weights_sorted[1:n,] 
+    keep_genes <- eliminate10$Gene
+  }
+  
+  df_genes <- df[,colnames(df) %in% keep_genes]
+  df <- cbind(df_genes, Class_data)
+}
+
+write.csv(keep_genes, file= "List_251_genes.csv", row.names = F, col.names = "Genes")
+```
+
+```{r Overlap}
+Gene_251_fdata <- Genes[rownames(Genes) %in% keep_genes,]
+Gene_251_symbol <- Gene_251_fdata %>% dplyr::select(Symbol)
+
+paper_251_genes <- read.csv("Paper_251genes.csv")
+paper_251_symbol <- paper_251_genes %>% dplyr::select(Symbol)
+
+overlapping_genes <- paper_251_symbol %>% inner_join(Gene_251_symbol)
+
+print(nrow(overlapping_genes))
+
+```
+
+
+```{r PCA}
+Expression_251 <- Expression_cut[rownames(Expression_cut) %in% keep_genes,]
+
+# PCA genes and counts
+PCA_genes <- Gene_251_fdata %>% dplyr::select(ID, Symbol)
+PCA_counts <- Expression_251
+
+# PCA samples data 
+PCA_pheno_origin <- Pheno_cut %>% 
+  dplyr::select(`disease state:ch1`) %>% 
+  dplyr::rename(disease_state = `disease state:ch1`) %>% 
+  mutate(disease_state = case_when(disease_state == "HIV only" ~ "HIV", disease_state == "HIV/TB" ~ "HIV/MTB")) %>% 
+  mutate(Data = "Origin") %>% 
+  dplyr::rename(Disease_State = disease_state)
+
+PCA_pheno_TS1 <- Pheno_TS1 %>% 
+  dplyr::select(`time post initiation of treatment:ch1`, `illness:ch1`) %>% 
+  dplyr::rename(disease_state = `time post initiation of treatment:ch1`) %>% 
+  mutate(disease_state = case_when(disease_state == "0_months" & `illness:ch1` == "Control" ~ "Controls", 
+                                   disease_state == "0_months" & `illness:ch1` == "PTB" ~ "TB", 
+                                   disease_state == "2_months" ~ "TB (2Mo)", 
+                                   disease_state =="12_months" ~ "TB (12Mo)")) %>% 
+  dplyr::select(disease_state) %>% 
+  mutate(Data = "TS1") %>% 
+  dplyr::rename(Disease_State = disease_state)
+
+PCA_samples <- PCA_pheno_origin %>% rbind(PCA_pheno_TS1)
+
+```
+
