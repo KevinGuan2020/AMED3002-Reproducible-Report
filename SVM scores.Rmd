@@ -231,7 +231,6 @@ SVM_Scores_TS5<- read.csv("SVM_Scores_TS5.csv")%>% dplyr::rename(Sample_ID = 1) 
 
 
 ```{r svm TS6}
-#cant do svm cos there's na values for every/ a lot of genes
 Pheno_TS6_illnessupdate <- Pheno_TS6 %>% dplyr::rename(illness = characteristics_ch1) %>% mutate(illness = case_when(illness == "disease: LTB" ~ "Latent TB", illness == "disease: PTB" ~ "TB"))
 
 Expression_TS6_t <- as.data.frame(t(TS6_normalized.1))
