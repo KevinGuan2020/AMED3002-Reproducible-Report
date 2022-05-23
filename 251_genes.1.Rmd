@@ -397,7 +397,8 @@ fit_TS3 = svm(Pheno_TS3_illness ~ ., data=svm_data_TS3_251, kernel="linear", cos
 svm_score_TS3 <- predict(fit_TS3, svm_data_TS3_251, decision.values = TRUE)
 svm_score_TS3
 
-SVM_Scores_TS2<- read.csv("SVM_Scores_TS2.csv")%>% dplyr::rename(Sample_ID = 1)%>% mutate(Predicted_Treatment = case_when(row_number() %in% c(1:7) ~ "0_months", row_number() %in% c(8:14) ~ "12_months")) %>% left_join(Pheno_TS2, by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Treatment, `time post initiation of treatment:ch1`) %>% dplyr::rename(Treatment=4) %>% arrange(-SVM_Score)
+SVM_Scores_TS3<- read.csv("SVM_Scores_TS3.csv")%>% dplyr::rename(Sample_ID = 1) %>% mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "TB", SVM_Score>=0 ~ "Controls/Latent TB")) %>% left_join(Pheno_TS3_illnessupdate,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, illness)
+
 ```
 
 
