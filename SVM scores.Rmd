@@ -324,17 +324,6 @@ auc_ROCR_TS6
 ```
 
 ```{r}
-library(caret)
-
-SVM_Scores_Origin_df
-SVM_Scores_TS1_df
-SVM_Scores_TS2_df
-SVM_Scores_TS3_df
-SVM_Scores_TS4_df
-SVM_Scores_TS5_df
-SVM_Scores_TS6_df
-
-
 confusion.glm_Origin = confusionMatrix(
   data = as.factor(SVM_Scores_Origin_df$predictions),
   reference = as.factor(SVM_Scores_Origin_df$labels)
