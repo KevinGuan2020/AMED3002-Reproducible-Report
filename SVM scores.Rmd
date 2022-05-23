@@ -25,7 +25,9 @@ library(preprocessCore)
 ```
 
 
-```{r}
+```{r Read in 251 genes}
+Genes251 <- read.csv("251_gene_names.csv") %>% unlist() %>% as.vector()
+
 Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
 
 Pheno = pData(Origin)
@@ -49,267 +51,18 @@ Expression_cut <- Expression %>%
   relocate(GSM1230946,.after = GSM1230902) %>%
   dplyr::rename(GSM1230903=GSM1230946)
 
-Expression_normalized <- normalize.quantiles(as.matrix(Expression_cut)) %>% 
-  as.data.frame()
-
-Expression_normalized %>% 
-  as.data.frame() %>% 
-  filter_all(all_vars(. < 600)) %>% 
-  boxplot()
-
-row.names(Expression_normalized) = rnames
-colnames(Expression_normalized) = cnames[-3]
-
 row.names(Expression_cut) = rnames
 colnames(Expression_cut) = cnames[-3]
 
 Pheno_cut <- Pheno %>% filter(title != "HIV infected patient 2_2")
 
-```
-
-
-```{r}
-Expression 
-
-
-Ytrain = factor(Pheno$description[c(1,3:44)])
-
-Xtrain = t(Expression)[c(1,3:44),] %>% as.data.frame()
-
-
-
-svm_model = svm(Xtrain, Ytrain, type = "C-classification", fitted=T)
-
-weights = t(svm_model$coefs) %*% svm_model$SV %>% as.data.frame()
-
-sort(weights)
-
-f_importances()
-Genes
-
-svm()
-
-svm_model_sv <- as.data.frame(svm_model$SV)
-colnames(svm_model_sv)
-svm_model_sv %>% dplyr::select(ILMN_1762666, ILMN_2185884, ILMN_1790562)
-t(weights %>% dplyr::select(ILMN_1762666, ILMN_2185884, ILMN_1790562, ILMN_1738075, ILMN_1806946, ILMN_2394264, ILMN_2208373, ILMN_2376723, ILMN_1714364, ILMN_1737574, ILMN_1773819, ILMN_1743396, ILMN_1668928, ILMN_1715863, ILMN_1737498, ILMN_1777915, ILMN_2157951, ILMN_1748904, ILMN_2356559, ILMN_2167416, ILMN_1666384, ILMN_1732343, ILMN_1690365, ILMN_1801931, ILMN_1653771, ILMN_1756086))
-
-
-svm_model$fitted
-```
-
-
-```{r}
-Expression_cut_t <- as.data.frame(t(Expression_cut))
-Pheno_cut_description <- factor(Pheno_cut$description)
-svm_data <- cbind(Expression_cut_t, Pheno_cut_description)
-
-```
-
-```{r}
-set.seed(1)
-tune_svm <- tune.svm(Pheno_cut_description~., data=svm_data, cost=seq(0.1,1,by=0.1), kernel="linear")
-
-tune_svm$best.parameters
-
-summary(tune_svm)
-```
-
-
-
-```{r fit1}
-fit.1 = svm(Pheno_cut_description ~ ., data=svm_data, kernel="linear", cost=0.1)  
-weights.1 = t(fit.1$coefs) %*% fit.1$SV %>% as.data.frame()
-
-absolute_weights_sorted.1 <- as.data.frame(t(sort(abs(weights.1))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
-
-absolute_weights_eliminate10percent.1 <- absolute_weights_sorted.1[1554:15529,] 
-
-rownames(absolute_weights_eliminate10percent.1) <- 1:nrow(absolute_weights_eliminate10percent.1)
-
-#t(weights %>% dplyr::select(ILMN_1762666, ILMN_2185884, ILMN_1790562, ILMN_1738075, ILMN_1806946, ILMN_2394264, ILMN_2208373, ILMN_2376723, ILMN_1714364, ILMN_1737574, ILMN_1773819, ILMN_1743396, ILMN_1668928, ILMN_1715863, ILMN_1737498, ILMN_1777915, ILMN_2157951, ILMN_1748904, ILMN_2356559, ILMN_2167416, ILMN_1666384, ILMN_1732343, ILMN_1690365, ILMN_1801931, ILMN_1653771, ILMN_1756086))
-
-```
-
-```{r fit2}
-fit.1_genes_vector <- as.vector(absolute_weights_eliminate10percent.1$Gene)
-fit.1_genes <- dput(fit.1_genes_vector)
-svm_data.2_genes <- svm_data[,colnames(svm_data) %in% fit.1_genes]
-svm_data.2 <- cbind(svm_data.2_genes,Pheno_cut_description)
-
-
-fit.2 = svm(Pheno_cut_description ~ ., data=svm_data.2, kernel="linear", cost=0.1)  
-weights.2 = t(fit.2$coefs) %*% fit.2$SV %>% as.data.frame()
-
-absolute_weights_sorted.2 <- as.data.frame(t(sort(abs(weights.2))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
-
-absolute_weights_eliminate10percent.2 <- absolute_weights_sorted.2[1399:13976,] 
-
-rownames(absolute_weights_eliminate10percent.2) <- 1:nrow(absolute_weights_eliminate10percent.2)
-```
-
-```{r fit 3}
-fit.2_genes_vector <- as.vector(absolute_weights_eliminate10percent.2$Gene)
-fit.2_genes <- dput(fit.2_genes_vector)
-svm_data.3_genes <- svm_data.2[,colnames(svm_data.2) %in% fit.2_genes]
-svm_data.3 <- cbind(svm_data.3_genes,Pheno_cut_description)
-
-
-fit.3 = svm(Pheno_cut_description ~ ., data=svm_data.3, kernel="linear", cost=0.1)  
-weights.3 = t(fit.3$coefs) %*% fit.3$SV %>% as.data.frame()
-
-absolute_weights_sorted.3 <- as.data.frame(t(sort(abs(weights.3))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
-
-absolute_weights_eliminate10percent.3 <- absolute_weights_sorted.3[1259:12578,] 
-
-rownames(absolute_weights_eliminate10percent.3) <- 1:nrow(absolute_weights_eliminate10percent.3)
-```
-
-
-```{r fit 4}
-fit.3_genes_vector <- as.vector(absolute_weights_eliminate10percent.3$Gene)
-fit.3_genes <- dput(fit.3_genes_vector)
-svm_data.4_genes <- svm_data.3[,colnames(svm_data.3) %in% fit.3_genes]
-svm_data.4 <- cbind(svm_data.4_genes,Pheno_cut_description)
-
-
-fit.4 = svm(Pheno_cut_description ~ ., data=svm_data.4, kernel="linear", cost=0.1)  
-weights.4 = t(fit.4$coefs) %*% fit.4$SV %>% as.data.frame()
-
-absolute_weights_sorted.4 <- as.data.frame(t(sort(abs(weights.4))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
-
-absolute_weights_eliminate10percent.4 <- absolute_weights_sorted.4[1133:11320,] 
-
-rownames(absolute_weights_eliminate10percent.4) <- 1:nrow(absolute_weights_eliminate10percent.4)
-```
-
-
-```{r fit5}
-fit.4_genes_vector <- as.vector(absolute_weights_eliminate10percent.4$Gene)
-fit.4_genes <- dput(fit.4_genes_vector)
-svm_data.5_genes <- svm_data.4[,colnames(svm_data.4) %in% fit.4_genes]
-svm_data.5 <- cbind(svm_data.5_genes,Pheno_cut_description)
-
-
-fit.5 = svm(Pheno_cut_description ~ ., data=svm_data.5, kernel="linear", cost=0.1)  
-weights.5 = t(fit.5$coefs) %*% fit.5$SV %>% as.data.frame()
-
-absolute_weights_sorted.5 <- as.data.frame(t(sort(abs(weights.5))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
-
-absolute_weights_eliminate10percent.5 <- absolute_weights_sorted.5[1019:10188,] 
-
-rownames(absolute_weights_eliminate10percent.5) <- 1:nrow(absolute_weights_eliminate10percent.5)
-```
-
-
-```{r fit6}
-fit.5_genes_vector <- as.vector(absolute_weights_eliminate10percent.5$Gene)
-fit.5_genes <- dput(fit.5_genes_vector)
-svm_data.6_genes <- svm_data.5[,colnames(svm_data.5) %in% fit.5_genes]
-svm_data.6 <- cbind(svm_data.6_genes,Pheno_cut_description)
-
-
-fit.6 = svm(Pheno_cut_description ~ ., data=svm_data.6, kernel="linear", cost=0.1)  
-weights.6 = t(fit.6$coefs) %*% fit.6$SV %>% as.data.frame()
-
-absolute_weights_sorted.6 <- as.data.frame(t(sort(abs(weights.6))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
-
-absolute_weights_eliminate10percent.6 <- absolute_weights_sorted.6[918:9170,] 
-
-rownames(absolute_weights_eliminate10percent.6) <- 1:nrow(absolute_weights_eliminate10percent.6)
-```
-
-
-```{r fit7}
-fit.6_genes_vector <- as.vector(absolute_weights_eliminate10percent.6$Gene)
-fit.6_genes <- dput(fit.6_genes_vector)
-svm_data.7_genes <- svm_data.6[,colnames(svm_data.6) %in% fit.6_genes]
-svm_data.7 <- cbind(svm_data.7_genes,Pheno_cut_description)
-
-
-fit.7 = svm(Pheno_cut_description ~ ., data=svm_data.7, kernel="linear", cost=0.1)  
-weights.7 = t(fit.7$coefs) %*% fit.7$SV %>% as.data.frame()
-
-absolute_weights_sorted.7 <- as.data.frame(t(sort(abs(weights.7))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
-
-absolute_weights_eliminate10percent.7 <- absolute_weights_sorted.7[827:8253,] 
-
-rownames(absolute_weights_eliminate10percent.7) <- 1:nrow(absolute_weights_eliminate10percent.7)
-```
-
-
-```{r fit 8}
-fit.7_genes_vector <- as.vector(absolute_weights_eliminate10percent.7$Gene)
-fit.7_genes <- dput(fit.7_genes_vector)
-svm_data.8_genes <- svm_data.7[,colnames(svm_data.7) %in% fit.7_genes]
-svm_data.8 <- cbind(svm_data.8_genes,Pheno_cut_description)
-
-
-fit.8 = svm(Pheno_cut_description ~ ., data=svm_data.8, kernel="linear", cost=0.1)  
-weights.8 = t(fit.8$coefs) %*% fit.8$SV %>% as.data.frame()
-
-absolute_weights_sorted.8 <- as.data.frame(t(sort(abs(weights.8))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
-
-absolute_weights_eliminate10percent.8 <- absolute_weights_sorted.7[744:7427,] 
-
-rownames(absolute_weights_eliminate10percent.8) <- 1:nrow(absolute_weights_eliminate10percent.8)
-```
-
-
-```{r fit 9}
-fit.8_genes_vector <- as.vector(absolute_weights_eliminate10percent.8$Gene)
-fit.8_genes <- dput(fit.8_genes_vector)
-svm_data.9_genes <- svm_data.8[,colnames(svm_data.8) %in% fit.8_genes]
-svm_data.9 <- cbind(svm_data.9_genes,Pheno_cut_description)
-
-
-fit.9 = svm(Pheno_cut_description ~ ., data=svm_data.9, kernel="linear", cost=0.1)  
-weights.9 = t(fit.9$coefs) %*% fit.9$SV %>% as.data.frame()
-
-absolute_weights_sorted.9 <- as.data.frame(t(sort(abs(weights.9))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
-
-absolute_weights_eliminate10percent.9 <- absolute_weights_sorted.9[662:6601,] 
-
-rownames(absolute_weights_eliminate10percent.9) <- 1:nrow(absolute_weights_eliminate10percent.9)
-```
-
-
-```{r fit10}
-fit.9_genes_vector <- as.vector(absolute_weights_eliminate10percent.9$Gene)
-fit.9_genes <- dput(fit.9_genes_vector)
-svm_data.10_genes <- svm_data.9[,colnames(svm_data.9) %in% fit.9_genes]
-svm_data.10 <- cbind(svm_data.10_genes,Pheno_cut_description)
-
-
-fit.10 = svm(Pheno_cut_description ~ ., data=svm_data.10, kernel="linear", cost=0.1)  
-weights.10 = t(fit.10$coefs) %*% fit.10$SV %>% as.data.frame()
-
-absolute_weights_sorted.10 <- as.data.frame(t(sort(abs(weights.10))))  %>% dplyr::rename(weight=V1) %>% tibble::rownames_to_column("Gene")
-
-Genes_251_after10svm <- absolute_weights_sorted.10 %>% arrange(desc(weight)) %>% head(251)
-
-```
-
-
-```{r}
-
-Gene_genes251.vector <- as.vector(Genes_251_after10svm$Gene)
-Gene_genes251 <- dput(Gene_genes251.vector)
-Genesdata_genes251.0 <- Genes[rownames(Genes) %in% Gene_genes251,]
-
-paper_251genes <- read.csv("Paper_251genes.csv")
-
-paper_251genes_symbol <- paper_251genes %>% dplyr::select(Symbol)
-Genesdata_genes251 <- Genesdata_genes251.0 %>% dplyr::select(Symbol)
-overlapping_gene_symbols <- paper_251genes_symbol %>% inner_join(Genesdata_genes251)
-
-Expression_cut_genes251 <- Expression_cut[rownames(Expression_cut) %in% Gene_genes251,]
-
+Expression_251 <- Expression_cut[rownames(Expression_cut) %in% Genes251,]
+Gene_251_fdata <- Genes[rownames(Genes) %in% keep_genes,]
 ```
 
 ```{r pca data}
 # PCA genes
-PCA_genes <- Genesdata_genes251.0 %>% dplyr::select(ID, Symbol)
+PCA_genes <- Gene_251_fdata %>% dplyr::select(ID, Symbol)
 
 #PCA counts
 PCA_counts_TS1 <- as.data.frame(Expression_TS1)[rownames(as.data.frame(Expression_TS1)) %in% Gene_genes251,]
