@@ -1,5 +1,5 @@
 ---
-title: "251_genes.1"
+title: "251_genes"
 author: "Christina Lauw"
 date: '2022-05-19'
 output: html_document
@@ -132,14 +132,14 @@ while (n > 280) {
   df <- cbind(df_genes, Class_data)
 }
 
-write.csv(keep_genes, file= "List_251_genes.csv", row.names = F, col.names = "Genes")
+write.csv(keep_genes, file = "SVM_251_genes.csv", row.names = F, col.names = "Genes")
 ```
 
 ```{r Overlap}
 Gene_251_fdata <- Genes[rownames(Genes) %in% keep_genes,]
 Gene_251_symbol <- Gene_251_fdata %>% dplyr::select(Symbol)
 
-paper_251_genes <- read.csv("Paper_251genes.csv")
+paper_251_genes <- read.csv("Paper_251_genes.csv")
 paper_251_symbol <- paper_251_genes %>% dplyr::select(Symbol)
 
 overlapping_genes <- paper_251_symbol %>% inner_join(Gene_251_symbol)
