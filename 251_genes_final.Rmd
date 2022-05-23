@@ -85,7 +85,7 @@ colnames(Class_data) = "Class"
 svm_data <- cbind(Expression_data, Class_data)
 ```
 
-```{r}
+```{r, eval = F}
 #finding best tuning parameters 
 set.seed(1)
 tune_svm <- tune.svm(Pheno_cut_description~., data=svm_data, cost=seq(1,2,by=0.1), kernel="linear")
@@ -132,7 +132,7 @@ while (n > 280) {
   df <- cbind(df_genes, Class_data)
 }
 
-write.csv(keep_genes, file = "SVM_251_genes.csv", row.names = F, col.names = "Genes")
+write.csv(keep_genes, file = "251_gene_names.csv", row.names = F, col.names = "Genes")
 ```
 
 ```{r Overlap}
@@ -149,7 +149,7 @@ print(nrow(overlapping_genes))
 ```
 
 
-```{r PCA}
+```{r PCA, eval = F}
 Expression_251 <- Expression_cut[rownames(Expression_cut) %in% keep_genes,]
 
 # PCA genes and counts
