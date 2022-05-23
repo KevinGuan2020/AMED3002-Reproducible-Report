@@ -321,11 +321,72 @@ auc_ROCR_TS3
 auc_ROCR_TS4
 auc_ROCR_TS5
 auc_ROCR_TS6
-
-
-
 ```
 
+```{r}
+library(caret)
+
+SVM_Scores_Origin_df
+SVM_Scores_TS1_df
+SVM_Scores_TS2_df
+SVM_Scores_TS3_df
+SVM_Scores_TS4_df
+SVM_Scores_TS5_df
+SVM_Scores_TS6_df
+
+
+confusion.glm_Origin = confusionMatrix(
+  data = as.factor(SVM_Scores_Origin_df$predictions),
+  reference = as.factor(SVM_Scores_Origin_df$labels)
+)
+confusion.glm_Origin$table
+confusion.glm_Origin
+
+confusion.glm_TS1 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS1_df$predictions),
+  reference = as.factor(SVM_Scores_TS1_df$labels)
+)
+confusion.glm_TS1$table
+confusion.glm_TS1
+
+
+confusion.glm_TS2 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS2_df$predictions),
+  reference = as.factor(SVM_Scores_TS2_df$labels)
+)
+confusion.glm_TS2$table
+confusion.glm_TS2
+
+confusion.glm_TS3 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS3_df$predictions),
+  reference = as.factor(SVM_Scores_TS3_df$labels)
+)
+confusion.glm_TS3$table
+confusion.glm_TS3
+
+confusion.glm_TS4 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS4_df$predictions),
+  reference = as.factor(SVM_Scores_TS4_df$labels)
+)
+confusion.glm_TS4$table
+confusion.glm_TS4
+
+confusion.glm_TS5 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS5_df$predictions),
+  reference = as.factor(SVM_Scores_TS5_df$labels)
+)
+confusion.glm_TS5$table
+confusion.glm_TS5
+
+
+confusion.glm_TS6 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS6_df$predictions),
+  reference = as.factor(SVM_Scores_TS6_df$labels)
+)
+confusion.glm_TS6$table
+confusion.glm_TS6
+
+```
 
 
 
