@@ -58,6 +58,48 @@ PCA_samples_3_sampleid <- dput(as.character(colnames(PCA_counts_3)))
 PCA_samples_3 <- PCA_samples.2[rownames(PCA_samples.2) %in% PCA_samples_3_sampleid,]
 ```
 
+
+```{r}
+dgelist <- DGEList(counts = PCA_counts_3, samples = PCA_samples_3, genes = PCA_genes_3)
+normalizationfactors <- calcNormFactors(dgelist, method = "TMM")
+keep <- filterByExpr(normalizationfactors)
+keep.1 <- normalizationfactors[keep,]
+cpm <- cpm(keep.1)
+lcpm <- cpm(keep.1, log = T)
+pca <- prcomp(t(lcpm), scale=T)
+autoplot(pca, data = PCA_samples.2, colour = "Disease_State", shape = "Data")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```{r}
 library(egg)
 
@@ -80,15 +122,4 @@ ggplot(pca1, aes(x = PC1, y = PC2, colour = samples$Disease_State, shape = PCA_s
 ggplot(pca1, aes(x = PC2, y = PC3, colour = samples$Disease_State, shape = PCA_samples.2$Data)) + geom_point(pch=15, cex=4)
 
 
-```
-
-```{r}
-dgelist <- DGEList(counts = PCA_counts_3, samples = PCA_samples_3, genes = PCA_genes_3)
-normalizationfactors <- calcNormFactors(dgelist, method = "TMM")
-keep <- filterByExpr(normalizationfactors)
-keep.1 <- normalizationfactors[keep,]
-cpm <- cpm(keep.1)
-lcpm <- cpm(keep.1, log = T)
-pca <- prcomp(t(lcpm), scale=T)
-autoplot(pca, data = PCA_samples.2, colour = "Disease_State", shape = "Data")
 ```

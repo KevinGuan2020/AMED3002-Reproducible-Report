@@ -25,6 +25,16 @@ library(preprocessCore)
 ```
 
 
+```{r paper 251 genes}
+Genes_copy <- Genes
+paper_251genes <- read.csv("Paper_251_genes.csv") %>% dplyr::rename(Accession=1) %>% filter(row_number() %in% c(1:251))
+
+Genes_copy$Search_Key = sub("\\..*", "", Genes_copy$Search_Key)
+Genes_copy %>% inner_join(paper_251genes, by=c("Search_Key" = "Accession", "Symbol"))
+```
+
+
+
 ```{r Read in 251 genes}
 Genes251 <- read.csv("251_gene_names.csv") %>% unlist() %>% as.vector()
 keep_genes <- dput(Genes251)
@@ -261,7 +271,6 @@ SVM_Scores_TS5<- read.csv("SVM_Scores_TS5.csv")%>% dplyr::rename(Sample_ID = 1) 
 
 
 ```{r svm TS6}
-#cant do svm cos there's na values for every/ a lot of genes
 Pheno_TS6_illnessupdate <- Pheno_TS6 %>% dplyr::rename(illness = characteristics_ch1) %>% mutate(illness = case_when(illness == "disease: LTB" ~ "Latent TB", illness == "disease: PTB" ~ "TB"))
 
 Expression_TS6_t <- as.data.frame(t(TS6_normalized.1))
@@ -277,50 +286,136 @@ SVM_Scores_TS6<- read.csv("SVM_Scores_TS6.csv")%>% dplyr::rename(Sample_ID = 1) 
 
 ```
 
+
 ```{r rocplot}
 
 #Origin
+SVM_Scores_Origin_df <- SVM_Scores_Origin %>% mutate(predictions = case_when(SVM_Score <0 ~ 0, SVM_Score >=0 ~1)) %>% mutate(labels = case_when(illness == "HIV" ~ 1, illness == "HIV/TB co-infection" ~ 0))
+SVM_Scores_Origin_pred <- prediction(SVM_Scores_Origin_df$predictions, SVM_Scores_Origin_df$labels)
+SVM_Scores_Origin_perf <- performance(SVM_Scores_Origin_pred,"tpr","fpr")
+plot(SVM_Scores_Origin_perf,col='red', main="Training Set", lwd=3)
+
+auc_ROCR_Origin <- performance(SVM_Scores_Origin_pred, measure = "auc")
+auc_ROCR_Origin <- auc_ROCR_Origin@y.values[[1]]
 
 #TS1
+SVM_Scores_TS1_df <- SVM_Scores_TS1 %>% mutate(predictions = case_when(SVM_Score <0 ~ 0, SVM_Score >=0 ~1)) %>% mutate(labels = case_when(illness == "Controls" ~ 1, illness == "TB (2 mo)" ~ 0))
+SVM_Scores_TS1_pred <- prediction(SVM_Scores_TS1_df$predictions, SVM_Scores_TS1_df$labels)
+SVM_Scores_TS1_perf <- performance(SVM_Scores_TS1_pred,"tpr","fpr")
+plot(SVM_Scores_TS1_perf,col='red', main="TS1", lwd=3)
 
-
+auc_ROCR_TS1 <- performance(SVM_Scores_TS1_pred, measure = "auc")
+auc_ROCR_TS1 <- auc_ROCR_TS1@y.values[[1]]
 
 #TS2
+SVM_Scores_TS2_df <- SVM_Scores_TS2 %>% mutate(predictions = case_when(SVM_Score <0 ~ 0, SVM_Score >=0 ~1)) %>% mutate(labels = case_when(illness == "TB" ~ 1, illness == "TB (12 mo)" ~0))
+SVM_Scores_TS2_pred <- prediction(SVM_Scores_TS2_df$predictions, SVM_Scores_TS2_df$labels)
+SVM_Scores_TS2_perf <- performance(SVM_Scores_TS2_pred,"tpr","fpr")
+plot(SVM_Scores_TS2_perf,col='red', main="TS2", lwd=3)
 
-
+auc_ROCR_TS2 <- performance(SVM_Scores_TS2_pred, measure = "auc")
+auc_ROCR_TS2 <- auc_ROCR_TS2@y.values[[1]]
 
 #TS3
+SVM_Scores_TS3_df <- SVM_Scores_TS3 %>% mutate(predictions = case_when(SVM_Score <0 ~ 0, SVM_Score >=0 ~1)) %>% mutate(labels = case_when(illness == "Controls/Latent TB" ~ 1, illness == "TB" ~ 0))
+SVM_Scores_TS3_pred <- prediction(SVM_Scores_TS3_df$predictions, SVM_Scores_TS3_df$labels)
+SVM_Scores_TS3_perf <- performance(SVM_Scores_TS3_pred,"tpr","fpr")
+plot(SVM_Scores_TS3_perf,col='red', main = "TS3", lwd=3)
 
-
-
+auc_ROCR_TS3 <- performance(SVM_Scores_TS3_pred, measure = "auc")
+auc_ROCR_TS3 <- auc_ROCR_TS3@y.values[[1]]
 
 #TS4
+SVM_Scores_TS4_df <- SVM_Scores_TS4 %>% mutate(predictions = case_when(SVM_Score <0 ~ 0, SVM_Score >=0 ~1)) %>% mutate(labels = case_when(illness == "TB" ~ 1, illness == "Controls/Latent TB" ~ 0))
+SVM_Scores_TS4_pred <- prediction(SVM_Scores_TS4_df$predictions, SVM_Scores_TS4_df$labels)
+SVM_Scores_TS4_perf <- performance(SVM_Scores_TS4_pred,"tpr","fpr")
+plot(SVM_Scores_TS4_perf,col='red', main = "TS4", lwd=3)
 
+auc_ROCR_TS4 <- performance(SVM_Scores_TS4_pred, measure = "auc")
+auc_ROCR_TS4 <- auc_ROCR_TS4@y.values[[1]]
 
 
 #TS5
+SVM_Scores_TS5_df <- SVM_Scores_TS5 %>% mutate(predictions = case_when(SVM_Score <0 ~ 0, SVM_Score >=0 ~1)) %>% mutate(labels = case_when(illness == "TB" ~ 1, illness == "Latent TB" ~ 0))
+SVM_Scores_TS5_pred <- prediction(SVM_Scores_TS5_df$predictions, SVM_Scores_TS5_df$labels)
+SVM_Scores_TS5_perf <- performance(SVM_Scores_TS5_pred,"tpr","fpr")
+plot(SVM_Scores_TS5_perf,col='red', main = "TS5", lwd=3)
 
+auc_ROCR_TS5 <- performance(SVM_Scores_TS5_pred, measure = "auc")
+auc_ROCR_TS5 <- auc_ROCR_TS5@y.values[[1]]
 
 
 #TS6
+SVM_Scores_TS6_df <- SVM_Scores_TS6 %>% mutate(predictions = case_when(SVM_Score <0 ~ 0, SVM_Score >=0 ~1)) %>% mutate(labels = case_when(illness == "TB" ~ 1, illness == "Latent TB" ~ 0))
+SVM_Scores_TS6_pred <- prediction(SVM_Scores_TS6_df$predictions, SVM_Scores_TS6_df$labels)
+SVM_Scores_TS6_perf <- performance(SVM_Scores_TS6_pred,"tpr","fpr")
+plot(SVM_Scores_TS6_perf,col='red', main = "TS6", lwd=3)
 
+auc_ROCR_TS6 <- performance(SVM_Scores_TS6_pred, measure = "auc")
+auc_ROCR_TS6 <- auc_ROCR_TS6@y.values[[1]]
 
-SVM_Scores_Origin_df <- SVM_Scores_Origin %>% dplyr::select(SVM_Score) %>% mutate(labels = case_when(SVM_Score <0 ~ 0, SVM_Score >=0 ~1)) %>% dplyr::rename(predictions = SVM_Score)
-SVM_Scores_Origin_pred <- prediction(SVM_Scores_Origin_df$predictions, SVM_Scores_Origin_df$labels)
-SVM_Scores_Origin_perf <- performance(SVM_Scores_Origin_pred,"tpr","fpr")
-plot(SVM_Scores_Origin_perf,col='red')
-
-
-SVM_Scores_TS1
-SVM_Scores_TS2
-SVM_Scores_TS3
-SVM_Scores_TS4
-SVM_Scores_TS5
-SVM_Scores_TS6
-
-
+auc_ROCR_Origin
+auc_ROCR_TS1
+auc_ROCR_TS2
+auc_ROCR_TS3
+auc_ROCR_TS4
+auc_ROCR_TS5
+auc_ROCR_TS6
 ```
 
+```{r}
+confusion.glm_Origin = confusionMatrix(
+  data = as.factor(SVM_Scores_Origin_df$predictions),
+  reference = as.factor(SVM_Scores_Origin_df$labels)
+)
+confusion.glm_Origin$table
+confusion.glm_Origin
+
+confusion.glm_TS1 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS1_df$predictions),
+  reference = as.factor(SVM_Scores_TS1_df$labels)
+)
+confusion.glm_TS1$table
+confusion.glm_TS1
+
+
+confusion.glm_TS2 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS2_df$predictions),
+  reference = as.factor(SVM_Scores_TS2_df$labels)
+)
+confusion.glm_TS2$table
+confusion.glm_TS2
+
+confusion.glm_TS3 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS3_df$predictions),
+  reference = as.factor(SVM_Scores_TS3_df$labels)
+)
+confusion.glm_TS3$table
+confusion.glm_TS3
+
+confusion.glm_TS4 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS4_df$predictions),
+  reference = as.factor(SVM_Scores_TS4_df$labels)
+)
+confusion.glm_TS4$table
+confusion.glm_TS4
+
+confusion.glm_TS5 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS5_df$predictions),
+  reference = as.factor(SVM_Scores_TS5_df$labels)
+)
+confusion.glm_TS5$table
+confusion.glm_TS5
+
+
+confusion.glm_TS6 = confusionMatrix(
+  data = as.factor(SVM_Scores_TS6_df$predictions),
+  reference = as.factor(SVM_Scores_TS6_df$labels)
+)
+confusion.glm_TS6$table
+confusion.glm_TS6
+
+```
 
 
 
