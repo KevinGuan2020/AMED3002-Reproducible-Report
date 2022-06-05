@@ -99,21 +99,36 @@ write.csv(PCA_samples,"C:\\Users\\lauwc\\OneDrive\\Documents\\Uni 2022-\\AMED300
 
 ```{r svm score origin}
 Expression_251_origin_t <- as.data.frame(t(Expression_251))
-Pheno_251_origin_disease <- factor(Pheno_cut$description)
+Pheno_251_origin_disease <- factor(Pheno_cut$description, levels = c("HIV/TB co-infection", "HIV"), labels = c("HIV/TB co-infection", "HIV"))
 svm_data.10_new <- cbind(Expression_251_origin_t, Pheno_251_origin_disease)
 
-fit.10_new <- svm(Pheno_251_origin_disease ~ ., data=svm_data.10_new, kernel="linear", cost=1)  
+fit.10_new <- svm(Pheno_251_origin_disease ~ ., data=svm_data.10_new, kernel="linear", type = "C-classification", cost=1)  
 
-svm_score_origin <- predict(fit.10_new, svm_data.10_new, decision.values = TRUE)
-svm_score_origin
+svm_score_origin <- predict(fit.10_new, Expression_251_origin_t, decision.values = TRUE)
 
-SVM_Scores_Origin<- read.csv("SVM_Scores_Origin.csv")%>% dplyr::rename(Sample_ID = 1) %>% mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "HIV/TB co-infection", SVM_Score>=0 ~ "HIV")) %>% left_join(Pheno,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, description) %>% dplyr::rename(illness = description)
+
+SVM_Scores_Origin <- read.csv("SVM_Scores_Origin.csv") %>% 
+  dplyr::rename(Sample_ID = 1) %>% 
+  mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "HIV/TB co-infection", SVM_Score>=0 ~ "HIV")) %>% 
+  mutate(SVM_Score = -SVM_Score) %>% 
+  left_join(Pheno,by=c("Sample_ID" = "geo_accession")) %>% 
+  dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, description) %>% 
+  dplyr::rename(illness = description)
 
                                                                                      
-colour_graph <- c(rep("#636363",22), rep("#fafcfb", 21))
+colour_graph <- c(rep("#636363",22), rep("#fafcfb", 21)) 
              
-ggplot(SVM_Scores_Origin, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) + geom_col(stat = "identity", fill = colour_graph) +  labs(title = "Training Set", y = "SVM Score") + theme(plot.title=element_text(hjust=0.5, size=15), axis.title.x = element_text(hjust = 0.5), axis.title.y = element_text(size=15)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank())                                                                                   
-                                                                                                    
+ggplot(SVM_Scores_Origin, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) + 
+  geom_col(stat = "identity", fill = colour_graph, color = "black") +
+  labs(title = "Training Set", y = "SVM Score") + 
+  theme_minimal() +
+  theme(plot.title=element_text(hjust=0.5, size=15), 
+        axis.title.x = element_text(hjust = 0.5), 
+        axis.title.y = element_text(size=15)) + 
+  theme(axis.title.x=element_blank(), 
+        axis.text.x=element_blank(), 
+        axis.ticks.x=element_blank()) 
+
 ```
 
 
@@ -153,11 +168,23 @@ fit_TS1 = svm(Pheno_TS1_treatmenttime~., data=svm_data_TS1_251, kernel="linear",
 svm_score_TS1 <- predict(fit_TS1, svm_data_TS1_251, decision.values = TRUE)
 svm_score_TS1
 
-SVM_Scores_TS1 <- read.csv("SVM_Scores_TS1.csv")%>% dplyr::rename(Sample_ID = 1) %>% mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "TB (2 mo)", SVM_Score>=0 ~ "Controls")) %>% left_join(Pheno_TS1_new,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, `time post initiation of treatment:ch1`) %>% dplyr::rename(illness = `time post initiation of treatment:ch1`) %>% mutate(illness= case_when(illness=="0_months" ~ "Controls", illness == "2_months" ~ "TB (2 mo)"))
+SVM_Scores_TS1 <- read.csv("SVM_Scores_TS1.csv") %>% dplyr::rename(Sample_ID = 1) %>% 
+  mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "TB (2 mo)", SVM_Score>=0 ~ "Controls")) %>% 
+    mutate(SVM_Score = -SVM_Score) %>% 
+  left_join(Pheno_TS1_new,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, `time post initiation of treatment:ch1`) %>% dplyr::rename(illness = `time post initiation of treatment:ch1`) %>% mutate(illness= case_when(illness=="0_months" ~ "Controls", illness == "2_months" ~ "TB (2 mo)"))
 
 colour_graph_TS1 <- c(rep("#636363",12), rep("#fafcfb", 7))
 
-ggplot(SVM_Scores_TS1, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) + geom_col(stat = "identity", fill = colour_graph_TS1) +  labs(title = "Test Set 1", y = "SVM Score") + theme(plot.title=element_text(hjust=0.5, size=15), axis.title.x = element_text(hjust = 0.5), axis.title.y = element_text(size=15)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) 
+ggplot(SVM_Scores_TS1, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) + 
+  geom_col(stat = "identity", fill = colour_graph_TS1, color = "black") +  
+  labs(title = "Test Set 1", y = "SVM Score") + 
+  theme_classic() + 
+  theme(plot.title=element_text(hjust=0.5, size=15), 
+        axis.title.x = element_text(hjust = 0.5), 
+        axis.title.y = element_text(size=15)) + 
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) 
 
 ```
 
@@ -173,11 +200,14 @@ fit_TS2 = svm(Pheno_TS2_treatmenttime ~ ., data=svm_data_TS2_251, kernel="linear
 svm_score_TS2 <- predict(fit_TS2, svm_data_TS2_251, decision.values = TRUE)
 svm_score_TS2
 
-SVM_Scores_TS2<- read.csv("SVM_Scores_TS2.csv")%>% dplyr::rename(Sample_ID = 1)%>% mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "TB (12 mo)", SVM_Score>=0 ~ "TB")) %>% left_join(Pheno_TS2,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, `time post initiation of treatment:ch1`) %>% dplyr::rename(illness = `time post initiation of treatment:ch1`) %>% mutate(illness= case_when(illness=="0_months" ~ "TB", illness == "12_months" ~ "TB (12 mo)"))
+SVM_Scores_TS2<- read.csv("SVM_Scores_TS2.csv")%>% dplyr::rename(Sample_ID = 1)%>% 
+  mutate(Predicted_Illness = case_when(SVM_Score <0 ~ "TB (12 mo)", SVM_Score>=0 ~ "TB")) %>% 
+  mutate(SVM_Score = -SVM_Score) %>% 
+  left_join(Pheno_TS2,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, `time post initiation of treatment:ch1`) %>% dplyr::rename(illness = `time post initiation of treatment:ch1`) %>% mutate(illness= case_when(illness=="0_months" ~ "TB", illness == "12_months" ~ "TB (12 mo)"))
 
 colour_graph_TS2 <- c(rep("#636363",1), rep("#fafcfb", 1),rep("#636363",1),rep("#fafcfb", 1),rep("#636363",3),rep("#fafcfb", 3), rep("#636363", 1), rep("#fafcfb", 1),rep("#636363", 1), rep("#fafcfb", 1))
 
-ggplot(SVM_Scores_TS2, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) + geom_col(stat = "identity", fill = colour_graph_TS2) +  labs(title = "Test Set 2", y = "SVM Score") + theme(plot.title=element_text(hjust=0.5, size=15), axis.title.x = element_text(hjust = 0.5), axis.title.y = element_text(size=15)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) 
+ggplot(SVM_Scores_TS2, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) + geom_col(stat = "identity", fill = colour_graph_TS2, color = "black") +  labs(title = "Test Set 2", y = "SVM Score") + theme_classic() + theme(plot.title=element_text(hjust=0.5, size=15), axis.title.x = element_text(hjust = 0.5), axis.title.y = element_text(size=15)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank())
 ```
 
 

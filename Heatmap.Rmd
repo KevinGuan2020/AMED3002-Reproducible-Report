@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(ComplexHeatmap)
 library(tidyverse)
+library(gplots)
 
 Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
 
@@ -64,7 +65,6 @@ Expression_251_paper <- Expression_cut[rownames(Expression_cut) %in% keep_genes_
 
 ```{r}
 
-Expression_251
 
 HIV_samples = row.names(filter(Pheno, description == "HIV" ))
 HIV_exprs = Expression_251[,colnames(Expression_251) %in% HIV_samples]
@@ -81,16 +81,32 @@ Fc_df$Class = c(rep("HIV",251),rep("HIV/TB", 251))
 
 
 
-Hamp = Expression_251[order(Expression_251$GSM1230925),]
+Hmap_df = Expression_251[order(Expression_251$GSM1230925),]
+Hmap_df$Gene = row.names(Hmap_df)
 
 pal <- colorpanel(32, "blue", "white", "red")
-heatmap(as.matrix(log(Expression_251)), col = pal)
 
-Pheno
-scale(Expression_251)
-library(gplots)
+heatmap(as.matrix(log(Expression_251)), col = pal, labRow = FALSE, labCol = FALSE, xlab = "Sample", ylab = "Genes")
 
+heatmap.2(as.matrix(log(Expression_251)), scale = "none", col = bluered(100), trace = "none", density.info = "none")
 
+Hmap_plot +
+  theme(plot.title=element_text(hjust=0.5, size=15), 
+        axis.title.x = element_text(hjust = 0.5), 
+        axis.title.y = element_text(size=15)) + 
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+Hmap_plot <- pivot_longer(data = Hmap_df, 
+                          cols = c(1:43),
+                          names_to = "Class", 
+                          values_to = "Abundance")
+
+ggplot(Hmap_plot, aes(x = Class, y = Gene, fill = Abundance)) +
+  geom_tile()
+
+sd(c(100,120))
 ```
 
 ```{r heatmap paper 251}
