@@ -46,6 +46,22 @@ Gene_251_fdata <- Genes[rownames(Genes) %in% keep_genes,]
 
 ```
 
+```{r paper 251 genes}
+Genes_copy <- Genes
+paper_251genes <- read.csv("Paper_251_genes.csv") %>% dplyr::rename(Accession=1) %>% filter(row_number() %in% c(1:251))
+
+Genes_copy$Search_Key = sub("\\..*", "", Genes_copy$Search_Key)
+#Genes paper 251 data
+Gene_251_paper_fdata <- Genes_copy %>% inner_join(paper_251genes, by=c("Search_Key" = "Accession", "Symbol")) %>% filter(row_number() %in% c(1:251))
+
+keep_genes_paper <- dput(Gene_251_paper_fdata %>% dplyr::select(ID) %>% unlist() %>% as.vector())
+                                                                                                              
+#Expression paper 251 data
+Expression_251_paper <- Expression_cut[rownames(Expression_cut) %in% keep_genes_paper,]
+     
+```
+
+
 ```{r}
 
 Expression_251
@@ -75,5 +91,11 @@ scale(Expression_251)
 library(gplots)
 
 
+```
+
+```{r heatmap paper 251}
+pal <- colorpanel(32, "blue", "white", "red")
+
+heatmap(as.matrix(log(Expression_251_paper)), col = pal)
 ```
 

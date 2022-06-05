@@ -21,6 +21,41 @@ library(dplyr)
 ```
 
 
+
+```{r Origin data}
+Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
+
+Pheno = pData(Origin)
+
+Genes = fData(Origin)
+
+Expression <- exprs(Origin)
+rnames = row.names(Expression)
+cnames = colnames(Expression)
+
+Expression %>% 
+  as.data.frame() %>% 
+  filter_all(all_vars(. < 600)) %>% 
+  boxplot()
+
+Expression_cut <- Expression %>% 
+  as.data.frame() %>% 
+  mutate(GSM1230946=(GSM1230903 + GSM1230904)/2) %>%
+  dplyr::select(-GSM1230903) %>%
+  dplyr::select(-GSM1230904) %>%
+  relocate(GSM1230946,.after = GSM1230902) %>%
+  dplyr::rename(GSM1230903=GSM1230946)
+
+row.names(Expression_cut) = rnames
+colnames(Expression_cut) = cnames[-3]
+
+Pheno_cut <- Pheno %>% filter(title != "HIV infected patient 2_2")
+
+Expression_251 <- Expression_cut[rownames(Expression_cut) %in% Genes251,]
+Gene_251_fdata <- Genes[rownames(Genes) %in% keep_genes,]
+```
+
+
 ```{r}
 PCA_counts.1 <- read.csv("PCA_counts.csv") 
 PCA_counts.2 <- PCA_counts.1[,-1]
@@ -69,6 +104,104 @@ lcpm <- cpm(keep.1, log = T)
 pca <- prcomp(t(lcpm), scale=T)
 autoplot(pca, data = PCA_samples.2, colour = "Disease_State", shape = "Data")
 ```
+
+
+
+```{r paper 251 genes}
+Genes_copy <- Genes
+paper_251genes <- read.csv("Paper_251_genes.csv") %>% dplyr::rename(Accession=1) %>% filter(row_number() %in% c(1:251))
+
+Genes_copy$Search_Key = sub("\\..*", "", Genes_copy$Search_Key)
+#Genes paper 251 data
+Gene_251_paper_fdata <- Genes_copy %>% inner_join(paper_251genes, by=c("Search_Key" = "Accession", "Symbol")) %>% filter(row_number() %in% c(1:251))
+
+keep_genes_paper <- dput(Gene_251_paper_fdata %>% dplyr::select(ID) %>% unlist() %>% as.vector())
+                                                                                                              
+#Expression paper 251 data
+Expression_251_paper <- Expression_cut[rownames(Expression_cut) %in% keep_genes_paper,]
+     
+```
+
+
+```{r pca paper data}
+# PCA genes paper
+PCA_genes_paper <- Gene_251_paper_fdata %>% dplyr::select(ID, Symbol)
+
+#PCA counts paper
+PCA_counts_TS1_paper <- as.data.frame(Expression_TS1)[rownames(as.data.frame(Expression_TS1)) %in% keep_genes_paper,]
+PCA_counts_TS1_genes.df_paper <- PCA_counts_TS1_paper %>% tibble::rownames_to_column("Gene")
+PCA_counts_TS1_vector_paper <- PCA_counts_TS1_genes.df_paper [, "Gene"]
+PCA_counts_TS1_genes_paper <- dput(as.character(PCA_counts_TS1_vector_paper))
+PCA_counts_Origin_paper <- Expression_251_paper[rownames(Expression_251_paper) %in% PCA_counts_TS1_genes_paper,]
+PCA_counts_paper <- cbind(PCA_counts_Origin_paper, PCA_counts_TS1_paper)
+
+# PCA samples datapaper
+PCA_pheno_origin <- Pheno_cut %>% dplyr::select(`disease state:ch1`) %>% dplyr::rename(disease_state = `disease state:ch1`) %>% mutate(disease_state = case_when(disease_state == "HIV only" ~ "HIV", disease_state == "HIV/TB" ~ "HIV/MTB")) %>% mutate(Data = "Origin") %>% dplyr::rename(Disease_State = disease_state)
+
+PCA_pheno_TS1 <- Pheno_TS1 %>% dplyr::select(`time post initiation of treatment:ch1`, `illness:ch1`) %>% dplyr::rename(disease_state = `time post initiation of treatment:ch1`) %>% mutate(disease_state = case_when(disease_state == "0_months" & `illness:ch1` == "Control" ~ "Controls", disease_state == "0_months" & `illness:ch1` == "PTB" ~ "TB", disease_state == "2_months" ~ "TB (2Mo)", disease_state =="12_months" ~ "TB (12Mo)")) %>% dplyr::select(disease_state) %>% mutate(Data = "TS1") %>% dplyr::rename(Disease_State = disease_state)
+
+PCA_samples <- PCA_pheno_origin %>% rbind(PCA_pheno_TS1)
+
+```
+
+
+
+```{r}
+#counts data - use PCA_counts_paper_1
+has_neg <- apply(PCA_counts_paper, 1, function(row) any(row < 0))
+genes_with_negative_counts_df <- which(has_neg) %>% as.data.frame() %>% tibble::rownames_to_column("Gene")
+length(which(has_neg))
+
+genes_with_negative_counts_vector <- genes_with_negative_counts_df [, "Gene"]
+genes_with_negative_counts <- dput(as.character(genes_with_negative_counts_vector))
+PCA_counts_paper_1 <- PCA_counts_paper[!rownames(PCA_counts_paper) %in% genes_with_negative_counts,]
+
+
+#genes data - use PCA_genes_paper_2
+PCA_counts_paper_gene_df <- PCA_counts_paper_1 %>% tibble::rownames_to_column("Gene")
+PCA_counts_paper_gene_vector <- PCA_counts_paper_gene_df[, "Gene"]
+PCA_counts_paper_gene <- dput(as.character(PCA_counts_paper_gene_vector))
+
+PCA_genes_paper_1 <- PCA_genes_paper %>% distinct(ID, .keep_all=TRUE)%>% mutate(ID_1 = ID) %>% column_to_rownames(var="ID") %>% dplyr::rename(ID= ID_1) %>% relocate(ID, .before=Symbol)
+
+PCA_genes_paper_2 <- PCA_genes_paper_1[rownames(PCA_genes_paper_1) %in% PCA_counts_paper_gene,]
+
+#samples data - use PCA_samples_paper
+PCA_samples_paper_sampleid <- dput(as.character(colnames(PCA_counts_paper)))
+PCA_samples_paper <- PCA_samples[rownames(PCA_samples) %in% PCA_samples_paper_sampleid,]
+```
+
+
+```{r}
+dgelist <- DGEList(counts = PCA_counts_paper_1, samples = PCA_samples.2, genes = PCA_genes_paper_2)
+normalizationfactors <- calcNormFactors(dgelist, method = "TMM")
+keep <- filterByExpr(normalizationfactors)
+keep.1 <- normalizationfactors[keep,]
+cpm <- cpm(dgelist)
+lcpm <- cpm(dgelist, log = T)
+pca <- prcomp(t(lcpm), scale=T)
+autoplot(pca, data = PCA_samples.2, colour = "Disease_State", shape = "Data")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
