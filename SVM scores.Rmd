@@ -25,6 +25,16 @@ library(preprocessCore)
 ```
 
 
+```{r paper 251 genes}
+Genes_copy <- Genes
+paper_251genes <- read.csv("Paper_251_genes.csv") %>% dplyr::rename(Accession=1) %>% filter(row_number() %in% c(1:251))
+
+Genes_copy$Search_Key = sub("\\..*", "", Genes_copy$Search_Key)
+Genes_copy %>% inner_join(paper_251genes, by=c("Search_Key" = "Accession", "Symbol"))
+```
+
+
+
 ```{r Read in 251 genes}
 Genes251 <- read.csv("251_gene_names.csv") %>% unlist() %>% as.vector()
 keep_genes <- dput(Genes251)
