@@ -15,5 +15,30 @@ output: html_document
 Human immunodeficiency virus (HIV) is an enveloped retrovirus where there exists two copies of a single-strandded RNA genome within it (https://www.ncbi.nlm.nih.gov/books/NBK534860/). TB, HIV/TB co-infection
 
 
-During 2014, a paper titled 'Identification of a 251 Gene Expression Signature That Can Accurately Detect M. tuberculosis in Patients with and without HIV Co-Infection' was published which reportedly found a 251 Gene Expression Signature that could distinguish HIV patients from HIV patients co-infected with TB. Critique of this paper is necessary as published findings can be used for further research, thus, it must be ensured that the results and conclusions drawn are accurate.
+During 2014, a paper titled 'Identification of a 251 Gene Expression Signature That Can Accurately Detect M. tuberculosis in Patients with and without HIV Co-Infection' was published which reportedly found a 251 Gene Expression Signature that could distinguish HIV patients from HIV patients co-infected with TB. Critique of this paper is necessary as published findings can be used for further research, thus, it must be ensured that the results and conclusions drawn are accurate. Here an attempt to replicate the findings will be conducted and a judgement on the appropriateness 
 
+
+
+
+### Results 
+
+##### Identification of a 251-Gene Signature Distinguishing HIV/TB Co-infected from HIV Mono-infected Patients
+
+Using 
+
+##### Classification of the Training Samples
+
+
+
+##### Top 20 Genes from the 251-Gene TB-Signature Identifies using SVM-RFE 
+
+
+##### Performance of SVM Signature in the Testing Sets
+
+
+
+### Discussion
+
+
+
+### Conclusion
