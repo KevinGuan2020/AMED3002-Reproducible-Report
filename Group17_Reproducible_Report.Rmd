@@ -1,0 +1,19 @@
+---
+title: 'Replication Study of: Identification of a 251 Gene Expression Signature That
+  Can Accurately Detect M. tuberculosis in Patients with and without HIV Co-Infection'
+author: 'Group 17: Kevin Guan, Christina Lauw, Phoebe Sedgwick, Lara Warner, Kefei
+  Zheng'
+output: html_document
+---
+
+### Abstract
+
+
+
+### Introduction 
+
+Human immunodeficiency virus (HIV) is an enveloped retrovirus where there exists two copies of a single-strandded RNA genome within it (https://www.ncbi.nlm.nih.gov/books/NBK534860/). TB, HIV/TB co-infection
+
+
+During 2014, a paper titled 'Identification of a 251 Gene Expression Signature That Can Accurately Detect M. tuberculosis in Patients with and without HIV Co-Infection' was published which reportedly found a 251 Gene Expression Signature that could distinguish HIV patients from HIV patients co-infected with TB. Critique of this paper is necessary as published findings can be used for further research, thus, it must be ensured that the results and conclusions drawn are accurate.
+
