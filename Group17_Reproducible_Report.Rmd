@@ -1,15 +1,43 @@
 ---
 title: 'Replication Study of: Identification of a 251 Gene Expression Signature That
   Can Accurately Detect M. tuberculosis in Patients with and without HIV Co-Infection'
+subtitle: "AMED3002 Reseach Project 2"
 author: 'Group 17: 500341584, 500475432, 500492820, 500493067, 500585889'
-output: 
-  html_document:
+date: "University of Sydney | Semester 2 2021"
+output:
+  rmdformats::downcute:
+    fig_caption: yes
+    self_contained: yes
+    number_sections: true 
+    df_print: kable
     code_folding: hide
-    toc: true
-    toc_float: true
-    theme: paper
-    
+    theme: sandstone
+    highlight: tango
+    css: 
+      - https://use.fontawesome.com/releases/v5.0.6/css/all.css
 ---
+<style type="text/css">
+
+body{ /* Normal  */
+      font-size: 14px;
+  }
+h1, h2 { /* add border to h1 and h2 */
+  border-bottom: solid 1px #666;
+}
+h1 { /* Header 1 */
+  font-size: 56px;
+  color: Black;
+}
+h2 { /* Header 2 */
+    font-size: 18px;
+  color: Black;
+}
+h3 { /* Header 3 */
+  font-size: 16px;
+  color: Grey;
+}
+</style>
+
 ```{r setup, include=FALSE, cache=TRUE} 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
 
@@ -33,9 +61,7 @@ library(ComplexHeatmap)
 library(RColorBrewer)
 library(gridExtra)
 library(gplots)
-
 ```
-
 
 ```{r Origin data, include=FALSE, cache=TRUE}
 Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
@@ -47,11 +73,6 @@ Genes = fData(Origin)
 Expression <- exprs(Origin)
 rnames = row.names(Expression)
 cnames = colnames(Expression)
-
-Expression %>% 
-  as.data.frame() %>% 
-  filter_all(all_vars(. < 600)) %>% 
-  boxplot()
 
 Expression_cut <- Expression %>% 
   as.data.frame() %>% 
@@ -65,10 +86,7 @@ row.names(Expression_cut) = rnames
 colnames(Expression_cut) = cnames[-3]
 
 Pheno_cut <- Pheno %>% filter(title != "HIV infected patient 2_2")
-
-
 ```
-
 
 ```{r paper 251 genes, include = FALSE, cache=TRUE}
 Genes_copy <- Genes
@@ -82,45 +100,43 @@ keep_genes_paper <- dput(Gene_251_paper_fdata %>% dplyr::select(ID) %>% unlist()
                                                                                                               
 #Expression paper 251 data
 Expression_251_paper <- Expression_cut[rownames(Expression_cut) %in% keep_genes_paper,]
-     
 ```
-### Abstract
+
+# Abstract
 The aim of this study is to replicate the findings of a published paper that aimed to identify a gene signature that could distinguish Mycobacterium tuberculosis(TB) and Human immunodeficiency virus (HIV) co-infected patients from patients with HIV only.
 
 Methodology of the published paper was followed beginning with initial data preprocessing followed by finding a 251 gene expression signature using support vector machine recursive feature elimination(SVM-RFE) then validating the classifier using the 6 test sets reportedly used. Receiving operating characteristic curves were plotted and the sensitivity, specificity, area under the curve(AUC) and accuracy values were found. A heatmap on the training data was created and principal component analysis was conducted on the training data and Test Set 1.
 
 It was found that reproducibility of the results in the published paper was met with great difficulty. This was due to missing information given in regards to the methodology used in the published paper as well as an incorrect study design and methodology in addressing the aim.
 
-### Introduction 
+# Introduction 
 
-Human immunodeficiency virus (HIV) is an enveloped retrovirus that attacks the immune system (1). Mycobacterium tuberculosis (TB) is an infectious disease with a high mortality, second only to Covid-19 (2). 10 million individuals contracted TB and 1.5 million people died from TB in 2020 with 214,000 also having HIV (2). TB only requires a few particles for infection (3). Once infected, it usually becomes latent in most individuals, but there is a 5-10% risk of TB becoming active (3).
+Human immunodeficiency virus (HIV) is an enveloped retrovirus that attacks the immune system __(1)__. Mycobacterium tuberculosis (TB) is an infectious disease with a high mortality, second only to Covid-19. 10 million individuals contracted TB and 1.5 million people died from TB in 2020 with 214,000 also having HIV __(2)__. TB only requires a few particles for infection. Once infected, it usually becomes latent in most individuals, but there is a 5-10% risk of TB becoming active __(3)__.
  
-A factor that can increase the risk of TB becoming activated is immunosuppression (3). People with HIV are 18x more likely to develop active TB (3). HIV causes depletion and exhaustion of immune cells like CD4+ t cells which are required for the immune system to fight TB (3). Thus having a co-infection of HIV/TB causes both disease progressions to accelerate (3).  TB has become the leading cause of death in individuals with HIV (3).
+A factor that can increase the risk of TB becoming activated is immunosuppression. People with HIV are 18x more likely to develop active TB. HIV causes depletion and exhaustion of immune cells like CD4+ t cells which are required for the immune system to fight TB. Thus having a co-infection of HIV/TB causes both disease progressions to accelerate.  TB has become the leading cause of death in individuals with HIV __(3)__.
  
-TB is curable with the right treatment regime however, TB must first be detected (2). 45% of HIV-negative individuals will die without proper treatment but for HIV-positive individuals, nearly all will die without treatment (2), hence why detecting TB in an individual with HIV is of upmost importance.Current diagnostic tools have reduced sensitivity in detecting TB in HIV-positive individuals which can lead to false negatives (4). When combining two tests, the LAM and Xpert MTB/RIF, together, only 80% of symptomatic individuals are detected (4). Some studies have explored gene expression in HIV/TB individuals to identify possible biomarkers however currently, no gene signatures have been identified that can identify HIV/TB co-infection (4).
+TB is curable with the right treatment regime however, TB must first be detected. 45% of HIV-negative individuals will die without proper treatment but for HIV-positive individuals, nearly all will die without treatment __(2)__, hence why detecting TB in an individual with HIV is of upmost importance.Current diagnostic tools have reduced sensitivity in detecting TB in HIV-positive individuals which can lead to false negatives. When combining two tests, the LAM and Xpert MTB/RIF, together, only 80% of symptomatic individuals are detected. Some studies have explored gene expression in HIV/TB individuals to identify possible biomarkers however currently, no gene signatures have been identified that can identify HIV/TB co-infection __(4)__.
 
 During 2014, a paper titled 'Identification of a 251 Gene Expression Signature That Can Accurately Detect M. tuberculosis in Patients with and without HIV Co-Infection' was published which reportedly found a 251 Gene Expression Signature that could distinguish HIV patients from HIV patients co-infected with TB. Critique of this paper is necessary as published findings can be used for further application and research, thus, it must be ensured that the results and conclusions drawn are accurate. Here an attempt to replicate the findings will be conducted and a judgement on the appropriateness of the method and analysis will be made. 
 
-### Method 
-##### Subjects
+# Method 
+
+## Subjects
 Replication and analysis were based on 43 study subjects recruited from the Themba Lethu Clinic in Johannesburg South Africa between the 6th of September 2007 to the 16th of October 2008. The 43 subjects consisted of 22 patients that were mono-infected with HIV and 21 patients that were co-infected with HIV/TB.
 
-##### Data Preprocessing
+## Data Preprocessing
 Raw gene expression microarray data was reportedly quantile normalized. Retrieval of the data revealed that normalized data was provided and that access to the pre-normalized data was not provided, therefore, quantile normalization was unable to be replicated and subsequent analysis was based on the normalized data given. Figure 1 displays boxplots indicating quantile normalization on the gene expression data.
-```{r fig.cap="Figure 1: Boxplot of Gene Expression of Samples", cache=TRUE}
-Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
-Pheno = pData(Origin)
-Genes = fData(Origin)
-Expression <- exprs(Origin)
-rnames = row.names(Expression)
-cnames = colnames(Expression)
+
+```{r boxplot, fig.cap="Figure 1: Boxplot of Gene Expression of Samples", cache=TRUE}
 Expression %>% 
   as.data.frame() %>% 
   filter_all(all_vars(. < 1000)) %>% 
   boxplot(las =2, cex.axis = 0.5)
 ```
+
 There existed one patient with two sample IDs of which were GSM1230903 and GSM1230904. Prior to further analysis, the gene expression data was averaged for this patient.
-```{r cache=TRUE}
+
+```{r removing duplicate, cache=TRUE}
 Expression_cut <- Expression %>% 
   as.data.frame() %>% 
   mutate(GSM1230946=(GSM1230903 + GSM1230904)/2) %>%
@@ -175,16 +191,17 @@ for (row in 1:nrow(data)) {
 table(Keep)
 ```
 
-##### 251 Gene Expression Signature 
+## 251 Gene Expression Signature 
 Multiple iterations of support vector machine(SVM) were run on the full dataset where 10% of the bottom weights were removed in each iteration until 251 genes were returned. A score was assigned by the SVM classifier to each sample with a positive score indicating a prediction of TB and a negative score indicating a prediction of no active TB. A heatmap of the gene expression was produced to visualise whether the genes could be clustered into groups.  
 
-##### Independent Validation Samples
+## Independent Validation Samples
 TB associated datasets were reportedly used to validate the reported study, hence these datasets were also used upon replication. The associated test sets (TS1,TS3,TS4,TS5) were normalized through replication of the reported steps. Normalization consisted of having the mean expression per probe in each dataset separately calculated and the overall mean calculated. Within a sample, each probe's expression level was adjusted by this difference. TS6 was normalized through median quantile normalization followed by adjustment of each sample's expression by the difference between the mean overall expression and the mean across TS1,TS3,TS4,TS5 as reported.
 
 The dataset stemming from GSE19435 was split into TS1 and TS2 of which
 TS1 consisted of 12 healthy patients and 7 active TB patients on 2 months of treatment and TS2 consisted of 7 active TB patients on no treatment and 7 active TB patients on 12 months of treatment. TS3 consisted of 12 healthy patients, 17 latent TB patients and 12 active TB patients on no treatment. There were 12 healthy patients in TS4, 21 latent TB patients and 21 active TB patients on no treatment in TS4, 31 latent TB patients and 20 active TB patients on no treatment in TS5, and 38 latent TB patients and 29 active TB patients on no treatment in TS6.
 
-```{r echo=TRUE, results=FALSE, cache=TRUE}
+```{r testset data extraction, echo=TRUE, results=FALSE, cache=TRUE}
+#code for extracting testset data and normalisation 
 TS1 <- getGEO("GSE19435", GSEMatrix = TRUE)[[1]]
 TS3 <- getGEO("GSE19439", GSEMatrix = TRUE)[[1]]
 TS4<- getGEO("GSE19444", GSEMatrix = TRUE)[[1]]
@@ -285,16 +302,6 @@ cnames_TS6 = colnames(Expression_TS6)
 
 TS6_quantile_normalized <- as.data.frame(normalize.quantiles(exprs(TS6)))
 
-#Expression_TS6 %>% 
- # as.data.frame() %>% 
- # filter_all(all_vars(. < 1000)) %>% 
- # boxplot()
-
-#TS6_quantile_normalized %>% 
-  #as.data.frame() %>% 
- # filter_all(all_vars(. < 1000)) %>% 
- # boxplot()
-
 row.names(TS6_quantile_normalized) = rnames_TS6
 colnames(TS6_quantile_normalized) = cnames_TS6
 
@@ -309,6 +316,7 @@ TS1_5 <- TS1_mean_gene %>% full_join(TS3_mean_gene) %>%
   full_join(TS3_mean_gene) %>%
   full_join(TS4_mean_gene) %>%
   full_join(TS5_mean_gene)
+
 # average and difference across all samples from the 4 datasets (TS1,3,4,5)
 TS1_5_average_and_diff <- TS1_5 %>% dplyr::select(Gene, TS1_mean, TS3_mean, TS4_mean, TS5_mean) %>% 
   rowwise %>%
@@ -754,6 +762,7 @@ TS5_normalized.1 <- TS5_normalized %>%`row.names<-`(., NULL) %>% column_to_rowna
 TS6_normalized.1 <- TS6_normalized %>%`row.names<-`(., NULL) %>% column_to_rownames(var = "Gene")
 
 Pheno_TS1_new <- Pheno_TS1 %>% filter(`illness:ch1` == "Control" | `time post initiation of treatment:ch1` == "2_months")
+
 #TS1 and TS2 for analysis data
 Pheno_TS2_part1 <- Pheno_TS1 %>% filter(`time post initiation of treatment:ch1` == "0_months" & `illness:ch1` == "PTB")
 Pheno_TS2_part2 <- Pheno_TS1 %>% filter(`time post initiation of treatment:ch1` == "12_months")
@@ -772,10 +781,11 @@ Expression_TS2_normalized <- TS1_normalized.1[, colnames(TS1_normalized.1) %in% 
 
 Principal Component Analysis(PCA) was conducted on the training set and TS1 to cluster the data for the presence of TB. The sensitivity, specificity and accuracy were found and a receiving operating characteristic(ROC) curve was produced with the area under the curve(AUC) calculated for the training set and all the test sets.
 
-### Results 
+# Results 
 
-#### Identification of a 251-Gene Signature Distinguishing HIV/TB Co-infected from HIV Mono-infected Patients
-##### Top 20 Genes from the 251-Gene TB-Signature Identified using Support Vector Machine Recursive Feature Elimination (SVM-RFE)
+## Identification of a 251-Gene Signature Distinguishing HIV/TB Co-infected from HIV Mono-infected Patients
+
+#### Top 20 Genes from the 251-Gene TB-Signature Identified using Support Vector Machine Recursive Feature Elimination (SVM-RFE)
 
 ```{r paper top 20 genes, cache=TRUE} 
 fc_paper_20 <- c(1.402, 1.172, 1.248, -1.260, 1.492, 1.422, 1.374, 1.256, 1.441, 1.336, 1.454, 1.102, 1.255, -1.586, 1.421, -1.234, 1.131, 1.253, -3.149, 1.275)
@@ -837,15 +847,21 @@ foldchangevalues <- read.csv("Origin_genes_withfc.csv")
 keep_genes <- dput(Genes251)
 ```
 
-
-```{r cache=TRUE}
+```{r top20 table, cache=TRUE}
 Expression_251 <- Expression_cut[rownames(Expression_cut) %in% Genes251,]
-Gene_251_fdata_fortable <- Genes[rownames(Genes) %in% keep_genes,] %>% dplyr::select(Accession, Symbol, Definition)
-Gene_251_fc <- foldchangevalues%>%filter(Gene %in% keep_genes)
-Top20genes_table <- cbind(Gene_251_fdata_fortable, Gene_251_fc) %>% transmute(Rank =c(1:251), Accession, Symbol, `Gene Name` = Definition, `Fold Change` = Fold_Change) %>% mutate(`Fold Change` = round(`Fold Change`,3)) %>% head(20)
-rownames(Top20genes_table) <- NULL
-kable(Top20genes_table, caption = "Table 2.Top 20 Genes from the 251 Gene Signature Identified Using SVM-RFE from Replication")
 
+Gene_251_fdata_fortable <- Genes[rownames(Genes) %in% keep_genes,] %>% dplyr::select(Accession, Symbol, Definition)
+
+Gene_251_fc <- foldchangevalues%>%filter(Gene %in% keep_genes)
+
+Top20genes_table <- cbind(Gene_251_fdata_fortable, Gene_251_fc) %>% 
+  transmute(Rank =c(1:251), Accession, Symbol, `Gene Name` = Definition, `Fold Change` = Fold_Change) %>% 
+  mutate(`Fold Change` = round(`Fold Change`,3)) %>% 
+  head(20)
+
+rownames(Top20genes_table) <- NULL
+
+kable(Top20genes_table, caption = "Table 2.Top 20 Genes from the 251 Gene Signature Identified Using SVM-RFE from Replication")
 ```
 
 ```{r table with similar genes for the 251 genes, top 20 genes, cache=TRUE}
@@ -856,8 +872,8 @@ Overlapping_genes_table <- Overlapping_genes %>% dplyr::rename(Symbol =3, `Fold 
 kable(Overlapping_genes_table, caption = "Table 3.Overlapping Genes of the Top 20 Genes from the 251 Gene Signature Identified Using SVM-RFE from the Published Paper and Replication")
 ```
 
-##### Classification of the Training Samples  
-```{r echo=TRUE, message=FALSE, warning=FALSE, results='hide', cache=TRUE}
+#### Classification of the Training Samples  
+```{r Classification graphs, echo=TRUE, message=FALSE, warning=FALSE, results='hide', cache=TRUE}
 
 Genes_copy <- Genes
 paper_251genes <- read.csv("Paper_251_genes.csv") %>% dplyr::rename(Accession=1) %>% filter(row_number() %in% c(1:251))
@@ -961,14 +977,12 @@ SVM_Scores_Origin_New<- read.csv("SVM_Scores_Origin_New.csv")%>% dplyr::rename(S
 colour_graph <- c( rep("#fafcfb", 22), rep("#636363",21))
              
 ggplot_svm_origin <- ggplot(SVM_Scores_Origin_New, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) + geom_col(stat = "identity", fill = colour_graph, colour="black") +  labs(title = "Training Set", y = "SVM Score") + theme_minimal()+ theme(plot.title=element_text(hjust=0.5, size=15), axis.title.x = element_text(hjust = 0.5), axis.title.y = element_text(size=15)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) 
-
 ```
 
-```{r fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 2. Support Vector Machine Scores for the Training Set. Left: The Published Paper. Right: Replication Result.", cache=TRUE }
+```{r training scores, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 2. Support Vector Machine Scores for the Training Set. Left: The Published Paper. Right: Replication Result.", cache=TRUE }
 figure_paper_svm_training <- include_graphics("Paper_SVM_Training.png")
 figure_svm_training <- include_graphics("ggplot_svm_training.png")
 include_graphics(c(figure_paper_svm_training, figure_svm_training))
-
 ```
 
 
@@ -981,7 +995,7 @@ include_graphics(c(figure_paper_heatmap, figure_heatmap))
 ```
 
 
-##### Principal Component Analysis based on the 251 Gene Signature
+#### Principal Component Analysis based on the 251 Gene Signature
 
 ```{r PCA, echo=TRUE, message=FALSE, warning=FALSE, results='hide', cache=TRUE}
 #PCA genes paper
@@ -1152,23 +1166,24 @@ auc_ROCR_TS6 <- auc_ROCR_TS6@y.values[[1]]
 
 ```
 
-```{r cache=TRUE}
-#par(mfrow=c(2,4))
-#(SVM_Scores_Origin_perf,col='red', main="Training Set", lwd=3)
-#text(x=0.74, y=0.05, labels="AUC:1.000", col="black", cex=1)
-#plot(SVM_Scores_TS1_perf,col='red', main="TS1", lwd=3)
-#text(x=0.74, y=0.05, labels="AUC:0.875", col="black", cex=1)
-#plot(SVM_Scores_TS2_perf,col='red', main="TS2", lwd=3)
-#text(x=0.74, y=0.05, labels="AUC:0.500", col="black", cex=1)
-#plot(SVM_Scores_TS3_perf,col='red', main = "TS3", lwd=3)
-#text(x=0.74, y=0.05, labels="AUC:0.739", col="black", cex=1)
-#plot(SVM_Scores_TS4_perf,col='red', main = "TS4", lwd=3)
-#text(x=0.74, y=0.05, labels="AUC:0.305", col="black", cex=1)
-#plot(SVM_Scores_TS5_perf,col='red', main = "TS5", lwd=3)
-#text(x=0.26, y=0.95, labels="AUC:0.186", col="black", cex=1)
-#plot(SVM_Scores_TS6_perf,col='red', main = "TS6", lwd=3)
-#text(x=0.74, y=0.05, labels="AUC:0.500", col="black", cex=1)
+```{r combine plots, eval = F, cache=TRUE}
+#code to combine ROC plots, picture was taken to save rendering time
 
+par(mfrow=c(2,4))
+(SVM_Scores_Origin_perf,col='red', main="Training Set", lwd=3)
+text(x=0.74, y=0.05, labels="AUC:1.000", col="black", cex=1)
+plot(SVM_Scores_TS1_perf,col='red', main="TS1", lwd=3)
+text(x=0.74, y=0.05, labels="AUC:0.875", col="black", cex=1)
+plot(SVM_Scores_TS2_perf,col='red', main="TS2", lwd=3)
+text(x=0.74, y=0.05, labels="AUC:0.500", col="black", cex=1)
+plot(SVM_Scores_TS3_perf,col='red', main = "TS3", lwd=3)
+text(x=0.74, y=0.05, labels="AUC:0.739", col="black", cex=1)
+plot(SVM_Scores_TS4_perf,col='red', main = "TS4", lwd=3)
+text(x=0.74, y=0.05, labels="AUC:0.305", col="black", cex=1)
+plot(SVM_Scores_TS5_perf,col='red', main = "TS5", lwd=3)
+text(x=0.26, y=0.95, labels="AUC:0.186", col="black", cex=1)
+plot(SVM_Scores_TS6_perf,col='red', main = "TS6", lwd=3)
+text(x=0.74, y=0.05, labels="AUC:0.500", col="black", cex=1)
 ```
 
 
@@ -1177,8 +1192,6 @@ figure_paper_roc <- include_graphics("Paper_ROC.png")
 plot_roc <- include_graphics("plot_roc.png")
 include_graphics(c(figure_paper_roc, plot_roc))
 ```
-
-
 
 ```{r performance of classifier table-sensitivity, specificity, accuracy , AUC, cache=TRUE}
 confusion.glm_Origin = confusionMatrix(
@@ -1221,8 +1234,8 @@ Performance_classifier <- read.csv("performance_of_classifier.csv") %>% dplyr::r
 kable(Performance_classifier, caption = "Table 4. Performance of the Classifier Measured through Sensitivity, Specificity, Accuracy and AUC for the Training Set(HIV/TB), Test Set 1, Test Set 2, Test Set 3, Test Set 4, Test Set 5 and Test Set 6")
 ```
 
+# Discussion
 
-### Discussion
 Evaluation and analysis of the methods and results used to address the aim of finding a 251 gene signature for HIV/TB co-infection revealed that there exists uncertainties in regards to the accuracy and validity of the findings and methodology used in the published paper.
 
 Attainment of the data used within the published paper revealed that normalized data had been provided as shown in Figure 1, therefore, without access to the raw data, the most suitable normalization method could not be determined.Thus the use of quantile normalization cannot be evaluated whether it is deemed appropriate or not. 
@@ -1243,10 +1256,11 @@ The SVM classifier was validated against all the test sets with the SVM scores f
 
 ROC plots were created and AUC values were found for the training set and all the test sets as shown in Figure 7. The sensitivity, specificity, accuracy and AUC values were found and tabulated in Table 4. The low AUC and accuracy values from the replication’s classifier for Test Set 2,3,4,5 and 6 could be due to the fact that active TB patients existed within Test Set 2 and latent TB patients existed within Test Set 3,4,5 and 6. Due to training the classifier on a dataset with the difference being TB and non-TB infection, it would be expected that low AUC and accuracy values would be returned due to the fact that the majority or all of the samples had TB in Test Set 2,3,4,5 and 6. Rather, the high AUC values for the paper’s classifier would indicate that it does not successfully distinguish TB patients from non-TB patients. 
 
-### Conclusion 
+# Conclusion 
+
 Mycobacterium tuberculosis continues to be an important disease to detect to ensure the right treatment regime is given to affected patients. There existed great difficulty in reproducing the results found in the published paper titled ‘Identification of a 251 Gene Expression Signature That Can Accurately Detect M. tuberculosis in Patients with and without HIV Co-Infection’. The 251 gene expression signature could not be successfully found through SVM-RFE and the signature did not exist in all the test sets. Difficulty in replication could be partly due to a lack of information given in regards to methodology such as no details in regards to what certain features, such as error bars, represent, or how a ranking criteria was formed. However, the other reason is that there were clear errors in the study methodology and design. The use of test sets where the majority or all the samples had TB was incorrect. The accuracy and validity of finding a gene expression signature that can distinguish between TB and non-TB could be improved in the future by training and testing on multiple datasets consisting of both TB and non-TB patients where there would be a reduction in any hidden elements in HIV patients that could confound TB prediction.
 
-### References
+# References
 1.	Justiz Vaillant AA, Gulick PG. HIV Disease Current Practice.  StatPearls. Treasure Island (FL): StatPearls Publishing; 2022.
 2.	Organisation WH. Tuberculosis: World Health Organisation; 2020 [Available from: https://www.who.int/news-room/fact-sheets/detail/tuberculosis#:~:text=Worldwide%2C%20TB%20is%20the%2013th,all%20countries%20and%20age%20groups.
 3.	Bruchfeld J, Correia-Neves M, Källenius G. Tuberculosis and HIV Coinfection. Cold Spring Harb Perspect Med. 2015;5(7):a017871-a.
