@@ -1,14 +1,14 @@
 ---
-title: 'Replication Study of: Identification of a 251 Gene Expression Signature That
-  Can Accurately Detect M. tuberculosis in Patients with and without HIV Co-Infection'
-subtitle: "AMED3002 Reseach Project 2"
+title: "Replication Study of: Identification of a 251 Gene Expression Signature That
+  Can Accurately Detect M. tuberculosis in Patients with and without HIV Co-Infection"
+subtitle: "**Github** (https://github.com/KevinGuan2020/AMED3002-Reproducible-Report)"
 author: 'Group 17: 500341584, 500475432, 500492820, 500493067, 500585889'
 date: "University of Sydney | Semester 2 2021"
 output:
   rmdformats::downcute:
     fig_caption: yes
     self_contained: yes
-    number_sections: true 
+    number_sections: false 
     df_print: kable
     code_folding: hide
     theme: sandstone
@@ -38,7 +38,7 @@ h3 { /* Header 3 */
 }
 </style>
 
-```{r setup, include=FALSE, cache=TRUE} 
+```{r setup, include=FALSE, } 
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE) 
 
 library(tidyverse)
@@ -63,7 +63,7 @@ library(gridExtra)
 library(gplots)
 ```
 
-```{r Origin data, include=FALSE, cache=TRUE}
+```{r Origin data, include=FALSE}
 Origin <- getGEO("GSE50834", GSEMatrix = TRUE)[[1]]
 
 Pheno = pData(Origin)
@@ -88,7 +88,7 @@ colnames(Expression_cut) = cnames[-3]
 Pheno_cut <- Pheno %>% filter(title != "HIV infected patient 2_2")
 ```
 
-```{r paper 251 genes, include = FALSE, cache=TRUE}
+```{r paper 251 genes, include = FALSE}
 Genes_copy <- Genes
 paper_251genes <- read.csv("Paper_251_genes.csv") %>% dplyr::rename(Accession=1) %>% filter(row_number() %in% c(1:251))
 
@@ -127,7 +127,7 @@ Replication and analysis were based on 43 study subjects recruited from the Them
 ## Data Preprocessing
 Raw gene expression microarray data was reportedly quantile normalized. Retrieval of the data revealed that normalized data was provided and that access to the pre-normalized data was not provided, therefore, quantile normalization was unable to be replicated and subsequent analysis was based on the normalized data given. Figure 1 displays boxplots indicating quantile normalization on the gene expression data.
 
-```{r boxplot, fig.cap="Figure 1: Boxplot of Gene Expression of Samples", cache=TRUE}
+```{r boxplot, fig.cap="Figure 1: Boxplot of Gene Expression of Samples"}
 Expression %>% 
   as.data.frame() %>% 
   filter_all(all_vars(. < 1000)) %>% 
@@ -136,7 +136,7 @@ Expression %>%
 
 There existed one patient with two sample IDs of which were GSM1230903 and GSM1230904. Prior to further analysis, the gene expression data was averaged for this patient.
 
-```{r removing duplicate, cache=TRUE}
+```{r removing duplicate}
 Expression_cut <- Expression %>% 
   as.data.frame() %>% 
   mutate(GSM1230946=(GSM1230903 + GSM1230904)/2) %>%
@@ -152,7 +152,7 @@ Pheno_cut <- Pheno %>% filter(title != "HIV infected patient 2_2")
 
 It was reported that non-informative probes that had a maximum fold change less than 1.2 between any two samples were removed due to showing little variation or being expressed at the background level. Upon replication, fold change was calculated for all genes between any two samples and there were no genes found to have a fold change less than 1.2.
 
-```{r maximum foldchange, cache=TRUE}
+```{r  maximum foldchange, eval = F}
 #calculating fold change between samples for all genes 
 data = Expression_cut
 
@@ -200,11 +200,11 @@ TB associated datasets were reportedly used to validate the reported study, henc
 The dataset stemming from GSE19435 was split into TS1 and TS2 of which
 TS1 consisted of 12 healthy patients and 7 active TB patients on 2 months of treatment and TS2 consisted of 7 active TB patients on no treatment and 7 active TB patients on 12 months of treatment. TS3 consisted of 12 healthy patients, 17 latent TB patients and 12 active TB patients on no treatment. There were 12 healthy patients in TS4, 21 latent TB patients and 21 active TB patients on no treatment in TS4, 31 latent TB patients and 20 active TB patients on no treatment in TS5, and 38 latent TB patients and 29 active TB patients on no treatment in TS6.
 
-```{r testset data extraction, echo=TRUE, results=FALSE, cache=TRUE}
+```{r testset data extraction, echo=TRUE, results=FALSE}
 #code for extracting testset data and normalisation 
 TS1 <- getGEO("GSE19435", GSEMatrix = TRUE)[[1]]
 TS3 <- getGEO("GSE19439", GSEMatrix = TRUE)[[1]]
-TS4<- getGEO("GSE19444", GSEMatrix = TRUE)[[1]]
+TS4 <- getGEO("GSE19444", GSEMatrix = TRUE)[[1]]
 TS5 <- getGEO("GSE19442", GSEMatrix = TRUE)[[1]]
 TS6 <- getGEO("GSE40553", GSEMatrix = TRUE)[[1]]
 
@@ -787,14 +787,14 @@ Principal Component Analysis(PCA) was conducted on the training set and TS1 to c
 
 #### Top 20 Genes from the 251-Gene TB-Signature Identified using Support Vector Machine Recursive Feature Elimination (SVM-RFE)
 
-```{r paper top 20 genes, cache=TRUE} 
+```{r paper top 20 genes} 
 fc_paper_20 <- c(1.402, 1.172, 1.248, -1.260, 1.492, 1.422, 1.374, 1.256, 1.441, 1.336, 1.454, 1.102, 1.255, -1.586, 1.421, -1.234, 1.131, 1.253, -3.149, 1.275)
 Paper_top20genes <- read.csv("Paper_top20genes.csv") %>% dplyr::rename(Rank=1, `Gene Name` = Gene.Name, `Fold Change (HIV+TB)/HIV` = Fold.Change..HIV.TB..HIV) %>% transmute(Rank, Accession, Symbol, `Gene Name`, `Fold Change (HIV+TB)/HIV` = fc_paper_20)
 
 kable(Paper_top20genes, caption = "Table 1.The Published Paper's Top 20 Genes from the 251 Gene Signature Identified Using SVM-RFE")
 ```
 
-```{r our top 20 genes, echo=TRUE, message=FALSE, warning=FALSE, results='hide', cache=TRUE}
+```{r our top 20 genes, eval = F, echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
 # Generating dataset for SVM
 Expression_data <- t(Expression_cut) %>% as.data.frame()
 Class_data <- factor(Pheno_cut$description) %>% as.data.frame()
@@ -842,12 +842,13 @@ while (n > 280) {
   df_genes <- df[,colnames(df) %in% keep_genes]
   df <- cbind(df_genes, Class_data)
 }
+```
+
+```{r top20 table}
 Genes251 <- read.csv("251_gene_names.csv") %>% unlist() %>% as.vector()
 foldchangevalues <- read.csv("Origin_genes_withfc.csv")
 keep_genes <- dput(Genes251)
-```
 
-```{r top20 table, cache=TRUE}
 Expression_251 <- Expression_cut[rownames(Expression_cut) %in% Genes251,]
 
 Gene_251_fdata_fortable <- Genes[rownames(Genes) %in% keep_genes,] %>% dplyr::select(Accession, Symbol, Definition)
@@ -864,7 +865,7 @@ rownames(Top20genes_table) <- NULL
 kable(Top20genes_table, caption = "Table 2.Top 20 Genes from the 251 Gene Signature Identified Using SVM-RFE from Replication")
 ```
 
-```{r table with similar genes for the 251 genes, top 20 genes, cache=TRUE}
+```{r table with similar genes for the 251 genes, top 20 genes}
 Overlapping_genes <- Paper_top20genes %>% inner_join(Top20genes_table, by="Symbol") %>% rename_at(vars(matches(".x")), ~ sub(".x", "_Paper", .x)) %>% rename_at(vars(matches(".y")), ~ sub(".y", "_Replication", .x)) 
 
 Overlapping_genes_table <- Overlapping_genes %>% dplyr::rename(Symbol =3, `Fold Change_Paper` = `Fold Change (HIV+TB)/HIV`,`Fold Change_Replication` = `Fold Change`) %>% relocate(Symbol, .before=Rank_Paper) 
@@ -873,7 +874,7 @@ kable(Overlapping_genes_table, caption = "Table 3.Overlapping Genes of the Top 2
 ```
 
 #### Classification of the Training Samples  
-```{r Classification graphs, echo=TRUE, message=FALSE, warning=FALSE, results='hide', cache=TRUE}
+```{r Classification graphs, echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
 
 Genes_copy <- Genes
 paper_251genes <- read.csv("Paper_251_genes.csv") %>% dplyr::rename(Accession=1) %>% filter(row_number() %in% c(1:251))
@@ -979,14 +980,14 @@ colour_graph <- c( rep("#fafcfb", 22), rep("#636363",21))
 ggplot_svm_origin <- ggplot(SVM_Scores_Origin_New, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_Score)) + geom_col(stat = "identity", fill = colour_graph, colour="black") +  labs(title = "Training Set", y = "SVM Score") + theme_minimal()+ theme(plot.title=element_text(hjust=0.5, size=15), axis.title.x = element_text(hjust = 0.5), axis.title.y = element_text(size=15)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) 
 ```
 
-```{r training scores, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 2. Support Vector Machine Scores for the Training Set. Left: The Published Paper. Right: Replication Result.", cache=TRUE }
+```{r training scores, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 2. Support Vector Machine Scores for the Training Set. Left: The Published Paper. Right: Replication Result."}
 figure_paper_svm_training <- include_graphics("Paper_SVM_Training.png")
 figure_svm_training <- include_graphics("ggplot_svm_training.png")
 include_graphics(c(figure_paper_svm_training, figure_svm_training))
 ```
 
 
-```{r heatmap, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 3. Heatmap based on the Gene Expression of the Training Set. Left: The Published Paper. Right: Replication Result.", cache=TRUE}
+```{r heatmap, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 3. Heatmap based on the Gene Expression of the Training Set. Left: The Published Paper. Right: Replication Result."}
 pal <- colorpanel(32, "blue", "white", "red")
 #heatmap(as.matrix(log(Expression_251_paper)), col = pal, labRow=FALSE, labCol = FALSE, xlab="Sample", ylab="Genes")
 figure_paper_heatmap<- include_graphics("Paper_Heatmap.png")
@@ -997,7 +998,7 @@ include_graphics(c(figure_paper_heatmap, figure_heatmap))
 
 #### Principal Component Analysis based on the 251 Gene Signature
 
-```{r PCA, echo=TRUE, message=FALSE, warning=FALSE, results='hide', cache=TRUE}
+```{r PCA, echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
 #PCA genes paper
 PCA_genes_paper <- Gene_251_paper_fdata %>% dplyr::select(ID, Symbol)
 #PCA counts paper
@@ -1042,18 +1043,17 @@ pcaplot <- autoplot(pca, data = PCA_samples_paper, colour = "Disease_State", sha
 ```
 
 
-```{r paper PCA , fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 4. Principal Component Analysis of the Training Set and Test Set 1. Left: The Published Paper. Right: Replication Result.", cache=TRUE}
+```{r paper PCA , fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 4. Principal Component Analysis of the Training Set and Test Set 1. Left: The Published Paper. Right: Replication Result."}
 figure_paper_pca <-include_graphics("Paper_PCA.png")
 figure_pca <- include_graphics("plot_pca.png")
 include_graphics(c(figure_paper_pca, figure_pca))
-
 ```
 
 
 ##### Performance of SVM Signature in the Testing Sets - Test Set 1 and Test Set 2 graph, ROC, AUC, accuracy table
 
 
-```{r svm TS1, echo=TRUE, message=FALSE, warning=FALSE, results='hide', cache=TRUE}
+```{r svm TS1, echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
 svm_score_TS1 <- predict(fit_origin_new, TS1_data_origin_common, decision.values = TRUE)
 
 
@@ -1065,14 +1065,14 @@ plot_TS1<- ggplot(SVM_Scores_TS1, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_S
 
 ```
 
-```{r svm TS1 plots, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 5. Support Vector Machine Scores for Test Set 1. Left: The Published Paper. Right: Replication Result.", cache=TRUE}
+```{r svm TS1 plots, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 5. Support Vector Machine Scores for Test Set 1. Left: The Published Paper. Right: Replication Result."}
 figure_paper_svm_ts1 <- include_graphics("Paper_SVM_TS1.png")
 figure_svm_ts1 <- include_graphics("plot_svm_ts1.png")
 include_graphics(c(figure_paper_svm_ts1, figure_svm_ts1))
 ```
 
 
-```{r svm TS2, echo=TRUE, message=FALSE, warning=FALSE, results='hide', cache=TRUE}
+```{r svm TS2, echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
 svm_score_TS2 <- predict(fit_origin_new, TS2_data_origin_common, decision.values = TRUE)
 
 
@@ -1085,14 +1085,14 @@ plot_ts2 <- ggplot(SVM_Scores_TS2, aes(x= reorder(Sample_ID, -SVM_Score), y=SVM_
 ```
 
 
-```{r svm TS2 plots, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 6. Support Vector Machine Scores for Test Set 2. Left: The Published Paper. Right: Replication Result.", cache=TRUE}
+```{r svm TS2 plots, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 6. Support Vector Machine Scores for Test Set 2. Left: The Published Paper. Right: Replication Result."}
 figure_paper_svm_ts2 <- include_graphics("Paper_SVM_TS2.png")
 figure_svm_ts2 <- include_graphics("plot_ts2.png")
 include_graphics(c(figure_paper_svm_ts2, figure_svm_ts2))
 ```
 
 
-```{r svm TS3-6, roc curve training, cache=TRUE}
+```{r svm TS3-6, roc curve training}
 #svm TS3
 svm_score_TS3 <- predict(fit_origin_new, TS3_data_origin_common, decision.values = TRUE)
 SVM_Scores_TS3<- read.csv("SVM_Scores_TS3_New.csv")%>% dplyr::rename(Sample_ID = 1) %>% mutate(Predicted_Illness =case_when(SVM_Score <0 ~ "TB", SVM_Score>=0 ~ "Controls/Latent TB")) %>% left_join(Pheno_TS3_illnessupdate,by=c("Sample_ID" = "geo_accession")) %>% dplyr::select(Sample_ID, SVM_Score, Predicted_Illness, illness) %>% na.omit()
@@ -1166,7 +1166,7 @@ auc_ROCR_TS6 <- auc_ROCR_TS6@y.values[[1]]
 
 ```
 
-```{r combine plots, eval = F, cache=TRUE}
+```{r combine plots, eval = F}
 #code to combine ROC plots, picture was taken to save rendering time
 
 par(mfrow=c(2,4))
@@ -1187,13 +1187,13 @@ text(x=0.74, y=0.05, labels="AUC:0.500", col="black", cex=1)
 ```
 
 
-```{r roc curves, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 7. ROC plots and AUC values for the Training Set, Test Set 1, Test Set 2, Test Set 3, Test Set 4, Test Set 5, Test Set 6. Left: The Published Paper. Right: Replication Result.", cache=TRUE}
+```{r roc curves, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap="Figure 7. ROC plots and AUC values for the Training Set, Test Set 1, Test Set 2, Test Set 3, Test Set 4, Test Set 5, Test Set 6. Left: The Published Paper. Right: Replication Result."}
 figure_paper_roc <- include_graphics("Paper_ROC.png")
 plot_roc <- include_graphics("plot_roc.png")
 include_graphics(c(figure_paper_roc, plot_roc))
 ```
 
-```{r performance of classifier table-sensitivity, specificity, accuracy , AUC, cache=TRUE}
+```{r performance of classifier}
 confusion.glm_Origin = confusionMatrix(
   data = as.factor(SVM_Scores_Origin_df$predictions),
   reference = as.factor(SVM_Scores_Origin_df$labels)
@@ -1238,13 +1238,17 @@ kable(Performance_classifier, caption = "Table 4. Performance of the Classifier 
 
 Evaluation and analysis of the methods and results used to address the aim of finding a 251 gene signature for HIV/TB co-infection revealed that there exists uncertainties in regards to the accuracy and validity of the findings and methodology used in the published paper.
 
-Attainment of the data used within the published paper revealed that normalized data had been provided as shown in Figure 1, therefore, without access to the raw data, the most suitable normalization method could not be determined.Thus the use of quantile normalization cannot be evaluated whether it is deemed appropriate or not. 
+#### Data Preprocessing
+
+Attainment of the data used within the published paper revealed that normalized data had been provided as shown in Figure 1, therefore, without access to the raw data, the most suitable normalization method could not be determined. Thus the use of quantile normalization cannot be evaluated whether it is deemed appropriate or not. 
 
 Averaging the gene expression data of a patient where there existed duplication of their data was appropriate, however, it would be better to have the data collection procedure improved that would allow such duplication to not occur in the future. 
 
 Having a maximum fold change cut-off of 1.2 to determine the removal of genes was arbitrary with no explanation provided as to why 1.2 was chosen. Using this cut-off would mean that a slight upregulation or deregulation of a gene would lead to its removal. However, implementation of this step during replication revealed that no genes had a maximum fold change less than 1.2 causing skepticism as to whether this step would have resulted in the 2000 genes needing to be removed as conducted in the original paper. Rather, the use of the most variable genes, determined by the variance of its expression level, should be used as the cutoff instead.
 
 Inconsistencies existed within the independent validation samples stemming from the external datasets. The only valid test set was Test Set 1 of which consisted of 7 patients with active TB and 12 healthy patients as the control. Test Set 2 consisted of all patients with active TB and Test Set 3,4,5 and 6 all had patients with latent TB as part of their control. With the aim being able to distinguish TB from non-TB, having no patients that do not have TB such as in Test Set 2 would deem this sample as inappropriate to validate the findings. Additionally, having latent TB patients as part of the control would be invalid upon determining the gene expression differences between TB and non-TB. Normalization of the external datasets of which involved adjusting for the differences in the test set’s mean against the overall mean is appropriate, but doesn’t allow for generalisability to other datasets. Any dataset that contains expression levels vastly different from the dataset the signature was detected from cannot be dealt with by using averages. This is a major issue for most genetic analyses and the best approach for dealing with such an issue was unable to be determined.
+
+#### Results
 
 The top 20 genes found in the paper are displayed in Table 1 and the top 20 genes found upon replication are displayed in Table 2, where only 3 genes were similar as shown in Table 3. The 251 gene signature found in the paper could not be replicated where only 84 genes were found to be common. A poor outline of the working process of the classifier and no hyperparameters of the model were given. Additionally, no criteria was given on how they based their ranking of genes. 
 
