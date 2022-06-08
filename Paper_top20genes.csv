@@ -1,0 +1,21 @@
+﻿Rank,Accession,Symbol,Gene Name,Fold Change (HIV+TB)/HIV
+1,NM_021004,DHRS4,dehydrogenase/reductase (SDR family) member 4,1.402
+2,NM_001990,EYA3,eyes absent homolog 3 (Drosophila),1.172
+3,NM_030629,CMIP,c-Maf-inducing protein,1.248
+4,NM_014233,UBTF,"upstream binding transcription factor, RNA polymerase I",−1.260
+5,NM_032227,TMEM164,transmembrane protein 164,1.492
+6,NM_078487,CDKN2B,"cyclin-dependent kinase inhibitor 2B (p15, inhibits CDK4)",1.422
+7,NM_005607,PTK2,PTK2 protein tyrosine kinase 2,1.374
+8,XM_939593,LOC648605,"PREDICTED: similar to Trimethyllysine dioxygenase, mitochondrial precursor",1.256
+9,CR621233,NaN,full-length cDNA clone CS0DI057YA22 of Placenta Cot25-normalized of (human),1.441
+10,NM_003501,ACOX3,"acyl-Coenzyme A oxidase 3, pristanoyl",1.336
+11,XM_001126647,MLKL,PREDICTED: mixed lineage kinase domain-like,1.454
+12,NM_007100,ATP5I,"ATP synthase, H+ transporting, mitochondrial F0 complex, subunit E",1.102
+13,NM_005819,STX6,syntaxin 6,1.255
+14,NM_152858,WTAP,Wilms tumor 1 associated protein,−1.586
+15,NM_001531,MR1,"major histocompatibility complex, class I-related",1.421
+16,XM_045290,LOC151579,PREDICTED: similar to basic leucine zipper and W2 domains 1,−1.234
+17,NM_025164,SIK3,SIK family kinase 3,1.131
+18,XM_036729,USP41,PREDICTED: ubiquitin specific peptidase 41,1.253
+19,NM_145172,WDR63,WD repeat domain 63,−3.149
+20,NM_023015,INTS3,integrator complex subunit 3,1.275

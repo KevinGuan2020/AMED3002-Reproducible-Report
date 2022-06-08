@@ -1,0 +1,9 @@
+﻿,,Sensitivity,,Specificity,,Accuracy,,AUC,
+Dataset,Description,SVM,SVM(Reproduced),SVM,SVM(Reproduced),SVM,SVM(Reproduced),SVM,SVM(Reproduced)
+HIV/TB,HIV/TB vs. HIV,76.2,100,86.4,100,81.4,100,0.864,1
+TS1,TB (2 mo) vs. Controls,85.7,100,100,75,94.7,84.2,1,0.875
+TS2,TB vs. TB (12 mo),85.7,100,100,0,92.9,50,0.98,0.5
+TS3,TB vs. Controls/Latent TB,69.2,100,100,47.8,90.5,66.7,0.936,0.7391
+TS4,TB vs. Controls/Latent TB,76.2,51.5,97,9.5,88.9,35.2,0.893,0.305
+TS5,TB vs. Latent TB,90,32.3,90.3,5,90.2,21.6,0.924,0.186
+TS6,TB vs. Latent TB,86.2,100,92.1,0,89.6,18.6,0.967,0.5
